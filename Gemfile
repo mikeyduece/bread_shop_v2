@@ -37,6 +37,7 @@ gem 'faraday'
 gem 'figaro'
 gem 'cancancan', '~> 2.0'
 gem 'devise'
+gem 'doorkeeper'
 
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.1.0', require: false
