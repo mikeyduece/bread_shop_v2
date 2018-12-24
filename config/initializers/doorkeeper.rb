@@ -4,10 +4,19 @@ Doorkeeper.configure do
 
   # This block will be called to check whether the resource owner is authenticated or not.
   resource_owner_authenticator do
-    User.find_by(email: params[:email])
-    # Put your resource owner authentication logic here.
-    # Example implementation:
-    #   User.find_by_id(session[:user_id]) || redirect_to(new_user_session_url)
+    user = User.find_by(email: params[:email])
+    if user && user.valid_password?(params[:password])
+      user
+    else
+      resource_owner_from_credentials
+    end
+  end
+
+  resource_owner_from_credentials do |routes|
+    user = User.find_for_database_authentication(email: params[:email])
+    if user && user.valid_for_authentication? { user.valid_password?(params[:password]) }
+      user
+    end
   end
 
   # If you didn't skip applications controller from Doorkeeper routes in your application routes.rb
@@ -181,7 +190,7 @@ Doorkeeper.configure do
   #   http://tools.ietf.org/html/rfc6819#section-4.4.2
   #   http://tools.ietf.org/html/rfc6819#section-4.4.3
   #
-  # grant_flows %w[authorization_code client_credentials]
+  grant_flows %w[authorization_code client_credentials password]
 
   # Hook into the strategies' request & response life-cycle in case your
   # application needs advanced customization or logging:
