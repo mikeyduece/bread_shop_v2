@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_12_24_174135) do
+ActiveRecord::Schema.define(version: 2018_12_24_201302) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -25,6 +25,13 @@ ActiveRecord::Schema.define(version: 2018_12_24_174135) do
     t.datetime "updated_at", null: false
     t.index ["email"], name: "index_admins_on_email", unique: true
     t.index ["reset_password_token"], name: "index_admins_on_reset_password_token", unique: true
+  end
+
+  create_table "families", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_families_on_name"
   end
 
   create_table "oauth_access_grants", force: :cascade do |t|
@@ -69,6 +76,19 @@ ActiveRecord::Schema.define(version: 2018_12_24_174135) do
     t.index ["uid"], name: "index_oauth_applications_on_uid", unique: true
   end
 
+  create_table "recipes", force: :cascade do |t|
+    t.string "name"
+    t.integer "number_of_portions"
+    t.float "weight_per_portion"
+    t.bigint "user_id"
+    t.bigint "family_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["family_id"], name: "index_recipes_on_family_id"
+    t.index ["name"], name: "index_recipes_on_name"
+    t.index ["user_id"], name: "index_recipes_on_user_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -86,4 +106,6 @@ ActiveRecord::Schema.define(version: 2018_12_24_174135) do
 
   add_foreign_key "oauth_access_grants", "oauth_applications", column: "application_id"
   add_foreign_key "oauth_access_tokens", "oauth_applications", column: "application_id"
+  add_foreign_key "recipes", "families"
+  add_foreign_key "recipes", "users"
 end
