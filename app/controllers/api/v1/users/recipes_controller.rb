@@ -5,7 +5,11 @@ module Api
         before_action :doorkeeper_authorize!
   
         def create
-          
+          recipe_params[:ingredients].each do |ingredient|
+            ing = Ingredient.find_or_initialize_by(name: ingredient[:name])
+            ing.save
+            puts ing.errors.inspect
+          end
         end
   
         private
