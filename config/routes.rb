@@ -10,6 +10,8 @@ Rails.application.routes.draw do
       resources :users, module: :users, controller: :users do
         put :activate
         delete :forget
+
+        resources :recipes
       end
     end
   end
