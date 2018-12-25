@@ -1,4 +1,6 @@
 class Recipe < ApplicationRecord
+  include Api::RecipeHelper
+  
   belongs_to :user
   belongs_to :family, optional: true
 
@@ -9,7 +11,6 @@ class Recipe < ApplicationRecord
   def ingredients
     list = {}
     recipe_ingredients.includes(:ingredient).find_each do |recipe_ingredient|
-      # ingredient = ingredients.find(recipe_ingredient.ingredient_id)
       list[recipe_ingredient.ingredient.name] = {
         amount: recipe_ingredient.amount,
         bakers_percentage: "#{recipe_ingredient.bakers_percentage}%"
@@ -23,7 +24,7 @@ class Recipe < ApplicationRecord
   end
 
   def lean
-    return true if sweet_and_fat_amts.all? { |amt| low.include?(amt) }
+    return true if sweet_and_fat_amts.all? { |amt| LOW.include?(amt) }
   end
 
   def soft
@@ -36,8 +37,8 @@ class Recipe < ApplicationRecord
 
   def rich
     if (MODERATE.include?(sweetener_percentage) &&
-        high.include?(fat_percentage)) ||
-        high.include?(fat_percentage)
+        HIGH.include?(fat_percentage)) ||
+        HIGH.include?(fat_percentage)
       true
     end
   end
@@ -47,7 +48,15 @@ class Recipe < ApplicationRecord
   end
 
   def sweet
-    return true if sweet_and_fat_amts.all? { |amt| HIGH.include?(amt) }
+    return true if sweet_and_fat_amts.all? { |amt| MODERATE.include?(amt) }
+  end
+
+  def calculate_family
+    update_attributes(family_id: family_assignment(:lean)) if lean
+    update_attributes(family_id: family_assignment(:soft)) if soft
+    update_attributes(family_id: family_assignment(:sweet)) if sweet
+    update_attributes(family_id: family_assignment(:rich)) if rich
+    update_attributes(family_id: family_assignment(:slack)) if slack
   end
 
   def family_assignment(name)
@@ -89,19 +98,19 @@ class Recipe < ApplicationRecord
   end
 
   def flour_amts
-    sum_recipe_ingredient_amounts('flour')
+    sum_recipe_ingredient_amounts(:flour)
   end
 
   def sweetener_amounts
-    sum_recipe_ingredient_amounts('sweetener')
+    sum_recipe_ingredient_amounts(:sweetener)
   end
 
   def fat_amounts
-    sum_recipe_ingredient_amounts('fat')
+    sum_recipe_ingredient_amounts(:fat)
   end
 
   def water_amt
-    sum_recipe_ingredient_amounts('water')
+    sum_recipe_ingredient_amounts(:water)
   end
 
 end

@@ -5,7 +5,7 @@ module Api
       agave molasses honey maple\ syrup stevia
     ].freeze
   
-    FATS = %w[butter cream sour\ cream canola\ oil olive\ oil margerine].freeze
+    FATS = %w[butter cream sour\ cream canola\ oil olive\ oil margerine shortening egg].freeze
   
     WATER = %w[water milk].freeze
   

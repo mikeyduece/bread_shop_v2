@@ -11,6 +11,7 @@ module Api
 
       create_recipe_ingredients(recipe: recipe, ingredients: params[:ingredients])
       recipe.recipe_ingredients.find_each(&:save)
+      recipe.calculate_family
       recipe
     end
 
