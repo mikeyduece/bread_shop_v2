@@ -9,11 +9,11 @@ module Api
         def create
           recipe = current_api_user.recipes.find_by(name: recipe_params[:name].downcase)
 
-          if recipe
-            error_response(code: 404, message: t('api.errors.record_exists'))
-          else
-            new_recipe = create_recipe(recipe_params)
+          if !recipe
+            new_recipe = create_recipe(user: current_api_user, params: recipe_params)
             success_response(code: 204, options: RecipeSerializer.new(new_recipe))
+          else
+            error_response(code: 404, message: t('api.errors.record_exists'))
           end
         end
 
@@ -23,6 +23,11 @@ module Api
 
         def show
           success_response(options: RecipeSerializer.new(user_recipe))
+        end
+
+        def destroy
+          user_recipe.destroy
+          success_response(code: 205, message: t('api.recipe_deleted', recipe_name: user_recipe.name))
         end
   
         private

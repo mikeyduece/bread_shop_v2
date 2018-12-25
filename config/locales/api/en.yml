@@ -1,0 +1,5 @@
+en:
+  api:
+    recipe_deleted: 'You have successfully delete %{recipe_name}'
+    errors:
+      record_exists: 'A record with that name already exists'

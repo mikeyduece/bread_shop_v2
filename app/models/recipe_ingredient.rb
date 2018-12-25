@@ -11,6 +11,7 @@ class RecipeIngredient < ApplicationRecord
   end
 
   def calculate_bakers_percentage
+    # TODO: Fix infinity error with flour
     flour_amt = recipe.flour_amts
     ((amount / flour_amt) * 100).round(2)
   end

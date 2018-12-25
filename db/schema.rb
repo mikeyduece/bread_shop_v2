@@ -96,7 +96,7 @@ ActiveRecord::Schema.define(version: 2018_12_25_005556) do
     t.float "amount"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.float "bakers_percentage", default: 0.0
+    t.float "bakers_percentage"
     t.index ["ingredient_id"], name: "index_recipe_ingredients_on_ingredient_id"
     t.index ["recipe_id"], name: "index_recipe_ingredients_on_recipe_id"
   end

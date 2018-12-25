@@ -54,10 +54,10 @@ class Recipe < ApplicationRecord
     Family.find_by(name: name).id
   end
 
-  def sum_recipe_ingredient_amounts(category)
-    category = Category.find_by(name: category)
+  def sum_recipe_ingredient_amounts(category_name)
+    category = Category.find_by(name: category_name)
     recipe_ingredients.includes(:ingredient)
-      .where(ingredients: { category: category })
+      .where(ingredients: { category_id: category.id })
       .sum(:amount)
   end
 

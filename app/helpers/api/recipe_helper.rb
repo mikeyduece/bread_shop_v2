@@ -6,17 +6,17 @@ module Api
 
     HIGH = (11.0..25.0)
 
-    def create_recipe(params)
-      recipe = current_api_user.recipes.create(name: params[:name])
-      puts recipe.errors.inspect
+    def create_recipe(user:, params:)
+      recipe = user.recipes.create(name: params[:name].downcase)
+
       create_recipe_ingredients(recipe: recipe, ingredients: params[:ingredients])
-      recipe.recipe_ingredients.each(&:bakers_percentage)
+      recipe.recipe_ingredients.find_each(&:save)
       recipe
     end
 
     def create_recipe_ingredients(recipe:, ingredients:)
       ingredients.each do |ingredient|
-        ing = Ingredient.find_or_create_by(name: ingredient[:name])
+        ing = Ingredient.find_or_create_by(name: ingredient[:name].downcase)
 
         recipe.recipe_ingredients.create(amount: ingredient[:amount], ingredient: ing)
       end
