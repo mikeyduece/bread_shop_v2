@@ -2,11 +2,13 @@ class RecipeIngredient < ApplicationRecord
   belongs_to :recipe
   belongs_to :ingredient
 
-  def bakers_percentage
-    calculate_bakers_percentage
-  end
-  
+  before_save :ensure_bakers_percentage
+
   private
+
+  def ensure_bakers_percentage 
+    self.bakers_percentage = calculate_bakers_percentage
+  end
 
   def calculate_bakers_percentage
     flour_amt = recipe.flour_amts

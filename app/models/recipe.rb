@@ -18,6 +18,10 @@ class Recipe < ApplicationRecord
     list
   end
 
+  def total_percentage 
+    recipe_ingredients.sum('recipe_ingredients.bakers_percentage')
+  end
+
   def lean
     return true if sweet_and_fat_amts.all? { |amt| low.include?(amt) }
   end
