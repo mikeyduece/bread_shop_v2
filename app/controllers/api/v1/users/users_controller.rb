@@ -2,7 +2,6 @@ module Api
   module V1
     module Users
       class UsersController < ApiController
-        include SerializationHelper
         before_action :doorkeeper_authorize!, except: :create
 
         def create
