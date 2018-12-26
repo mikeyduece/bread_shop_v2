@@ -23,40 +23,39 @@ class Recipe < ApplicationRecord
     recipe_ingredients.sum('recipe_ingredients.bakers_percentage')
   end
 
-  def lean
-    return true if sweet_and_fat_amts.all? { |amt| LOW.include?(amt) }
+  def lean?
+    sweet_and_fat_amts.all? { |amt| LOW.include?(amt) }
   end
 
-  def soft
-    if (water_percentage + fat_percentage) < 70.0 &&
+  def soft?
+    (water_percentage + fat_percentage) < 70.0 &&
         MODERATE.include?(sweetener_percentage) &&
         MODERATE.include?(fat_percentage)
-      true
-    end
   end
 
-  def rich
-    if (MODERATE.include?(sweetener_percentage) &&
+  def rich?
+    (MODERATE.include?(sweetener_percentage) &&
         HIGH.include?(fat_percentage)) ||
         HIGH.include?(fat_percentage)
-      true
-    end
   end
 
-  def slack
-    return true if water_percentage + fat_percentage > 70.0
+  def slack?
+    water_percentage + fat_percentage > 70.0
   end
 
-  def sweet
-    return true if sweet_and_fat_amts.all? { |amt| MODERATE.include?(amt) }
+  def sweet?
+    # HIGH.include?(sweetener_percentage) && MODERATE.include?(fat_percentage)
+    sweet_and_fat_amts.all? { |amt| HIGH.include?(amt) }
   end
 
   def calculate_family
-    update_attributes(family_id: family_assignment(:lean)) if lean
-    update_attributes(family_id: family_assignment(:soft)) if soft
-    update_attributes(family_id: family_assignment(:sweet)) if sweet
-    update_attributes(family_id: family_assignment(:rich)) if rich
-    update_attributes(family_id: family_assignment(:slack)) if slack
+    case
+    when lean? then update_attributes(family_id: family_assignment(:lean))
+    when soft? then update_attributes(family_id: family_assignment(:soft))
+    when sweet? then update_attributes(family_id: family_assignment(:sweet))
+    when rich? then update_attributes(family_id: family_assignment(:rich))
+    when slack? then update_attributes(family_id: family_assignment(:slack))
+    end
   end
 
   def family_assignment(name)
