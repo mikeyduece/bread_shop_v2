@@ -44,7 +44,6 @@ class Recipe < ApplicationRecord
   end
 
   def sweet?
-    # HIGH.include?(sweetener_percentage) && MODERATE.include?(fat_percentage)
     sweet_and_fat_amts.all? { |amt| HIGH.include?(amt) }
   end
 
