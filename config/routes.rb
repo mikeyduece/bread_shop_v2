@@ -7,6 +7,8 @@ Rails.application.routes.draw do
   
   namespace :api do
     namespace :v1 do
+      resources :recipes, module: :recipes, controller: :recipes, only: :show
+
       resources :users, module: :users, controller: :users do
         put :activate
         delete :forget
