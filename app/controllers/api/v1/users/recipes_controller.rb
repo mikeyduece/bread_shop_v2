@@ -34,7 +34,7 @@ module Api
           if user_recipe.present?
             recipe_name = user_recipe.name
             user_recipe.destroy
-            success_response(code: 200, message: t('recipe_deleted', recipe_name: recipe_name))
+            success_response(code: 202, message: t('recipe_deleted', recipe_name: recipe_name))
           else
             error_response(code: 404, message: t('errors.record_not_found'))
           end

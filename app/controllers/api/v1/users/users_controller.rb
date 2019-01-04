@@ -17,6 +17,12 @@ module Api
           success_response(data: Users::PrivateSerializer.new(current_api_user))
         end
 
+        def update
+          if current_api_user.update(user_params)
+            success_response(data: Users::PrivateSerializer.new(current_api_user))
+          end
+        end
+
         private
 
         def user_params
