@@ -110,5 +110,4 @@ class Recipe < ApplicationRecord
   def water_amt
     sum_recipe_ingredient_amounts(:water)
   end
-
 end

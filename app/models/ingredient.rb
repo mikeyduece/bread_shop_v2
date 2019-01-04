@@ -14,11 +14,15 @@ class Ingredient < ApplicationRecord
     name = self[:name].downcase
 
     case
-    when SWEETENERS.include?(name) then update_attribute(:category, category_assignment('sweetener'))
-    when FATS.include?(name)       then update_attribute(:category, category_assignment('fat'))
-    when FLOURS.include?(name)     then update_attribute(:category, category_assignment('flour'))
-    when WATER.include?(name)      then update_attribute(:category, category_assignment('water'))
+    when category_include?(constant: SWEETENERS, kind: name) then update_attributes(category: category_assignment(:sweetener))
+    when category_include?(constant: FATS, kind: name)       then update_attributes(category: category_assignment(:fat))
+    when category_include?(constant: FLOURS, kind: name)     then update_attributes(category: category_assignment(:flour))
+    when category_include?(constant: WATER, kind: name)      then update_attributes(category: category_assignment(:water))
     end
+  end
+
+  def category_include?(constant:, kind:)
+    constant.any? { |c| kind.include?(c) }
   end
 
   def category_assignment(category_name)
