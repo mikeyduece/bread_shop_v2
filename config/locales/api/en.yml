@@ -1,5 +1,5 @@
 en:
-  recipe_deleted: 'You have successfully delete %{recipe_name}'
+  recipe_deleted: 'You have successfully deleted your %{recipe_name} recipe'
   errors:
     record_exists: 'A record with that name already exists'
     delete_error: 'There was a problem deleting %{recipe_name}'

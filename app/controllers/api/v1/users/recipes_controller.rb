@@ -12,8 +12,8 @@ module Api
           if !recipe
             new_recipe = create_recipe(user: current_api_user, params: recipe_params)
 
-            if new_recipe.errors.nil?
-              success_response(code: 204, data: Recipes::OverviewSerializer.new(new_recipe))
+            if new_recipe.errors.messages.empty?
+              success_response(code: 201, data: Recipes::OverviewSerializer.new(new_recipe))
             else
               error_response(code: 404, message: new_recipe.errors)
             end
@@ -31,12 +31,10 @@ module Api
         end
 
         def destroy
-          if user_recipe
-            if user_recipe.destroy
-              success_response(code: 205, message: t('recipe_deleted', recipe_name: user_recipe.name))
-            else
-              error_response(code: 500, message: t('errors.delete_error', recipe_name: user_recipe.name))
-            end
+          if user_recipe.present?
+            recipe_name = user_recipe.name
+            user_recipe.destroy
+            success_response(code: 200, message: t('recipe_deleted', recipe_name: recipe_name))
           else
             error_response(code: 404, message: t('errors.record_not_found'))
           end
