@@ -18,7 +18,7 @@ module Api
               error_response(code: 404, message: new_recipe.errors)
             end
           else
-            error_response(code: 404, message: t('api.errors.record_exists'))
+            error_response(code: 404, message: t('errors.record_exists'))
           end
         end
 
@@ -33,12 +33,12 @@ module Api
         def destroy
           if user_recipe
             if user_recipe.destroy
-              success_response(code: 205, message: t('en.api.recipe_deleted', recipe_name: user_recipe.name))
+              success_response(code: 205, message: t('recipe_deleted', recipe_name: user_recipe.name))
             else
-              error_response(code: 500, message: t('en.api.errors.delete_error', recipe_name: user_recipe.name))
+              error_response(code: 500, message: t('errors.delete_error', recipe_name: user_recipe.name))
             end
           else
-            error_response(code: 500, message: t('en.api.errors.record_not_found'))
+            error_response(code: 404, message: t('errors.record_not_found'))
           end
         end
   
