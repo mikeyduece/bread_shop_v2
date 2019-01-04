@@ -7,6 +7,8 @@ class Recipe < ApplicationRecord
   has_many :recipe_ingredients, dependent: :destroy
 
   validates :name, presence: true, uniqueness: { scope: :user_id }
+  validates :number_of_portions, presence: true, numericality: { greater_than: 0 }
+  validates :weight_per_portion, presence: true, numericality: { greater_than: 0 }
 
   def ingredients
     list = {}

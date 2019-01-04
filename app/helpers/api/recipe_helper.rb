@@ -8,8 +8,7 @@ module Api
 
     def create_recipe(user:, params:)
       recipe = user.recipes.create(params.except(:ingredients))
-      puts '############################'
-      puts params.inspect
+
       create_recipe_ingredients(recipe: recipe, ingredients: params[:ingredients])
       recipe.recipe_ingredients.find_each(&:save)
       recipe.calculate_family
