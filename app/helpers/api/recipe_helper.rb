@@ -7,13 +7,16 @@ module Api
     HIGH = (11.0..25.0)
 
     def create_recipe(user:, params:)
-      recipe = user.recipes.create(name: params[:name].downcase)
-
+      recipe = user.recipes.create(params.except(:ingredients))
+      puts '############################'
+      puts params.inspect
       create_recipe_ingredients(recipe: recipe, ingredients: params[:ingredients])
       recipe.recipe_ingredients.find_each(&:save)
       recipe.calculate_family
       recipe
     end
+
+    private
 
     def create_recipe_ingredients(recipe:, ingredients:)
       ingredients.each do |ingredient|

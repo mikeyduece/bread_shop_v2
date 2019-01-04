@@ -1,9 +1,9 @@
 class Api::V1::Recipes::OverviewSerializer
   include FastJsonapi::ObjectSerializer
-  attributes :name, :total_percentage, :units, :family, :ingredients
+  attributes :name, :total_percentage, :number_of_portions, :weight_per_portion, :units, :family, :ingredients
 
   attribute :user do |object|
-    Users::OverviewSerializer.new(object.user)
+    Api::V1::Users::OverviewSerializer.new(object.user)
   end
 
   attribute :total_percentage do |object|
@@ -15,6 +15,6 @@ class Api::V1::Recipes::OverviewSerializer
   end
 
   attribute :family do |object|
-    Families::OverviewSerializer.new(object.family)
+    Api::V1::Families::OverviewSerializer.new(object.family)
   end
 end

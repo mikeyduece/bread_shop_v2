@@ -11,18 +11,18 @@ module Api
 
           if !recipe
             new_recipe = create_recipe(user: current_api_user, params: recipe_params)
-            success_response(code: 204, data: RecipeSerializer.new(new_recipe))
+            success_response(code: 204, data: Recipes::OverviewSerializer.new(new_recipe))
           else
             error_response(code: 404, message: t('api.errors.record_exists'))
           end
         end
 
         def index
-          success_response(data: RecipeSerializer.new(current_api_user.recipes))
+          success_response(data: Recipes::OverviewSerializer.new(current_api_user.recipes))
         end
 
         def show
-          success_response(data: RecipeSerializer.new(user_recipe))
+          success_response(data: Recipes::OverviewSerializer.new(user_recipe))
         end
 
         def destroy
@@ -37,7 +37,7 @@ module Api
         end
   
         def recipe_params
-          params.require(:recipe).permit(:name, :units, ingredients: [:name, :amount])
+          params.require(:recipe).permit(:name, :units, :number_of_portions, :weight_per_portion, ingredients: [:name, :amount])
         end
       end
     end
