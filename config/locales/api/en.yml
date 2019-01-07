@@ -6,3 +6,5 @@ en:
     record_not_found: 'That record does not exist'
   comments: 
     error: 'Oops, Something went wrong while saving your comment'
+    deleted: 'Comment deleted'
+    delete_error: 'Not able to delete comment at this time'

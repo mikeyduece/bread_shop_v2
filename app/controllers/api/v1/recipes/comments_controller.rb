@@ -23,15 +23,23 @@ module Api
         end
       
         def show
-          
+          success_response(data: Comments::OverviewSerializer.new(comment))
         end
       
         def update
-          
+          if comment.update(comment_params)
+            success_response(data: Comments::OverviewSerializer.new(comment))
+          else
+            error_response(code: 500, message: t('api.comments.error'))
+          end
         end
       
         def destroy
-          
+          if comment.destroy
+            success_response(code: 201, message: t('api.comments.deleted'))
+          else
+            error_response(code: 500, message: t('api.comments.delete_error'))
+          end
         end
       
         private
