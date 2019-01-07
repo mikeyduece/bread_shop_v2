@@ -14,10 +14,6 @@ module Api
         end
   
         private
-
-        def options
-          { include: [:user] }
-        end
   
         def recipe
           @recipe = Recipe.find_by(id: params[:recipe_id] || params[:id])
