@@ -1,4 +1,3 @@
-class Api::V1::Families::OverviewSerializer
-  include FastJsonapi::ObjectSerializer
+class Api::V1::Families::OverviewSerializer < BaseSerializer
   attributes :name
 end
