@@ -6,10 +6,6 @@ module Api
         before_action :doorkeeper_authorize!
         helper_method :recipe, :comment
       
-        def index
-          success_response(data: Api::V1::Comments::OverviewSerializer.new(recipe.comments.roots))
-        end
-      
         def create
           new_comment = recipe.comments.new(comment_params)
           

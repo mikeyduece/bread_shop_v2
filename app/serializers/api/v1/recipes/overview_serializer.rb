@@ -16,4 +16,8 @@ class Api::V1::Recipes::OverviewSerializer < BaseSerializer
   attribute :family do |object|
     BASE::Families::OverviewSerializer.new(object.family)
   end
+
+  attributes :comments do |object|
+    BASE::Comments::OverviewSerializer.new(object.comments.roots)
+  end
 end
