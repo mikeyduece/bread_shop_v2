@@ -7,7 +7,7 @@ module Api
         def create
           user = User.create(user_params)
           if user.save
-            success_response(code: 204, data: Users::PrivateSerializer.new(user))
+            success_response(code: 201, data: Users::PrivateSerializer.new(user))
           else
             render json: 'A user with that email already exists'
           end
