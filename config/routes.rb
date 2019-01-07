@@ -7,7 +7,9 @@ Rails.application.routes.draw do
   
   namespace :api do
     namespace :v1 do
-      resources :recipes, module: :recipes, controller: :recipes, only: :show
+      resources :recipes, module: :recipes, controller: :recipes, only: :show do
+        resources :comments, except: %i[new edit]
+      end
 
       resources :users, module: :users, controller: :users, except: %i[new edit] do
         put :activate
