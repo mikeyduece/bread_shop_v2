@@ -11,23 +11,33 @@ module Api
 
           if !recipe
             new_recipe = create_recipe(user: current_api_user, params: recipe_params)
-            success_response(code: 204, options: RecipeSerializer.new(new_recipe))
+
+            if new_recipe.errors.messages.empty?
+              success_response(code: 201, data: Recipes::OverviewSerializer.new(new_recipe))
+            else
+              error_response(code: 404, message: new_recipe.errors)
+            end
           else
-            error_response(code: 404, message: t('api.errors.record_exists'))
+            error_response(code: 404, message: t('errors.record_exists'))
           end
         end
 
         def index
-          success_response(options: RecipeSerializer.new(current_api_user.recipes))
+          success_response(data: Recipes::OverviewSerializer.new(current_api_user.recipes))
         end
 
         def show
-          success_response(options: RecipeSerializer.new(user_recipe))
+          success_response(data: Recipes::OverviewSerializer.new(user_recipe))
         end
 
         def destroy
-          user_recipe.destroy
-          success_response(code: 205, message: t('api.recipe_deleted', recipe_name: user_recipe.name))
+          if user_recipe.present?
+            recipe_name = user_recipe.name
+            user_recipe.destroy
+            success_response(code: 202, message: t('recipe_deleted', recipe_name: recipe_name))
+          else
+            error_response(code: 404, message: t('errors.record_not_found'))
+          end
         end
   
         private
@@ -37,7 +47,7 @@ module Api
         end
   
         def recipe_params
-          params.require(:recipe).permit(:name, :units, ingredients: [:name, :amount])
+          params.require(:recipe).permit(:name, :units, :number_of_portions, :weight_per_portion, ingredients: [:name, :amount])
         end
       end
     end

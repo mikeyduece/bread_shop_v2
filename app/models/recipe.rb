@@ -1,15 +1,18 @@
 class Recipe < ApplicationRecord
+  include Api::RecipeHelper
+  
   belongs_to :user
   belongs_to :family, optional: true
 
   has_many :recipe_ingredients, dependent: :destroy
 
   validates :name, presence: true, uniqueness: { scope: :user_id }
+  validates :number_of_portions, presence: true, numericality: { greater_than: 0 }
+  validates :weight_per_portion, presence: true, numericality: { greater_than: 0 }
 
   def ingredients
     list = {}
     recipe_ingredients.includes(:ingredient).find_each do |recipe_ingredient|
-      # ingredient = ingredients.find(recipe_ingredient.ingredient_id)
       list[recipe_ingredient.ingredient.name] = {
         amount: recipe_ingredient.amount,
         bakers_percentage: "#{recipe_ingredient.bakers_percentage}%"
@@ -22,32 +25,38 @@ class Recipe < ApplicationRecord
     recipe_ingredients.sum('recipe_ingredients.bakers_percentage')
   end
 
-  def lean
-    return true if sweet_and_fat_amts.all? { |amt| low.include?(amt) }
+  def lean?
+    sweet_and_fat_amts.all? { |amt| LOW.include?(amt) }
   end
 
-  def soft
-    if (water_percentage + fat_percentage) < 70.0 &&
+  def soft?
+    (water_percentage + fat_percentage) < 70.0 &&
         MODERATE.include?(sweetener_percentage) &&
         MODERATE.include?(fat_percentage)
-      true
+  end
+
+  def rich?
+    (MODERATE.include?(sweetener_percentage) &&
+        HIGH.include?(fat_percentage)) ||
+        HIGH.include?(fat_percentage)
+  end
+
+  def slack?
+    water_percentage + fat_percentage > 70.0
+  end
+
+  def sweet?
+    sweet_and_fat_amts.all? { |amt| HIGH.include?(amt) }
+  end
+
+  def calculate_family
+    case
+    when lean? then update_attributes(family_id: family_assignment(:lean))
+    when soft? then update_attributes(family_id: family_assignment(:soft))
+    when sweet? then update_attributes(family_id: family_assignment(:sweet))
+    when rich? then update_attributes(family_id: family_assignment(:rich))
+    when slack? then update_attributes(family_id: family_assignment(:slack))
     end
-  end
-
-  def rich
-    if (MODERATE.include?(sweetener_percentage) &&
-        high.include?(fat_percentage)) ||
-        high.include?(fat_percentage)
-      true
-    end
-  end
-
-  def slack
-    return true if water_percentage + fat_percentage > 70.0
-  end
-
-  def sweet
-    return true if sweet_and_fat_amts.all? { |amt| HIGH.include?(amt) }
   end
 
   def family_assignment(name)
@@ -89,19 +98,18 @@ class Recipe < ApplicationRecord
   end
 
   def flour_amts
-    sum_recipe_ingredient_amounts('flour')
+    sum_recipe_ingredient_amounts(:flour)
   end
 
   def sweetener_amounts
-    sum_recipe_ingredient_amounts('sweetener')
+    sum_recipe_ingredient_amounts(:sweetener)
   end
 
   def fat_amounts
-    sum_recipe_ingredient_amounts('fat')
+    sum_recipe_ingredient_amounts(:fat)
   end
 
   def water_amt
-    sum_recipe_ingredient_amounts('water')
+    sum_recipe_ingredient_amounts(:water)
   end
-
 end

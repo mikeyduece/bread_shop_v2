@@ -7,11 +7,13 @@ Rails.application.routes.draw do
   
   namespace :api do
     namespace :v1 do
-      resources :users, module: :users, controller: :users do
+      resources :recipes, module: :recipes, controller: :recipes, only: :show
+
+      resources :users, module: :users, controller: :users, except: %i[new edit] do
         put :activate
         delete :forget
 
-        resources :recipes
+        resources :recipes, except: %i[new edit]
       end
     end
   end
