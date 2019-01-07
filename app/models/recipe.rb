@@ -5,6 +5,7 @@ class Recipe < ApplicationRecord
   belongs_to :family, optional: true
 
   has_many :recipe_ingredients, dependent: :destroy
+  has_many :comments, dependent: :destroy
 
   validates :name, presence: true, uniqueness: { scope: :user_id }
   validates :number_of_portions, presence: true, numericality: { greater_than: 0 }
