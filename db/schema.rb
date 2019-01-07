@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_01_07_190628) do
+ActiveRecord::Schema.define(version: 2019_01_04_140433) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -32,12 +32,6 @@ ActiveRecord::Schema.define(version: 2019_01_07_190628) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["name"], name: "index_categories_on_name"
-  end
-
-  create_table "comments", force: :cascade do |t|
-    t.text "body"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
   end
 
   create_table "families", force: :cascade do |t|
@@ -125,17 +119,6 @@ ActiveRecord::Schema.define(version: 2019_01_07_190628) do
     t.index ["user_id"], name: "index_recipes_on_user_id"
   end
 
-  create_table "user_recipe_comments", force: :cascade do |t|
-    t.bigint "user_id"
-    t.bigint "recipe_id"
-    t.bigint "comment_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["comment_id"], name: "index_user_recipe_comments_on_comment_id"
-    t.index ["recipe_id"], name: "index_user_recipe_comments_on_recipe_id"
-    t.index ["user_id"], name: "index_user_recipe_comments_on_user_id"
-  end
-
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -161,7 +144,4 @@ ActiveRecord::Schema.define(version: 2019_01_07_190628) do
   add_foreign_key "recipe_ingredients", "recipes"
   add_foreign_key "recipes", "families"
   add_foreign_key "recipes", "users"
-  add_foreign_key "user_recipe_comments", "comments"
-  add_foreign_key "user_recipe_comments", "recipes"
-  add_foreign_key "user_recipe_comments", "users"
 end
