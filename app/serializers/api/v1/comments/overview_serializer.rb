@@ -1,6 +1,5 @@
 class Api::V1::Comments::OverviewSerializer < BaseSerializer
   attributes :body, :parent_id
-  belongs_to :recipe
 
   attribute :user do |object|
     BASE::Users::OverviewSerializer.new(object.user)
