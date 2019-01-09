@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_01_09_192409) do
+ActiveRecord::Schema.define(version: 2019_01_09_204452) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -59,6 +59,8 @@ ActiveRecord::Schema.define(version: 2019_01_09_192409) do
   create_table "forums", force: :cascade do |t|
     t.string "title"
     t.text "body"
+    t.bigint "user_id"
+    t.index ["user_id"], name: "index_forums_on_user_id"
   end
 
   create_table "ingredients", force: :cascade do |t|
@@ -158,6 +160,7 @@ ActiveRecord::Schema.define(version: 2019_01_09_192409) do
   end
 
   add_foreign_key "comments", "users"
+  add_foreign_key "forums", "users"
   add_foreign_key "ingredients", "categories"
   add_foreign_key "oauth_access_grants", "oauth_applications", column: "application_id"
   add_foreign_key "oauth_access_tokens", "oauth_applications", column: "application_id"
