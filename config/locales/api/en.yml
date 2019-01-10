@@ -8,3 +8,5 @@ en:
     error: 'Oops, Something went wrong while saving your comment'
     deleted: 'Comment deleted'
     delete_error: 'Not able to delete comment at this time'
+  forums: 
+    errors: 'Oops, Something went wron while creating this forum topic'
