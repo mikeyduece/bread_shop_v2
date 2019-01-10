@@ -1,12 +1,13 @@
 en:
-  recipe_deleted: 'You have successfully deleted your %{recipe_name} recipe'
-  errors:
-    record_exists: 'A record with that name already exists'
-    delete_error: 'There was a problem deleting %{recipe_name}'
-    record_not_found: 'That record does not exist'
-  comments: 
-    error: 'Oops, Something went wrong while saving your comment'
-    deleted: 'Comment deleted'
-    delete_error: 'Not able to delete comment at this time'
-  forums: 
-    errors: 'Oops, Something went wron while creating this forum topic'
+  api:
+    recipe_deleted: 'You have successfully deleted your %{name} recipe'
+    errors:
+      record_exists: 'A record with that name already exists'
+      delete_error: 'There was a problem deleting %{recipe_name}'
+      record_not_found: 'That record does not exist'
+    comments: 
+      error: 'Oops, Something went wrong while saving your comment'
+      deleted: 'Comment deleted'
+      delete_error: 'Not able to delete comment at this time'
+    forums: 
+      errors: 'Oops, Something went wron while creating this forum topic'
