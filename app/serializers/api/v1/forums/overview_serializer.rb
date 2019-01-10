@@ -1,7 +1,6 @@
-class Api::V1::Forums::OverviewSerializer < BaseSerializer
-  attributes :title, :body
+class Api::V1::Forums::OverviewSerializer < Api::V1::Forums::PrivateSerializer
 
-  attribute :user do |object|
-    BASE::Users::OverviewSerializer.new(object.user)
+  attribute :comments do |object|
+    BASE::Forums::Comments::OverviewSerializer.new(object.comments)
   end
 end

@@ -4,8 +4,12 @@ module Api
       class ForumsController < ApiController
         before_action :doorkeeper_authorize!
         helper_method :forum
+        helper_method :forums
+
         def index
-          # TODO: Set up filterring
+          forum_list = forums.limit(params[:limit]) || []
+
+          success_response(data: Forums::PrivateSerializer.new(forum_list))
         end
 
         def show
@@ -27,7 +31,7 @@ module Api
         private
 
         def forums
-          @fourms ||= Forum.all
+          @forums ||= Forum.all
         end
 
         def forum_params
