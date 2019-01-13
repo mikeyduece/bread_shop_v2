@@ -8,7 +8,7 @@ module Api
 
     def create_recipe(user:, params:)
       recipe = user.recipes.create(params.except(:ingredients))
-require 'pry'; binding.pry
+
       create_recipe_ingredients(recipe: recipe, ingredients: params[:ingredients])
       recipe.recipe_ingredients.find_each(&:save)
       recipe.calculate_family
