@@ -30,6 +30,10 @@ module Api
           success_response(data: Recipes::OverviewSerializer.new(user_recipe))
         end
 
+        def update
+          user_recipe.update_recipe(user: current_api_user, ingredients: recipe_params[:ingredients])
+        end
+
         def destroy
           if user_recipe.present?
             recipe_name = user_recipe.name
