@@ -9,16 +9,16 @@ module Api
         def create
           recipe = current_api_user.recipes.find_by(name: recipe_params[:name].downcase)
 
-          if !recipe
+          unless recipe.present?
             new_recipe = create_recipe(user: current_api_user, params: recipe_params)
 
-            if new_recipe.errors.messages.empty?
+            if new_recipe.valid?
               success_response(code: 201, data: Recipes::OverviewSerializer.new(new_recipe))
             else
               error_response(code: 404, message: new_recipe.errors)
             end
           else
-            error_response(code: 404, message: t('errors.record_exists'))
+            error_response(code: 404, message: t('api.errors.record_exists'))
           end
         end
 
@@ -31,14 +31,15 @@ module Api
         end
 
         def update
-          user_recipe.update_recipe(user: current_api_user, ingredients: recipe_params[:ingredients])
+          user_recipe.update_recipe(params: recipe_params)
+          success_response(data: Recipes::OverviewSerializer.new(user_recipe))
         end
 
         def destroy
           if user_recipe.present?
             recipe_name = user_recipe.name
             user_recipe.destroy
-            success_response(code: 202, message: t('recipe_deleted', recipe_name: recipe_name))
+            success_response(code: 202, message: t('api.recipes.recipe_deleted', recipe_name: recipe_name))
           else
             error_response(code: 404, message: t('errors.record_not_found'))
           end
