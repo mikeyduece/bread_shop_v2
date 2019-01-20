@@ -12,8 +12,21 @@ module Api
             error_response(code: 404, message: 'Recipe Not Found')
           end
         end
+
+        def scale
+          if recipe
+            success_response(data: Recipes::ScaledSerializer.new(recipe, { params: { params: recipe_params } }))
+          else
+            error_response(code: 404, message: t('api.defaults.not_found'))
+          end
+
+        end
   
         private
+
+        def recipe_params
+          params.require(:recipe).permit(:weight_per_portion, :number_of_portions)
+        end
   
         def recipe
           @recipe = Recipe.find_by(id: params[:recipe_id] || params[:id])

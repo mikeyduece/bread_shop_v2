@@ -13,7 +13,9 @@ class User < ApplicationRecord
     dependent: :delete_all # or :destroy if you need callbacks
 
   has_many :recipes
+  has_many :forums
+  has_many :forum_topics, class_name: 'Forum'
   
-  has_many :recipe_comments, class_name: 'Comment'
-  has_many :forum_comments, class_name: 'Comment'
+  has_many :recipe_comments, through: :recipes, class_name: 'Comment'
+  has_many :forum_comments, through: :forums, class_name: 'Comment'
 end
