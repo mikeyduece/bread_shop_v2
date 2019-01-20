@@ -16,7 +16,7 @@ class Recipe < ApplicationRecord
     recipe_ingredients.includes(:ingredient).find_each do |recipe_ingredient|
       list[recipe_ingredient.ingredient.name] = {
         amount: recipe_ingredient.amount,
-        bakers_percentage: recipe_ingredient.bakers_percentage
+        bakers_percentage: "#{recipe_ingredient.bakers_percentage}%"
       }
     end
     list
@@ -36,7 +36,7 @@ class Recipe < ApplicationRecord
 
       scaled[recipe_ingredient.ingredient.name] = {
         amount: new_amount,
-        bakers_percentage: recipe_ingredient.bakers_percentage
+        bakers_percentage: "#{recipe_ingredient.bakers_percentage}%"
       }
     end
     scaled
