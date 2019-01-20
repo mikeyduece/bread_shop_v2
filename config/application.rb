@@ -23,6 +23,7 @@ module BreadShopV2
     config.load_defaults 5.2
     config.i18n.default_locale = :en
     config.i18n.load_path += Dir[Rails.root.join('config', 'locales', '**', '*.{rb,yml}')]
+    config.autoload_paths << "#{Rails.root}/lib"
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration can go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded after loading
