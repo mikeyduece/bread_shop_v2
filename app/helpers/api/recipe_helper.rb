@@ -118,7 +118,6 @@ module Api
         ingredient = recipe_ingredient.ingredient
         new_amount = (new_flour_weight * (recipe_ingredient.bakers_percentage.to_f / 100)).round(2)
         
-        recipe_ingredient.update_attributes(amount: new_amount)
       end
     end
 

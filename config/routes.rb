@@ -8,6 +8,8 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
       resources :recipes, module: :recipes, only: :show do
+        put :scale
+        
         resources :comments, except: %i[new edit]
       end
 
