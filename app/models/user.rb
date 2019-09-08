@@ -14,8 +14,11 @@ class User < ApplicationRecord
 
   has_many :recipes
   has_many :forums
-  has_many :forum_topics, class_name: 'Forum'
-  
-  has_many :recipe_comments, through: :recipes, class_name: 'Comment'
-  has_many :forum_comments, through: :forums, class_name: 'Comment'
+  # comments
+  has_many :recipe_comments, through: :recipes, class_name: 'Comment', source: :comments
+  has_many :forum_comments, through: :forums, class_name: 'Comment', source: :forum
+
+  # likes
+  has_many :recipe_likes, through: :recipes, source: :likes
+  has_many :forum_likes, through: :forums, source: :likes
 end
