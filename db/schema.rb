@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_01_09_204452) do
+ActiveRecord::Schema.define(version: 2019_09_08_142553) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -28,48 +28,62 @@ ActiveRecord::Schema.define(version: 2019_01_09_204452) do
   end
 
   create_table "categories", force: :cascade do |t|
-    t.string "name"
+    t.string "name", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["name"], name: "index_categories_on_name"
   end
 
   create_table "comments", force: :cascade do |t|
-    t.text "body"
     t.string "owner_type"
     t.bigint "owner_id"
+    t.string "commentable_type"
+    t.bigint "commentable_id"
+    t.bigint "parent_id"
+    t.text "body"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "ancestry"
-    t.integer "parent_id"
-    t.bigint "user_id"
-    t.index ["ancestry"], name: "index_comments_on_ancestry"
-    t.index ["body"], name: "index_comments_on_body"
+    t.index ["commentable_id", "commentable_type"], name: "index_comments_on_commentable_id_and_commentable_type"
+    t.index ["commentable_id", "owner_id", "commentable_type", "owner_type"], name: "index_comments_on_owner_and_commentable"
+    t.index ["commentable_type", "commentable_id"], name: "index_comments_on_commentable_type_and_commentable_id"
+    t.index ["owner_id", "owner_type"], name: "index_comments_on_owner_id_and_owner_type"
     t.index ["owner_type", "owner_id"], name: "index_comments_on_owner_type_and_owner_id"
-    t.index ["user_id"], name: "index_comments_on_user_id"
+    t.index ["parent_id"], name: "index_comments_on_parent_id"
   end
 
   create_table "families", force: :cascade do |t|
-    t.string "name"
+    t.string "name", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["name"], name: "index_families_on_name"
   end
 
   create_table "forums", force: :cascade do |t|
-    t.string "title"
-    t.text "body"
     t.bigint "user_id"
+    t.string "title", null: false
+    t.text "body", null: false
     t.index ["user_id"], name: "index_forums_on_user_id"
   end
 
   create_table "ingredients", force: :cascade do |t|
     t.bigint "category_id"
-    t.string "name"
+    t.string "name", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["category_id", "name"], name: "index_ingredients_on_category_id_and_name"
     t.index ["category_id"], name: "index_ingredients_on_category_id"
     t.index ["name"], name: "index_ingredients_on_name"
+  end
+
+  create_table "likes", force: :cascade do |t|
+    t.string "likeable_type"
+    t.bigint "likeable_id"
+    t.string "owner_type"
+    t.bigint "owner_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["likeable_type", "likeable_id"], name: "index_likes_on_likeable_type_and_likeable_id"
+    t.index ["owner_type", "owner_id"], name: "index_likes_on_owner_type_and_owner_id"
   end
 
   create_table "oauth_access_grants", force: :cascade do |t|
@@ -117,27 +131,29 @@ ActiveRecord::Schema.define(version: 2019_01_09_204452) do
   create_table "recipe_ingredients", force: :cascade do |t|
     t.bigint "recipe_id"
     t.bigint "ingredient_id"
-    t.float "amount"
+    t.float "amount", null: false
+    t.float "bakers_percentage", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.float "bakers_percentage"
-    t.index ["amount"], name: "index_recipe_ingredients_on_amount"
-    t.index ["bakers_percentage"], name: "index_recipe_ingredients_on_bakers_percentage"
     t.index ["ingredient_id"], name: "index_recipe_ingredients_on_ingredient_id"
+    t.index ["recipe_id", "ingredient_id"], name: "index_recipe_ingredients_on_recipe_id_and_ingredient_id"
     t.index ["recipe_id"], name: "index_recipe_ingredients_on_recipe_id"
   end
 
   create_table "recipes", force: :cascade do |t|
+    t.bigint "user_id"
+    t.bigint "family_id"
+    t.integer "unit", default: 0, null: false
     t.string "name", null: false
     t.integer "number_of_portions", null: false
     t.float "weight_per_portion", null: false
-    t.bigint "user_id"
-    t.bigint "family_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "units", default: "oz"
     t.index ["family_id"], name: "index_recipes_on_family_id"
     t.index ["name"], name: "index_recipes_on_name"
+    t.index ["unit"], name: "index_recipes_on_unit"
+    t.index ["user_id", "name", "family_id"], name: "index_recipes_on_user_id_and_name_and_family_id", unique: true
+    t.index ["user_id", "name"], name: "index_recipes_on_user_id_and_name", unique: true
     t.index ["user_id"], name: "index_recipes_on_user_id"
   end
 
@@ -159,7 +175,6 @@ ActiveRecord::Schema.define(version: 2019_01_09_204452) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
-  add_foreign_key "comments", "users"
   add_foreign_key "forums", "users"
   add_foreign_key "ingredients", "categories"
   add_foreign_key "oauth_access_grants", "oauth_applications", column: "application_id"

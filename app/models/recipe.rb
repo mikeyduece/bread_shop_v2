@@ -5,7 +5,8 @@ class Recipe < ApplicationRecord
   belongs_to :family, optional: true
 
   has_many :recipe_ingredients, dependent: :destroy
-  has_many :comments, as: :owner, dependent: :destroy
+  has_many :comments, as: :commentable, dependent: :destroy
+  has_many :likes, as: :likeable, dependent: :destroy
 
   validates :name, presence: true, uniqueness: { scope: :user_id }
   validates :number_of_portions, presence: true, numericality: { greater_than: 0 }
@@ -48,7 +49,7 @@ class Recipe < ApplicationRecord
         bakers_percentage: "#{recipe_ingredient.bakers_percentage}%"
       }
     end
-    
+
     scaled
   end
 end
