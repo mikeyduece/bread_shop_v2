@@ -1,7 +1,7 @@
 class Ingredient < ApplicationRecord
   include Api::IngredientHelper
 
-  belongs_to :category, optional: true
+  belongs_to :category
   
   has_many :recipe_ingredients, dependent: :destroy
   has_many :recipes, through: :recipe_ingredients

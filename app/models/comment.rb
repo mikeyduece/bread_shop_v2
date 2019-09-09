@@ -1,5 +1,4 @@
 class Comment < ApplicationRecord
-  has_ancestry
 
   belongs_to :commentable, polymorphic: true
   belongs_to :owner, polymorphic: true

@@ -6,6 +6,7 @@ require File.expand_path('../../config/environment', __FILE__)
 abort("The Rails environment is running in production mode!") if Rails.env.production?
 require 'rspec/rails'
 require 'webmock/rspec'
+require 'shoulda-matchers'
 require 'vcr'
 
 VCR.configure do |config|
@@ -36,6 +37,8 @@ DatabaseCleaner.strategy = :truncation
 RSpec.configure do |config|
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
   config.fixture_path = "#{::Rails.root}/spec/fixtures"
+  config.include(Shoulda::Matchers::ActiveModel, type: :model)
+  config.include(Shoulda::Matchers::ActiveRecord, type: :model)
 
   config.before(:all) do
     DatabaseCleaner.clean
