@@ -4,7 +4,7 @@ RSpec.describe Family, type: :model do
   subject { Family.new(name: 'Category 1') }
 
   context :associations do
-    it { have_many(:recipes) }
+    it { should have_many(:recipes) }
   end
 
   context :validations do

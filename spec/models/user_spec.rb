@@ -1,5 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe User, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+  subject { User.new(first_name: 'Mike', last_name: 'Heft', email: 'myemail@gmail.com', phone_number: '1234567890') }
+  context :associations do
+    it { should have_many(:recipes) }
+    it { should have_many(:forums) }
+  end
 end
