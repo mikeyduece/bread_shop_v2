@@ -2,9 +2,11 @@ class Recipe < ApplicationRecord
   include Api::RecipeHelper
   
   belongs_to :user
-  belongs_to :family, optional: true
+  belongs_to :family
 
   has_many :recipe_ingredients, dependent: :destroy
+  has_many :ingredients, through: :recipe_ingredients
+
   has_many :comments, as: :commentable, dependent: :destroy
   has_many :likes, as: :likeable, dependent: :destroy
 
