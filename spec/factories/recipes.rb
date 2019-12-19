@@ -3,7 +3,7 @@ FactoryBot.define do
     name { "MyString" }
     number_of_portions { 1 }
     weight_per_portion { 1.5 }
-    user { nil }
-    family { nil }
+    user { create(:user) }
+    family { create(:family) }
   end
 end
