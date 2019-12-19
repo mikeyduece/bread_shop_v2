@@ -30,6 +30,7 @@
 # Ignore application configuration
 /config/application.yml
 
+/.idea
 /public/packs
 /public/packs-test
 /node_modules
