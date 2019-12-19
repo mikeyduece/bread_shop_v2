@@ -1,5 +1,5 @@
 FactoryBot.define do
   factory :category do
-    name { "MyString" }
+      name { Faker::TvShows::RickAndMorty.character }
   end
 end

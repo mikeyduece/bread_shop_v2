@@ -1,5 +1,8 @@
 class Recipe < ApplicationRecord
   include Api::RecipeHelper
+  include Likeable
+
+  liker :user
   
   belongs_to :user
   belongs_to :family
@@ -8,13 +11,12 @@ class Recipe < ApplicationRecord
   has_many :ingredients, through: :recipe_ingredients
 
   has_many :comments, as: :commentable, dependent: :destroy
-  has_many :likes, as: :likeable, dependent: :destroy
 
   validates :name, presence: true, uniqueness: { scope: :user_id }
   validates :number_of_portions, presence: true, numericality: { greater_than: 0 }
   validates :weight_per_portion, presence: true, numericality: { greater_than: 0 }
 
-  def ingredients
+  def formatted_ingredients
     list = []
     recipe_ingredients.includes(:ingredient).find_each do |recipe_ingredient|
       list << {
@@ -27,7 +29,7 @@ class Recipe < ApplicationRecord
     list
   end
 
-  def total_percentage 
+  def total_percentage
     recipe_ingredients.sum('recipe_ingredients.bakers_percentage')
   end
 

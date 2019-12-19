@@ -1,11 +1,5 @@
 module Api
   module RecipeHelper
-    LOW = (0.0..4.99)
-
-    MODERATE = (5.0..10.0)
-
-    HIGH = (11.0..25.0)
-
     def create_recipe(user:, params:)
       recipe = user.recipes.create(params.except(:ingredients))
 
@@ -23,19 +17,19 @@ module Api
     end
 
     def lean?
-      sweet_and_fat_amts.all? { |amt| LOW.include?(amt) }
+      sweet_and_fat_amts.all? { |amt| Api::Recipes::LOW.include?(amt) }
     end
   
     def soft?
       (water_percentage + fat_percentage) < 70.0 &&
-          MODERATE.include?(sweetener_percentage) &&
-          MODERATE.include?(fat_percentage)
+          Api::Recipes::MODERATE.include?(sweetener_percentage) &&
+          Api::Recipes::MODERATE.include?(fat_percentage)
     end
   
     def rich?
-      (MODERATE.include?(sweetener_percentage) &&
-          HIGH.include?(fat_percentage)) ||
-          HIGH.include?(fat_percentage)
+      (Api::Recipes::MODERATE.include?(sweetener_percentage) &&
+          Api::Recipes::HIGH.include?(fat_percentage)) ||
+          Api::Recipes::HIGH.include?(fat_percentage)
     end
   
     def slack?
@@ -43,10 +37,11 @@ module Api
     end
   
     def sweet?
-      sweet_and_fat_amts.all? { |amt| HIGH.include?(amt) }
+      sweet_and_fat_amts.all? { |amt| Api::Recipes::HIGH.include?(amt) }
     end
+
     def family_assignment(name)
-      Family.find_by(name: name).id
+      Family.find_by(name: name)&.id
     end
   
     def sum_recipe_ingredient_amounts(category_name)
