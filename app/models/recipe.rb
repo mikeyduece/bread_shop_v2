@@ -1,16 +1,16 @@
 class Recipe < ApplicationRecord
   include Api::RecipeHelper
   include Likeable
+  include Commentable
 
   liker :user
+  commenter :user
   
   belongs_to :user
   belongs_to :family
 
   has_many :recipe_ingredients, dependent: :destroy
   has_many :ingredients, through: :recipe_ingredients
-
-  has_many :comments, as: :commentable, dependent: :destroy
 
   validates :name, presence: true, uniqueness: { scope: :user_id }
   validates :number_of_portions, presence: true, numericality: { greater_than: 0 }
