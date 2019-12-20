@@ -1,7 +1,9 @@
 class User < ApplicationRecord
   include Likeable
+  include Commentable
 
   likeable :recipes, :forums
+  commentable :recipes, :forums
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
@@ -17,9 +19,5 @@ class User < ApplicationRecord
 
   has_many :recipes
   has_many :forums
-  # comments
-  has_many :recipe_comments, through: :recipes, class_name: 'Comment', source: :comments
-  has_many :forum_comments, through: :forums, class_name: 'Comment', source: :forum
 
-  # likes
 end
