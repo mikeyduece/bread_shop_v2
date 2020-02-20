@@ -16,6 +16,14 @@ module Recipes
     def call(&block)
       raise NotImplementedError
     end
-  
+
+    def create_recipe_ingredients(recipe:, ingredients:)
+      ingredients.each do |ingredient|
+        ingredient_object = Ingredient.find_or_create_by(name: ingredient[:name].downcase)
+    
+        recipe.recipe_ingredients.build(amount: ingredient[:amount], ingredient: ingredient_object)
+      end
+    end
+    
   end
 end

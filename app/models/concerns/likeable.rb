@@ -8,6 +8,8 @@ module Likeable
 
   class_methods do
     def likeable(*attributes)
+      raise NotImplementedError unless self.respond_to?(:likeable)
+      
       attributes = [attributes] unless attributes.is_a?(Array)
 
       attributes.each do |attribute|
@@ -17,6 +19,8 @@ module Likeable
     end
 
     def liker(*attributes)
+      raise NotImplementedError unless self.respond_to?(:liker)
+      
       attributes = [attributes] unless attributes.is_a?(Array)
       attributes.each do |attribute|
         class_eval "has_many :by_liked_#{attribute}, -> { order(created_at: :desc) }, class_name: 'Like', source: :likeable, source_type: '#{attribute.to_s.classify}', foreign_key: :likeable_id, dependent: :destroy"
