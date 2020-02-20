@@ -1,5 +1,5 @@
-class Comment <
-  includes Likeable
+class Comment < ApplicationRecord
+  include Likeable
   
   liker :user
 
