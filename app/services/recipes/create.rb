@@ -5,10 +5,8 @@ module Recipes
       yield(Success.new(recipe), NoTrigger)
       
     rescue StandardError => e
-      yield(Failure.new(I18n.t('some error message'), 500))
+      yield(Failure.new(I18n.t('api.errors.record_exists'), 500))
     end
-    
-    
     
   end
 end
