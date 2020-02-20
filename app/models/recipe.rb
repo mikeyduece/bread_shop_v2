@@ -30,7 +30,7 @@ class Recipe < ApplicationRecord
   end
 
   def total_percentage
-    recipe_ingredients.sum('recipe_ingredients.bakers_percentage')
+    recipe_ingredients.sum(:bakers_percentage)
   end
 
   def new_flour_weight(params: params)

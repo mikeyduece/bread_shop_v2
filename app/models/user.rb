@@ -3,7 +3,8 @@ class User < ApplicationRecord
   include Commentable
 
   likeable :recipes, :forums
-  commentable :recipes, :forums
+  commentable :recipes, :forums, :comments
+
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
