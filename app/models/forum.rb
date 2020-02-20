@@ -1,6 +1,8 @@
 class Forum < ApplicationRecord
   include Commentable
   include Likeable
+  
+  liker :user
 
   belongs_to :user
   

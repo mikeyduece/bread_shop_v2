@@ -1,5 +1,4 @@
 class Ingredient < ApplicationRecord
-  include Api::IngredientHelper
 
   belongs_to :category
   
@@ -8,7 +7,7 @@ class Ingredient < ApplicationRecord
 
   validates :name, presence: true, uniqueness: true
 
-  after_create :ensure_category
+  before_commit :ensure_category, on: :create
 
   private
 
@@ -16,10 +15,10 @@ class Ingredient < ApplicationRecord
     name = self[:name].downcase
 
     case
-    when category_include?(constant: SWEETENERS, kind: name) then update_attributes(category: category_assignment(:sweetener))
-    when category_include?(constant: FATS, kind: name)       then update_attributes(category: category_assignment(:fat))
-    when category_include?(constant: FLOURS, kind: name)     then update_attributes(category: category_assignment(:flour))
-    when category_include?(constant: WATER, kind: name)      then update_attributes(category: category_assignment(:water))
+    when category_include?(constant: Api::Ingredients::SWEETENERS, kind: name) then update_attributes(category: category_assignment(:sweetener))
+    when category_include?(constant: Api::Ingredients::FATS, kind: name)       then update_attributes(category: category_assignment(:fat))
+    when category_include?(constant: Api::Ingredients::FLOURS, kind: name)     then update_attributes(category: category_assignment(:flour))
+    when category_include?(constant: Api::Ingredients::WATER, kind: name)      then update_attributes(category: category_assignment(:water))
     end
   end
 

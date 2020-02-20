@@ -1,5 +1,5 @@
 class Recipe < ApplicationRecord
-  include Api::RecipeHelper
+  include Recipes::FamilyCalculator
   include Likeable
   include Commentable
 
@@ -15,6 +15,8 @@ class Recipe < ApplicationRecord
   validates :name, presence: true, uniqueness: { scope: :user_id }
   validates :number_of_portions, presence: true, numericality: { greater_than: 0 }
   validates :weight_per_portion, presence: true, numericality: { greater_than: 0 }
+  
+  before_save :calculate_family
 
   def formatted_ingredients
     list = []
@@ -30,10 +32,10 @@ class Recipe < ApplicationRecord
   end
 
   def total_percentage
-    recipe_ingredients.sum('recipe_ingredients.bakers_percentage')
+    recipe_ingredients.sum(:bakers_percentage)
   end
 
-  def new_flour_weight(params: params)
+  def new_flour_weight(params:)
     ((new_total_weight(params: params) / total_percentage) * 100).round(2)
   end
 

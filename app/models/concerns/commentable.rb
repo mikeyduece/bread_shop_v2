@@ -2,7 +2,8 @@ module Commentable
   extend ActiveSupport::Concern
 
   included do
-    has_many :comments, class_name: 'Comment', as: :commentable, dependant: :destroy
+    #TODO: Needs testing to ensure the relationships line up correctly.
+    has_many :comments, class_name: 'Comment', as: :commentable, dependent: :destroy
   end
 
   class_methods do
@@ -18,7 +19,7 @@ module Commentable
       attributes = [attributes] unless attributes.is_a?(Array)
 
       attributes.each do |attribute|
-        class_eval "has_many :#{attribute}_comments, class_name: '#{attribute.to_s.classify}, source: :owner"
+        class_eval "has_many :#{attribute}_comments, class_name: '#{attribute.to_s.classify}', source: :owner"
       end
     end
 

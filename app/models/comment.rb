@@ -1,4 +1,7 @@
 class Comment < ApplicationRecord
+  include Likeable
+  
+  liker :user
 
   belongs_to :commentable, polymorphic: true
   belongs_to :owner, polymorphic: true
