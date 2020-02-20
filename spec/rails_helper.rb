@@ -40,6 +40,10 @@ RSpec.configure do |config|
   config.include(Shoulda::Matchers::ActiveModel, type: :model)
   config.include(Shoulda::Matchers::ActiveRecord, type: :model)
 
+  config.before(:each) do
+    Rails.application.load_seed # loading seeds
+  end
+
   config.before(:all) do
     DatabaseCleaner.clean
   end

@@ -87,7 +87,6 @@ module Recipes
     # Helper Methods
     def sum_recipe_ingredient_amounts(category_name)
       category = Category.find_by(name: category_name)
-  
       recipe_ingredients.includes(:ingredient)
                         .where(ingredients: { category_id: category.id })
                         .sum(:amount)
