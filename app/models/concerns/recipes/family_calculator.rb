@@ -48,7 +48,10 @@ module Recipes
     
     # Calculated category amounts
     def flour_amts
-      sum_recipe_ingredient_amounts(:flour)
+      flour = sum_recipe_ingredient_amounts(:flour)
+      raise Recipes::NoFlourError if flour < 1
+      
+      flour
     end
     
     def sweetener_amounts
@@ -70,31 +73,30 @@ module Recipes
     def calculate_family
       case
         when lean?
-          update_attributes(family: set_family(:lean))
+          update(family: set_family(:lean))
         when soft?
-          update_attributes(family: set_family(:soft))
+          update(family: set_family(:soft))
         when sweet?
-          update_attributes(family: set_family(:sweet))
+          update(family: set_family(:sweet))
         when rich?
-          update_attributes(family: set_family(:rich))
+          update(family: set_family(:rich))
         when slack?
-          update_attributes(family: set_family(:slack))
+          update(family: set_family(:slack))
       end
     end
     
     private
     
-    # Helper Methods
+    # Helper Method
+    # TODO: This might be better suited as a scope in rec ing
     def sum_recipe_ingredient_amounts(category_name)
       category = Category.find_by(name: category_name)
       recipe_ingredients.includes(:ingredient)
-                        .where(ingredients: { category_id: category.id })
+                        .where(ingredients: { category: category })
                         .sum(:amount)
     end
 
     def calculate_percentage(category_amount)
-      raise Recipes::NoFlourError if flour_amts < 1
-      
       ((category_amount / flour_amts) * 100).round(2)
     end
   

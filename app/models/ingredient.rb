@@ -1,32 +1,33 @@
 class Ingredient < ApplicationRecord
-
+  
   belongs_to :category
   
   has_many :recipe_ingredients, dependent: :destroy
   has_many :recipes, through: :recipe_ingredients
-
+  
   validates :name, presence: true, uniqueness: true
-
-  before_commit :ensure_category, on: :create
-
+  
+  before_validation :ensure_category, on: :create
+  
   private
-
+  
   def ensure_category
-    name = self[:name].downcase
-
+    return unless self.name
+    
+    name = self.name&.downcase
     case
-    when category_include?(constant: Api::Ingredients::SWEETENERS, kind: name) then update_attributes(category: category_assignment(:sweetener))
-    when category_include?(constant: Api::Ingredients::FATS, kind: name)       then update_attributes(category: category_assignment(:fat))
-    when category_include?(constant: Api::Ingredients::FLOURS, kind: name)     then update_attributes(category: category_assignment(:flour))
-    when category_include?(constant: Api::Ingredients::WATER, kind: name)      then update_attributes(category: category_assignment(:water))
+      when Api::Ingredients::SWEETENERS.any?(name)
+        self.category = set_category(:sweetener)
+      when Api::Ingredients::FATS.any?(name)
+        self.category = set_category(:fat)
+      when Api::Ingredients::FLOURS.any?(name)
+        self.category = set_category(:flour)
+      when Api::Ingredients::WATER.any?(name)
+        self.category = set_category(:water)
     end
   end
-
-  def category_include?(constant:, kind:)
-    constant.any? { |c| kind.include?(c) }
-  end
-
-  def category_assignment(category_name)
+  
+  def set_category(category_name)
     Category.find_or_create_by(name: category_name)
   end
 end
