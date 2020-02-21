@@ -28,17 +28,17 @@ module Recipes
     
     # Percentage ranges for calculating families
     def sweetener_percentage
-      sweets = sweetener_amounts
+      sweets = sweetener_amounts || 0
       calculate_percentage(sweets)
     end
     
     def fat_percentage
-      fats = fat_amounts
+      fats = fat_amounts || 0
       calculate_percentage(fats)
     end
     
     def water_percentage
-      water = water_amt
+      water = water_amt || 0
       calculate_percentage(water)
     end
     
@@ -48,19 +48,22 @@ module Recipes
     
     # Calculated category amounts
     def flour_amts
-      sum_recipe_ingredient_amounts(:flour)
+      flour = sum_recipe_ingredient_amounts[:flour]
+      raise Recipes::NoFlourError if flour < 1
+      
+      flour
     end
     
     def sweetener_amounts
-      sum_recipe_ingredient_amounts(:sweetener)
+      sum_recipe_ingredient_amounts[:sweetener]
     end
     
     def fat_amounts
-      sum_recipe_ingredient_amounts(:fat)
+      sum_recipe_ingredient_amounts[:fat]
     end
     
     def water_amt
-      sum_recipe_ingredient_amounts(:water)
+      sum_recipe_ingredient_amounts[:water]
     end
 
     def set_family(name)
@@ -70,27 +73,24 @@ module Recipes
     def calculate_family
       case
         when lean?
-          update_attributes(family: set_family(:lean))
+          update(family: set_family(:lean))
         when soft?
-          update_attributes(family: set_family(:soft))
+          update(family: set_family(:soft))
         when sweet?
-          update_attributes(family: set_family(:sweet))
+          update(family: set_family(:sweet))
         when rich?
-          update_attributes(family: set_family(:rich))
+          update(family: set_family(:rich))
         when slack?
-          update_attributes(family: set_family(:slack))
+          update(family: set_family(:slack))
       end
     end
     
     private
     
-    # Helper Methods
-    def sum_recipe_ingredient_amounts(category_name)
-      category = Category.find_by(name: category_name)
-  
-      recipe_ingredients.includes(:ingredient)
-                        .where(ingredients: { category_id: category.id })
-                        .sum(:amount)
+    # Helper Method
+    # TODO: This might be better suited as a scope in rec ing
+    def sum_recipe_ingredient_amounts
+      @totals ||= recipe_ingredients.amount_totals_by_category
     end
 
     def calculate_percentage(category_amount)

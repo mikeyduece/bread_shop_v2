@@ -12,12 +12,13 @@ class Recipe < ApplicationRecord
   has_many :recipe_ingredients, dependent: :destroy
   has_many :ingredients, through: :recipe_ingredients
 
-  validates :name, presence: true, uniqueness: { scope: :user_id }
+  validates :name, presence: true
+  validates :name, uniqueness: { scope: :user_id }
   validates :number_of_portions, presence: true, numericality: { greater_than: 0 }
   validates :weight_per_portion, presence: true, numericality: { greater_than: 0 }
   
-  before_save :calculate_family
-
+  before_commit :calculate_family, on: %i[create update]
+  
   def formatted_ingredients
     list = []
     recipe_ingredients.includes(:ingredient).find_each do |recipe_ingredient|

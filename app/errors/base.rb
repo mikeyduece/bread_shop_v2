@@ -1,0 +1,3 @@
+class Base < StandardError
+
+end

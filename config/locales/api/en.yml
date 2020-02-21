@@ -4,12 +4,15 @@ en:
     recipes:
       recipe_deleted: 'You have successfully deleted your %{name} recipe'
     errors:
-      record_exists: 'A record with that name already exists'
-      delete_error: 'There was a problem deleting %{recipe_name}'
-      record_not_found: 'That record does not exist'
-    comments: 
-      error: 'Oops, Something went wrong while saving your comment'
+      recipes:
+        record_exists: 'You already have a recipe with that name'
+        delete_error: 'There was a problem deleting %{recipe_name}'
+        record_not_found: 'That recipe does not exist'
+        no_flour: 'You must add at least one type of flour to your recipe'
+      comments:
+        save_error: 'Oops, Something went wrong while saving your comment'
+        delete_error: 'Not able to delete comment at this time'
+      forums:
+        save_error: 'Oops, Something went wrong while creating this forum topic'
+    comments:
       deleted: 'Comment deleted'
-      delete_error: 'Not able to delete comment at this time'
-    forums: 
-      errors: 'Oops, Something went wron while creating this forum topic'
