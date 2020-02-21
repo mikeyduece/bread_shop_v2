@@ -4,21 +4,24 @@ module Recipes
     def call(&block)
       yield(Success.new(recipe), NoTrigger)
       
+    rescue ActiveRecord::RecordNotUnique => e
+      yield(NoTrigger, Failure.new(I18n.t('api.errors.recipes.record_exists'), 500))
     rescue StandardError => e
-      yield(Failure.new(I18n.t('api.errors.record_exists'), 500))
+      yield(NoTrigger, Failure.new(e.message, 500))
     end
     
     private
 
     def recipe
-      recipe = user.recipes.create(params.except(:ingredients))
+      require 'pry'; binding.pry
+      @recipe = user.recipes.build(params.except(:ingredients))
       add_ingredients
       
-      recipe
+      @recipe
     end
     
     def add_ingredients
-      create_recipe_ingredients(recipe: recipe, ingredients: params[:ingredients])
+      create_recipe_ingredients(recipe: @recipe, ingredients: params[:ingredients])
     end
     
   end
