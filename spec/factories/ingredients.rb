@@ -1,6 +1,7 @@
 FactoryBot.define do
   factory :ingredient do
-    category
-    name { "MyString" }
+    sequence :name do |n|
+      "#{n}Ingredient"
+    end
   end
 end

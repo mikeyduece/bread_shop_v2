@@ -1,7 +1,10 @@
 FactoryBot.define do
   factory :recipe_ingredient do
-    recipe { nil }
-    ingredient { nil }
-    amount { 1.5 }
+    recipe
+    ingredient
+    sequence :amount do |n|
+      @amount ||= (0.01..10.0).step(0.01).to_a.shuffle
+      @amount[n].round(2)
+    end
   end
 end
