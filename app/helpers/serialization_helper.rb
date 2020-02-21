@@ -17,9 +17,9 @@ module SerializationHelper
     
     options[:serializer] = serializer
     if resource.is_a?(Array) || resource.is_a?(::ActiveRecord::Relation)
-      ::ActiveModel::Serializer::CollectionSerializer.new(resource, options)
+      ::ActiveModel::Serializers::CollectionSerializer.new(resource, options)
     else
-      ::ActiveModelSerializers::SerializableResource.new(resource, options)
+      ::ActiveModel::Serializers::SerializableResource.new(resource, options)
     end
   end
 end

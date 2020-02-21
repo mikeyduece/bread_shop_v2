@@ -9,7 +9,7 @@ module Api
           if user.save
             success_response(code: 201, data: Users::PrivateSerializer.new(user))
           else
-            render json: 'A user with that email already exists'
+            error_response('A user with that email already exists', 404)
           end
         end
 
