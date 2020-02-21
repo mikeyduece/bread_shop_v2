@@ -93,6 +93,8 @@ module Recipes
     end
 
     def calculate_percentage(category_amount)
+      raise Recipes::NoFlourError if flour_amts < 1
+      
       ((category_amount / flour_amts) * 100).round(2)
     end
   
