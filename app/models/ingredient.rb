@@ -24,6 +24,8 @@ class Ingredient < ApplicationRecord
         self.category = set_category(:flour)
       when Api::Ingredients::WATER.any?(name)
         self.category = set_category(:water)
+      else
+        self.category = Category.find_or_create_by(name: :other)
     end
   end
   

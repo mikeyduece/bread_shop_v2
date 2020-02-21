@@ -17,6 +17,8 @@ class Recipe < ApplicationRecord
   validates :number_of_portions, presence: true, numericality: { greater_than: 0 }
   validates :weight_per_portion, presence: true, numericality: { greater_than: 0 }
   
+  before_commit :calculate_family, on: %i[create update]
+  
   def formatted_ingredients
     list = []
     recipe_ingredients.includes(:ingredient).find_each do |recipe_ingredient|

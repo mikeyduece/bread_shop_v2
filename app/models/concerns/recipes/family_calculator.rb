@@ -28,17 +28,17 @@ module Recipes
     
     # Percentage ranges for calculating families
     def sweetener_percentage
-      sweets = sweetener_amounts
+      sweets = sweetener_amounts || 0
       calculate_percentage(sweets)
     end
     
     def fat_percentage
-      fats = fat_amounts
+      fats = fat_amounts || 0
       calculate_percentage(fats)
     end
     
     def water_percentage
-      water = water_amt
+      water = water_amt || 0
       calculate_percentage(water)
     end
     

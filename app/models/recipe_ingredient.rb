@@ -2,7 +2,7 @@ class RecipeIngredient < ApplicationRecord
   belongs_to :recipe
   belongs_to :ingredient
   
-  before_commit :ensure_bakers_percentage
+  before_commit :ensure_bakers_percentage, on: %i[create update]
   
   scope :amount_totals_by_category, -> {
     joins(ingredient: :category)

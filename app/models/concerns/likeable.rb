@@ -3,7 +3,7 @@ module Likeable
 
   included do
     has_many :likes, class_name: 'Like', as: :likeable, dependent: :destroy
-    has_many :likeable_objects, class_name: 'Like', as: :liker, dependent: :destroy
+    has_many :likeable_objects, class_name: 'Like', as: :owner, dependent: :destroy
   end
 
   class_methods do
