@@ -2,11 +2,13 @@ class RecipeIngredient < ApplicationRecord
   belongs_to :recipe
   belongs_to :ingredient
   
-  scope :amounts_by_category, ->(category_name) {
-    category = Category.find_by(name: category_name)
-    require 'pry'; binding.pry
-    includes(:ingredient).where(ingredients: { category: category })
-                         .sum(:amount)
+  before_commit :ensure_bakers_percentage
+  
+  scope :amount_totals_by_category, -> {
+    joins(ingredient: :category)
+      .group('categories.name')
+      .sum(:amount)
+      .with_indifferent_access
   }
   
   private

@@ -48,22 +48,22 @@ module Recipes
     
     # Calculated category amounts
     def flour_amts
-      flour = sum_recipe_ingredient_amounts(:flour)
+      flour = sum_recipe_ingredient_amounts[:flour]
       raise Recipes::NoFlourError if flour < 1
       
       flour
     end
     
     def sweetener_amounts
-      sum_recipe_ingredient_amounts(:sweetener)
+      sum_recipe_ingredient_amounts[:sweetener]
     end
     
     def fat_amounts
-      sum_recipe_ingredient_amounts(:fat)
+      sum_recipe_ingredient_amounts[:fat]
     end
     
     def water_amt
-      sum_recipe_ingredient_amounts(:water)
+      sum_recipe_ingredient_amounts[:water]
     end
 
     def set_family(name)
@@ -89,11 +89,8 @@ module Recipes
     
     # Helper Method
     # TODO: This might be better suited as a scope in rec ing
-    def sum_recipe_ingredient_amounts(category_name)
-      category = Category.find_by(name: category_name)
-      recipe_ingredients.includes(:ingredient)
-                        .where(ingredients: { category: category })
-                        .sum(:amount)
+    def sum_recipe_ingredient_amounts
+      @totals ||= recipe_ingredients.amount_totals_by_category
     end
 
     def calculate_percentage(category_amount)
