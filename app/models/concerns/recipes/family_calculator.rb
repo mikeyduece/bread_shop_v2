@@ -3,7 +3,7 @@ module Recipes
     
     # Boolean checks for for family related percentage/category ranges
     def lean?
-      sweet_and_fat_amts.all? { |amt| Api::Recipes::LOW.include?(amt) }
+      sweet_and_fat_amts.all?(Api::Recipes::LOW)
     end
     
     def soft?
@@ -19,11 +19,11 @@ module Recipes
     end
     
     def slack?
-      water_percentage + fat_percentage > 70.0
+      (water_percentage + fat_percentage) > 70.0
     end
     
     def sweet?
-      sweet_and_fat_amts.all? { |amt| Api::Recipes::HIGH.include?(amt) }
+      sweet_and_fat_amts.all?(Api::Recipes::HIGH)
     end
     
     # Percentage ranges for calculating families
@@ -48,10 +48,7 @@ module Recipes
     
     # Calculated category amounts
     def flour_amts
-      flour = sum_recipe_ingredient_amounts[:flour]
-      raise Recipes::NoFlourError if flour < 1
-      
-      flour
+      sum_recipe_ingredient_amounts[:flour]
     end
     
     def sweetener_amounts
@@ -65,7 +62,7 @@ module Recipes
     def water_amt
       sum_recipe_ingredient_amounts[:water]
     end
-
+    
     def set_family(name)
       Family.find_by(name: name)
     end
@@ -92,7 +89,7 @@ module Recipes
     def sum_recipe_ingredient_amounts
       @totals ||= recipe_ingredients.amount_totals_by_category
     end
-
+    
     def calculate_percentage(category_amount)
       ((category_amount / flour_amts) * 100).round(2)
     end

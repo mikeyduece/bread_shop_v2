@@ -13,7 +13,6 @@ module Recipes
     private
 
     def recipe
-      require 'pry'; binding.pry
       @recipe = user.recipes.build(params.except(:ingredients))
       add_ingredients
       
