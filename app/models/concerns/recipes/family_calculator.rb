@@ -1,9 +1,30 @@
 module Recipes
   module FamilyCalculator
+    def calculate_family
+      case
+        when lean?
+          family = set_family(:lean)
+        when soft?
+          family = set_family(:soft)
+        when sweet?
+          family = set_family(:sweet)
+        when rich?
+          family = set_family(:rich)
+        when slack?
+          family = set_family(:slack)
+      end
+    end
+    
+    private
+    
+    # Sets family according to the name passed in
+    def set_family(name)
+      Family.find_by(name: name)
+    end
     
     # Boolean checks for for family related percentage/category ranges
     def lean?
-      sweet_and_fat_amts.all?(Api::Recipes::LOW)
+      sweetener_and_fat_amounts.all?(Api::Recipes::LOW)
     end
     
     def soft?
@@ -42,14 +63,11 @@ module Recipes
       calculate_percentage(water)
     end
     
-    def sweet_and_fat_amts
+    def sweetener_and_fat_amounts
       [sweetener_percentage, fat_percentage]
     end
     
     # Calculated category amounts
-    def flour_amts
-      sum_recipe_ingredient_amounts[:flour]
-    end
     
     def sweetener_amounts
       sum_recipe_ingredient_amounts[:sweetener]
