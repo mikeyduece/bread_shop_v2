@@ -1,9 +1,9 @@
 FactoryBot.define do
   factory :ingredient do
-    association :category, factory: :category
+    category
     
     sequence :name do |n|
-      "#{n}Ingredient"
+      "#{n} flour"
     end
   end
 end
