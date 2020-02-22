@@ -13,13 +13,20 @@ RSpec.describe Recipe, type: :model do
   context :callbacks do
     it 'should callback to #calcualte_family' do
       recipe = build(:recipe)
+      
       expect(recipe).to receive(:calculate_family)
       recipe.save
     end
     
   end
   
-  context :instance_methods do
+  context :errors do
+    it 'should raise NoFlourError if no flour present in recipe' do
+      recipe = build(:recipe)
+      recipe.recipe_ingredients.clear
+      
+      expect { recipe.save }.to raise_error(Recipes::NoFlourError)
+    end
   end
   
 end
