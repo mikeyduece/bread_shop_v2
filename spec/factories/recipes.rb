@@ -15,7 +15,7 @@ FactoryBot.define do
       create_list(:ingredient, evaluator.ingredient_count)
     end
     
-    after(:create) do |recipe|
+    before(:create) do |recipe|
       create_list(:recipe_ingredient, 3, recipe: recipe)
     end
     family { Family.all.sample || association(:family) }
