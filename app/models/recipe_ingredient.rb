@@ -18,7 +18,9 @@ class RecipeIngredient < ApplicationRecord
   end
   
   def calculate_bakers_percentage
-    flour_amt = recipe.flour_amts
+    flour_amt = recipe.flour_amounts
     ((amount / flour_amt) * 100).round(2)
+  rescue Recipes::NoFlourError => e
+    recipe.errors[:base] << e.message
   end
 end
