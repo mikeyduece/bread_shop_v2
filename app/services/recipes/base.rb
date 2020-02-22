@@ -1,5 +1,6 @@
 module Recipes
   class Base
+    include SerializationHelper
     attr_reader :user, :params
     
     def self.call(user, params = nil, &block)
@@ -7,7 +8,7 @@ module Recipes
     end
     
     def initialize(user, params)
-      @params = params
+      @params = params[:recipe]
       @user   = user
     end
     

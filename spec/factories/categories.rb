@@ -1,5 +1,7 @@
 FactoryBot.define do
   factory :category do
-      name { Faker::TvShows::RickAndMorty.unique.character }
+    sequence :name do |n|
+      "#{n} flour"
+    end
   end
 end

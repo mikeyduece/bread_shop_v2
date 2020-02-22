@@ -1,9 +1,10 @@
 FactoryBot.define do
   factory :ingredient do
-    association :category, factory: :category
+    category { Category.find_or_create_by(name: :flour) }
     
     sequence :name do |n|
-      "#{n}Ingredient"
+      "#{n} flour"
     end
+    
   end
 end
