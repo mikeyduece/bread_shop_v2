@@ -44,7 +44,7 @@ module Recipes
     end
     
     def sweet?
-      sweet_and_fat_amts.all?(Api::Recipes::HIGH)
+      sweetener_and_fat_amounts.all?(Api::Recipes::HIGH)
     end
     
     # Percentage ranges for calculating families
@@ -77,39 +77,17 @@ module Recipes
       sum_recipe_ingredient_amounts[:fat]
     end
     
-    def water_amt
+    def water_amounts
       sum_recipe_ingredient_amounts[:water]
     end
     
-    def set_family(name)
-      Family.find_by(name: name)
-    end
-    
-    def calculate_family
-      case
-        when lean?
-          update(family: set_family(:lean))
-        when soft?
-          update(family: set_family(:soft))
-        when sweet?
-          update(family: set_family(:sweet))
-        when rich?
-          update(family: set_family(:rich))
-        when slack?
-          update(family: set_family(:slack))
-      end
-    end
-    
-    private
-    
-    # Helper Method
-    # TODO: This might be better suited as a scope in rec ing
+    # Helper Methods
     def sum_recipe_ingredient_amounts
       @totals ||= recipe_ingredients.amount_totals_by_category
     end
     
     def calculate_percentage(category_amount)
-      ((category_amount / flour_amts) * 100).round(2)
+      ((category_amount / flour_amounts) * 100).round(2)
     end
   
   end
