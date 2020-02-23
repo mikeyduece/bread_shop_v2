@@ -1,5 +1,7 @@
 module Recipes
   module FamilyCalculator
+    private
+    
     def calculate_family
       case
         when lean?
@@ -15,7 +17,6 @@ module Recipes
       end
     end
     
-    private
     
     # Sets family according to the name passed in
     def set_family(name)

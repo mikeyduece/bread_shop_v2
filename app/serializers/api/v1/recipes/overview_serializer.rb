@@ -1,5 +1,5 @@
 class Api::V1::Recipes::OverviewSerializer < BaseSerializer
-  attributes :name, :total_percentage, :number_of_portions, :weight_per_portion, :units, :family, :ingredients
+  attributes :name, :total_percentage, :number_of_portions, :weight_per_portion, :unit, :family, :ingredients
 
   attribute :user do |object|
     BASE::Users::OverviewSerializer.new(object.user)
@@ -16,7 +16,11 @@ class Api::V1::Recipes::OverviewSerializer < BaseSerializer
   attribute :family do |object|
     BASE::Families::OverviewSerializer.new(object.family)
   end
-
+  
+  attribute :ingredients do |object|
+    BASE::Recipes::RecipeIngredients::OverviewSerializer.new(object.recipe_ingredients)
+  end
+  
   attributes :comments do |object|
     BASE::Comments::OverviewSerializer.new(object&.comments)
   end

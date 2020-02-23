@@ -11,23 +11,23 @@ module Api
           return error_response(code: 404, message: t('api.errors.record_exists')) if recipe
           
           ::Recipes::Create.call(current_api_user, recipe_params) do |success, failure|
-            success.call { |recipe| success_response(data: Recipes::OverviewSerializer.new(recipe)) }
+            success.call { |recipe| success_response(data: V1::Recipes::OverviewSerializer.new(recipe)) }
             
             failure.call(&method(:error_response))
           end
         end
         
         def index
-          success_response(data: Recipes::OverviewSerializer.new(current_api_user.recipes))
+          success_response(data: V1::Recipes::OverviewSerializer.new(current_api_user.recipes))
         end
         
         def show
-          success_response(data: Recipes::OverviewSerializer.new(@user_recipe))
+          success_response(data: V1::Recipes::OverviewSerializer.new(@user_recipe))
         end
         
         def update
           @user_recipe.update_recipe(params: recipe_params)
-          success_response(data: Recipes::OverviewSerializer.new(@user_recipe))
+          success_response(data: V1::Recipes::OverviewSerializer.new(@user_recipe))
         end
         
         def destroy
@@ -46,7 +46,7 @@ module Api
         end
         
         def recipe_params
-          params.require(:recipe).permit(:name, :units, :number_of_portions, :weight_per_portion, ingredients: [:name, :amount])
+          params.require(:recipe).permit(:name, :unit, :number_of_portions, :weight_per_portion, ingredients: [:name, :amount])
         end
       end
     end
