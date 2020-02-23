@@ -2,7 +2,7 @@ class RecipeIngredient < ApplicationRecord
   belongs_to :recipe
   belongs_to :ingredient
   
-  before_commit :ensure_bakers_percentage, on: %i[create update]
+  after_commit :ensure_bakers_percentage, on: %i[create update]
   
   scope :amount_totals_by_category, -> {
     joins(ingredient: :category)
@@ -22,7 +22,7 @@ class RecipeIngredient < ApplicationRecord
   private
   
   def ensure_bakers_percentage
-    self.bakers_percentage = calculate_bakers_percentage
+    update_columns(bakers_percentage: calculate_bakers_percentage)
   end
   
   def calculate_bakers_percentage
