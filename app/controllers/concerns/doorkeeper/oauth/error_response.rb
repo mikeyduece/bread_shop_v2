@@ -1,6 +1,6 @@
 module Doorkeeper
   module OAuth
-    class ErrorResponse
+    class ErrorResponse < BaseResponse
       def body
         {
           error:
