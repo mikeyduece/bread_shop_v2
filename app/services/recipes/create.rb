@@ -13,9 +13,8 @@ module Recipes
     private
 
     def recipe
-      @recipe = user.recipes.build(params.except(:ingredients))
+      @recipe ||= user.recipes.build(params.except(:ingredients))
       add_ingredients
-      
       @recipe
     end
     

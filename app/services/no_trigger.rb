@@ -1,5 +1,5 @@
 class NoTrigger
 
-  def call
+  def self.call
   end
 end

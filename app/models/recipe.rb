@@ -7,7 +7,7 @@ class Recipe < ApplicationRecord
   commenter :user
   
   belongs_to :user
-  belongs_to :family
+  belongs_to :family, optional: true
 
   has_many :recipe_ingredients, dependent: :destroy
   has_many :ingredients, through: :recipe_ingredients
@@ -18,7 +18,9 @@ class Recipe < ApplicationRecord
   validates :number_of_portions, presence: true, numericality: { greater_than: 0 }
   validates :weight_per_portion, presence: true, numericality: { greater_than: 0 }
   
-  before_commit :calculate_family, on: %i[create update]
+  after_save :calculate_family#, on: %i[create update]
+  
+  enum unit: %i[oz lbs g kg]
 
   def flour_amounts
     flour = sum_recipe_ingredient_amounts[:flour]
