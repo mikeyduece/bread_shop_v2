@@ -5,15 +5,15 @@ module Recipes
     def calculate_family
       case
         when lean?
-          family = set_family(:lean)
+          update(family: set_family(:lean))
         when soft?
-          family = set_family(:soft)
+          update(family: set_family(:soft))
         when sweet?
-          family = set_family(:sweet)
+          update(family: set_family(:sweet))
         when rich?
-          family = set_family(:rich)
+          update(family: set_family(:rich))
         when slack?
-          family = set_family(:slack)
+          update(family: set_family(:slack))
       end
     end
     
@@ -69,7 +69,6 @@ module Recipes
     end
     
     # Calculated category amounts
-    
     def sweetener_amounts
       sum_recipe_ingredient_amounts[:sweetener]
     end
