@@ -11,6 +11,14 @@ class RecipeIngredient < ApplicationRecord
       .with_indifferent_access
   }
   
+  def ingredient_name
+    ingredient.name
+  end
+  
+  def ingredient_category_name
+    ingredient.category.name
+  end
+  
   private
   
   def ensure_bakers_percentage

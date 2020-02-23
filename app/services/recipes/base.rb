@@ -8,7 +8,7 @@ module Recipes
     end
     
     def initialize(user, params)
-      @params = params[:recipe]
+      @params = params
       @user   = user
     end
     
@@ -24,6 +24,7 @@ module Recipes
     
         recipe.recipe_ingredients.build(amount: ingredient[:amount], ingredient: ingredient_object)
       end
+      recipe.save
     end
     
   end
