@@ -1,4 +1,5 @@
 class ApiController < ActionController::API
+  include DrySerialization::Blueprinter
   include SerializationHelper
 
   helper_method :current_api_user
