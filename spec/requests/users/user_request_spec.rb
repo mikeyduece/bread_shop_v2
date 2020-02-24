@@ -16,9 +16,9 @@ RSpec.describe 'User API' do
     
     expect(response).to be_successful
     
-    user_data = JSON.parse(response.body, symbolize_names: true)[:data][:attributes]
+    user_data = JSON.parse(response.body, symbolize_names: true)
     
-    expect(user_data[:name]).to eq('Mike Heft')
+    expect(user_data[:user][:first_name]).to eq('Mike')
     expect(User.last.first_name).to eq(params[:user][:first_name])
   end
 end
