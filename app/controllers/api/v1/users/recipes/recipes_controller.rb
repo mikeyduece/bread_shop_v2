@@ -1,9 +1,7 @@
 module Api
   module V1
     module Users
-      class RecipesController < ApiController
-        include Api::RecipeHelper
-        before_action :doorkeeper_authorize!
+      class RecipesController < UsersBaseController
         before_action :set_user_recipe, except: :create
         
         def create
@@ -42,7 +40,7 @@ module Api
         private
         
         def set_user_recipe
-          @user_recipe ||= current_api_user.recipes.find_by(id: params[:recipe_id] || params[:id])
+          @user_recipe ||= @user.recipes.find_by(id: params[:recipe_id] || params[:id])
         end
         
         def recipe_params

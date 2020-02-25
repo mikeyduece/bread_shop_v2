@@ -11,6 +11,8 @@ RSpec.describe 'User API' do
     }
   } }
   
+  let!(:user) { create(:user) }
+  
   it 'creates user' do
     post '/api/v1/users', params: params
     
@@ -20,5 +22,10 @@ RSpec.describe 'User API' do
     
     expect(user_data[:user][:first_name]).to eq('Mike')
     expect(User.last.first_name).to eq(params[:user][:first_name])
+  end
+
+  it 'doesn\'t allow User to see profile info if not logged in' do
+    get api_v1_user_path(User.last)
+    require 'pry'; binding.pry
   end
 end

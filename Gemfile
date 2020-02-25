@@ -4,6 +4,7 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 ruby '2.6.3'
 
 gem 'dry_serialization', source: 'https://gem.fury.io/mikeyduece-gems/'
+gem 'blueprinter'
 
 gem 'rails', '~> 6.0.1'
 gem 'pg', '>= 0.18', '< 2.0'
@@ -40,6 +41,7 @@ gem 'newrelic_rpm'
 gem 'bootsnap', '>= 1.1.0', require: false
 
 group :development, :test do
+  gem 'rubocop-rspec'
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
   gem 'rspec-rails'
   gem 'pry-rails'

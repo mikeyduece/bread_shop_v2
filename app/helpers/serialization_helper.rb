@@ -1,18 +1,17 @@
 module SerializationHelper
-  def success_response(code = 200, data = {}, message = nil)
-    default_response = default_response(code, message, data)
+  def success_response(status = 200, data = {}, message = nil)
+    default_response = default_response(status, message, data)
     render json: default_response
   end
   
-  def error_response(message, code = 200)
-    default_response = default_response(code, message, nil)
+  def error_response(message, status = 404)
+    default_response = default_response(status, message, nil)
     render json: default_response
   end
 
-  def default_response(code, message, data)
-    { code: code, message: message }.merge(data)
+  def default_response(status, message, data)
+    { status: status, message: message }.merge(data)
   end
-
 
   #def serialized_resource(resource, serializer, options = {})
   #  return nil if resource.nil?

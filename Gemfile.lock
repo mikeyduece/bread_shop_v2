@@ -94,8 +94,7 @@ GEM
     diff-lcs (1.3)
     doorkeeper (5.3.1)
       railties (>= 5)
-    dry_serialization (0.1.3)
-      blueprinter
+    dry_serialization (0.2.71)
     erubi (1.9.0)
     execjs (2.7.0)
     factory_bot (4.11.1)
@@ -240,6 +239,8 @@ GEM
       rexml
       ruby-progressbar (~> 1.7)
       unicode-display_width (>= 1.4.0, < 1.7)
+    rubocop-rspec (1.38.1)
+      rubocop (>= 0.68.1)
     ruby-progressbar (1.10.1)
     ruby_dep (1.5.0)
     safe_yaml (1.0.5)
@@ -309,6 +310,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  blueprinter
   bootsnap (>= 1.1.0)
   bullet
   byebug
@@ -333,6 +335,7 @@ DEPENDENCIES
   rails (~> 6.0.1)
   rspec-rails
   rubocop
+  rubocop-rspec
   sass-rails (~> 5.0)
   shoulda-matchers
   stream_rails

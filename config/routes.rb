@@ -14,10 +14,12 @@ Rails.application.routes.draw do
       end
       
       resources :users, module: :users, except: %i[new edit] do
-        put :activate
-        delete :forget
+        member do
+          put :activate
+          delete :forget
+        end
         
-        resources :recipes, except: %i[new edit]
+        resources :recipes, module: :recipes, except: %i[new edit]
       end
       
       resources :comments, module: :comments, except: %i[new edit] do

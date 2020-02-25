@@ -8,7 +8,7 @@ FactoryBot.define do
     user
     
     transient do
-      ingredient_count 6
+      ingredient_count { 6 }
     end
     
     before(:create) do |_recipe, evaluator|

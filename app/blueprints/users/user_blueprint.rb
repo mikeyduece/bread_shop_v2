@@ -1,4 +1,4 @@
-class Users::UserBlueprint < Blueprinter::Base
+class Users::UserBlueprint < BaseBlueprint
   identifier :id
   
   view :normal do
