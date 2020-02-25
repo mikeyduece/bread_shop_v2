@@ -1,6 +1,7 @@
 en:
   api:
-    defaults: 'Not Found'
+    defaults:
+      not_found: 'Not Found'
     recipes:
       recipe_deleted: 'You have successfully deleted your %{name} recipe'
     errors:

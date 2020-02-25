@@ -6,6 +6,10 @@ class Api::V1::Users::UsersBaseController < ApiController
       @user = current_api_user
     else
       @user = User.find_by(id: params[:user_id] || params[:id])
+      
+      if @user.blank?
+        error_response(t('api.defaults.not_found', 404))
+      end
     end
   end
 end
