@@ -25,6 +25,7 @@ RSpec.describe RecipeIngredient, type: :model do
       
       expect(actual).to be_a(Hash)
       expect(actual).to_not be_nil
+      expect(actual.keys).to include('flour')
     end
   end
   

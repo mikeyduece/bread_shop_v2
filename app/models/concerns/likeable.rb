@@ -1,12 +1,14 @@
 module Likeable
   extend ActiveSupport::Concern
 
+  # TODO: Rename likeable polymorphic name to target
   included do
     has_many :likes, class_name: 'Like', as: :likeable, dependent: :destroy
     has_many :likeable_objects, class_name: 'Like', as: :owner, dependent: :destroy
   end
 
   class_methods do
+    # TODO: Need to refactor relationship names/relationships themselves
     def likeable(*attributes)
       raise NotImplementedError unless self.respond_to?(:likeable)
       
