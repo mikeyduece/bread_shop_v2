@@ -1,8 +1,5 @@
 class Forum < ApplicationRecord
-  liker :user
-
-  belongs_to :user
+  belongs_to :admin
   
-  validates :title, presence: true, uniqueness: { scope: :user_id }
-  validates :body, presence: true, length: { minimum: 10, too_short: "Comment must be at least %{count} characters" }
+  validates :title, presence: true, uniqueness: { scope: :admin_id }
 end

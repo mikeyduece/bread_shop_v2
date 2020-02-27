@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_02_27_133428) do
+ActiveRecord::Schema.define(version: 2020_02_27_133718) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -87,6 +87,20 @@ ActiveRecord::Schema.define(version: 2020_02_27_133428) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["name"], name: "index_families_on_name"
+  end
+
+  create_table "forum_topics", force: :cascade do |t|
+    t.bigint "forum_id", null: false
+    t.string "owner_type"
+    t.bigint "owner_id"
+    t.string "title", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["forum_id", "owner_id", "owner_type", "title"], name: "idx_forum_topics_on_forum_owner_title", unique: true
+    t.index ["forum_id"], name: "index_forum_topics_on_forum_id"
+    t.index ["owner_id", "owner_type", "title"], name: "index_forum_topics_on_owner_id_and_owner_type_and_title", unique: true
+    t.index ["owner_type", "owner_id"], name: "index_forum_topics_on_owner_type_and_owner_id"
+    t.index ["title"], name: "index_forum_topics_on_title"
   end
 
   create_table "forums", force: :cascade do |t|
