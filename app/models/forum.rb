@@ -1,11 +1,7 @@
 class Forum < ApplicationRecord
-  include Commentable
-  include Likeable
+  belongs_to :admin
   
-  liker :user
-
-  belongs_to :user
+  has_many :forum_topics, inverse_of: :forum
   
-  validates :title, presence: true, uniqueness: { scope: :user_id }
-  validates :body, presence: true, length: { minimum: 10, too_short: "Comment must be at least %{count} characters" }
+  validates :title, presence: true, uniqueness: { scope: :admin_id }
 end

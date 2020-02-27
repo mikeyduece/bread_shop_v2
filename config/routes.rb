@@ -22,11 +22,6 @@ Rails.application.routes.draw do
         resources :recipes, module: :recipes, except: %i[new edit]
       end
       
-      resources :comments, module: :comments, except: %i[new edit] do
-        put :activate
-        delete :forget
-      end
-      
       resources :forums, module: :forums, except: %i[new edit] do
         put :activate
         delete :forget

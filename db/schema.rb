@@ -10,10 +10,41 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_02_21_131617) do
+ActiveRecord::Schema.define(version: 2020_02_27_133718) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "action_text_rich_texts", force: :cascade do |t|
+    t.string "name", null: false
+    t.text "body"
+    t.string "record_type", null: false
+    t.bigint "record_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["record_type", "record_id", "name"], name: "index_action_text_rich_texts_uniqueness", unique: true
+  end
+
+  create_table "active_storage_attachments", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "record_type", null: false
+    t.bigint "record_id", null: false
+    t.bigint "blob_id", null: false
+    t.datetime "created_at", null: false
+    t.index ["blob_id"], name: "index_active_storage_attachments_on_blob_id"
+    t.index ["record_type", "record_id", "name", "blob_id"], name: "index_active_storage_attachments_uniqueness", unique: true
+  end
+
+  create_table "active_storage_blobs", force: :cascade do |t|
+    t.string "key", null: false
+    t.string "filename", null: false
+    t.string "content_type"
+    t.text "metadata"
+    t.bigint "byte_size", null: false
+    t.string "checksum", null: false
+    t.datetime "created_at", null: false
+    t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
+  end
 
   create_table "admins", force: :cascade do |t|
     t.string "email", default: "", null: false
@@ -58,11 +89,24 @@ ActiveRecord::Schema.define(version: 2020_02_21_131617) do
     t.index ["name"], name: "index_families_on_name"
   end
 
-  create_table "forums", force: :cascade do |t|
-    t.bigint "user_id"
+  create_table "forum_topics", force: :cascade do |t|
+    t.bigint "forum_id", null: false
+    t.string "owner_type"
+    t.bigint "owner_id"
     t.string "title", null: false
-    t.text "body", null: false
-    t.index ["user_id"], name: "index_forums_on_user_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["forum_id", "owner_id", "owner_type", "title"], name: "idx_forum_topics_on_forum_owner_title", unique: true
+    t.index ["forum_id"], name: "index_forum_topics_on_forum_id"
+    t.index ["owner_id", "owner_type", "title"], name: "index_forum_topics_on_owner_id_and_owner_type_and_title"
+    t.index ["owner_type", "owner_id"], name: "index_forum_topics_on_owner_type_and_owner_id"
+    t.index ["title"], name: "index_forum_topics_on_title"
+  end
+
+  create_table "forums", force: :cascade do |t|
+    t.string "title", null: false
+    t.bigint "admin_id", null: false
+    t.index ["admin_id"], name: "index_forums_on_admin_id"
   end
 
   create_table "ingredients", force: :cascade do |t|
@@ -175,7 +219,7 @@ ActiveRecord::Schema.define(version: 2020_02_21_131617) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
-  add_foreign_key "forums", "users"
+  add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "ingredients", "categories"
   add_foreign_key "oauth_access_grants", "oauth_applications", column: "application_id"
   add_foreign_key "oauth_access_tokens", "oauth_applications", column: "application_id"
