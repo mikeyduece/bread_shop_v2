@@ -1,5 +1,7 @@
 require 'rails_helper'
 
-RSpec.describe ForumTopic, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+describe ForumTopic, type: :model do
+  it { should belong_to(:owner) }
+  it { should belong_to(:forum) }
+  it { should have_rich_text(:content) }
 end
