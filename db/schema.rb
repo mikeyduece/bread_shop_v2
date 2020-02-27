@@ -98,7 +98,7 @@ ActiveRecord::Schema.define(version: 2020_02_27_133718) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["forum_id", "owner_id", "owner_type", "title"], name: "idx_forum_topics_on_forum_owner_title", unique: true
     t.index ["forum_id"], name: "index_forum_topics_on_forum_id"
-    t.index ["owner_id", "owner_type", "title"], name: "index_forum_topics_on_owner_id_and_owner_type_and_title", unique: true
+    t.index ["owner_id", "owner_type", "title"], name: "index_forum_topics_on_owner_id_and_owner_type_and_title"
     t.index ["owner_type", "owner_id"], name: "index_forum_topics_on_owner_type_and_owner_id"
     t.index ["title"], name: "index_forum_topics_on_title"
   end
