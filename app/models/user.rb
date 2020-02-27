@@ -3,10 +3,12 @@ class User < ApplicationRecord
   include Likeable
   include Commentable
 
-  likeable :recipes, :forums, :comments
-  commentable :recipes, :forums, :comments
+  likeable :recipes, :forum_topics, :comments
+  commentable :recipes, :forum_topics, :comments
 
+  # recipes
   has_many :recipes
-  has_many :forums
+  # forums
+  has_many :forum_topics, as: :owner, inverse_of: :owner
 
 end
