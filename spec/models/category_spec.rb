@@ -4,7 +4,7 @@ RSpec.describe Category, type: :model do
   subject { Category.new(name: 'Category 1') }
 
   context :associations do
-    it { have_many(:ingredients) }
+    it { should have_many(:ingredients) }
   end
 
   context :validations do
