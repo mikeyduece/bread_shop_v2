@@ -32,8 +32,8 @@ class Recipe < ApplicationRecord
     list = []
     recipe_ingredients.includes(:ingredient).find_each do |recipe_ingredient|
       list << {
-        name:              recipe_ingredient.ingredient.name,
-        amount:            recipe_ingredient.amount,
+        name: recipe_ingredient.ingredient_name,
+        amount: recipe_ingredient.amount,
         bakers_percentage: "#{recipe_ingredient.bakers_percentage}%"
       }
     end
@@ -57,11 +57,11 @@ class Recipe < ApplicationRecord
     scaled = []
     recipe_ingredients.includes(:ingredient).find_each do |recipe_ingredient|
       new_amount = (new_flour_weight(params: params) * (recipe_ingredient.bakers_percentage.to_f / 100)).round(2)
-      new_amount = new_flour_weight(params: params) if recipe_ingredient.ingredient.name.eql?(:flour)
+      new_amount = new_flour_weight(params: params) if recipe_ingredient.ingredient_name.eql?(:flour)
       
       scaled << {
-        name:              recipe_ingredient.ingredient.name,
-        amount:            new_amount,
+        name: recipe_ingredient.ingredient_name,
+        amount: new_amount,
         bakers_percentage: "#{recipe_ingredient.bakers_percentage}%"
       }
     end
