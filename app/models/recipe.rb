@@ -14,6 +14,8 @@ class Recipe < ApplicationRecord
   validates :number_of_portions, presence: true, numericality: { greater_than: 0 }
   validates :weight_per_portion, presence: true, numericality: { greater_than: 0 }
 
+  # TODO: Refactor to use each_with_object({})
+  # Formats the ingredient information to display name, amount, and percentage
   def ingredients
     list = []
     recipe_ingredients.includes(:ingredient).find_each do |recipe_ingredient|
@@ -27,18 +29,22 @@ class Recipe < ApplicationRecord
     list
   end
 
+  # Calculates the total percentage of all ingredients for a recipe
   def total_percentage 
     recipe_ingredients.sum('recipe_ingredients.bakers_percentage')
   end
 
+  # Calculates the new flour weight, given the new total weight of the dough
   def new_flour_weight(params: params)
     ((new_total_weight(params: params) / total_percentage) * 100).round(2)
   end
 
+  # Calculates the new total weight given the number of and weight per portion
   def new_total_weight(params:)
     params[:number_of_portions] * params[:weight_per_portion]
   end
 
+  # Returns formatted and scaled ingredient amounts based on new calulcations
   def new_totals(params:)
     scaled = []
     recipe_ingredients.includes(:ingredient).find_each do |recipe_ingredient|
