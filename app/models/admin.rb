@@ -1,6 +1,7 @@
 class Admin < ApplicationRecord
-  # Include default devise modules. Others available are:
-  # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
-  devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :validatable
+  include DoorkeeperHelper
+  
+  # forums
+  has_many :forums, inverse_of: :admin
+  has_many :forum_topics, as: :owner, inverse_of: :owner
 end

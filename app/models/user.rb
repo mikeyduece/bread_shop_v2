@@ -1,24 +1,14 @@
 class User < ApplicationRecord
-  # Include default devise modules. Others available are:
-  # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
-  devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :validatable
-         
-  has_many :access_grants, class_name: "Doorkeeper::AccessGrant",
-    foreign_key: :resource_owner_id,
-    dependent: :delete_all # or :destroy if you need callbacks
+  include DoorkeeperHelper
+  include Likeable
+  include Commentable
 
-  has_many :access_tokens, class_name: "Doorkeeper::AccessToken",
-    foreign_key: :resource_owner_id,
-    dependent: :delete_all # or :destroy if you need callbacks
+  likeable :recipes, :forum_topics, :comments
+  commentable :recipes, :forum_topics, :comments
 
+  # recipes
   has_many :recipes
-  has_many :forums
-  # comments
-  has_many :recipe_comments, through: :recipes, class_name: 'Comment', source: :comments
-  has_many :forum_comments, through: :forums, class_name: 'Comment', source: :forum
+  # forums
+  has_many :forum_topics, as: :owner, inverse_of: :owner
 
-  # likes
-  has_many :recipe_likes, through: :recipes, source: :likes
-  has_many :forum_likes, through: :forums, source: :likes
 end

@@ -1,5 +1,8 @@
 class Comment < ApplicationRecord
-  # TODO Either use soc_med gem or create modules to extract likes/comments
+  include Likeable
+  
+  liker :user
+
   belongs_to :commentable, polymorphic: true
   belongs_to :owner, polymorphic: true
   belongs_to :parent, class_name: 'Comment', optional: true, foreign_key: :parent_id

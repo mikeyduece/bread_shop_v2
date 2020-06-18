@@ -1,9 +1,7 @@
 class Forum < ApplicationRecord
-  belongs_to :user
+  belongs_to :admin
   
-  has_many :comments, as: :commentable, dependent: :destroy
-  has_many :likes, as: :likeable, dependent: :destroy
-
-  validates :title, presence: true, uniqueness: { scope: :user_id }
-  validates :body, presence: true, length: { minimum: 10, too_short: "Comment must be at least %{count} characters" }
+  has_many :forum_topics, inverse_of: :forum
+  
+  validates :title, presence: true, uniqueness: { scope: :admin_id }
 end

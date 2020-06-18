@@ -39,6 +39,10 @@ RSpec.configure do |config|
   config.fixture_path = "#{::Rails.root}/spec/fixtures"
   config.include(Shoulda::Matchers::ActiveModel, type: :model)
   config.include(Shoulda::Matchers::ActiveRecord, type: :model)
+  
+  #config.before(:suite) do
+  #  Rails.application.load_seed # loading seeds
+  #end
 
   config.before(:all) do
     DatabaseCleaner.clean
@@ -72,4 +76,15 @@ RSpec.configure do |config|
   config.filter_rails_from_backtrace!
   # arbitrary gems may also be filtered via:
   # config.filter_gems_from_backtrace("gem name")
+  
+  if Bullet.enable?
+    config.before(:each) do
+      Bullet.start_request
+    end
+  
+    config.after(:each) do
+      Bullet.perform_out_of_channel_notifications if Bullet.notification?
+      Bullet.end_request
+    end
+  end
 end

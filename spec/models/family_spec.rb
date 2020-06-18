@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe Family, type: :model do
-  subject { Family.new(name: 'Category 1') }
+  subject { Family.new(name: 'Sweet') }
 
   context :associations do
     it { should have_many(:recipes) }

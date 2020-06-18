@@ -1,5 +1,9 @@
 FactoryBot.define do
   factory :family do
-    name { "MyString" }
+    sequence :name do
+      @name ||= %i[lean soft rich sweet slack]
+      
+      @name.sample
+    end
   end
 end

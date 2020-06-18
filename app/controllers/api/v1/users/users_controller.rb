@@ -1,20 +1,20 @@
 module Api
   module V1
     module Users
-      class UsersController < ApiController
-        before_action :doorkeeper_authorize!, except: :create
-
+      class UsersController < UsersBaseController
+        skip_before_action :doorkeeper_authorize!, :set_user, only: :create
+        
         def create
           user = User.create(user_params)
           if user.save
-            success_response(code: 201, data: Users::PrivateSerializer.new(user))
+            success_response(201, user: serialized_resource(user, ::Users::UserBlueprint, view: :extended))
           else
-            render json: 'A user with that email already exists'
+            error_response('A user with that email already exists', 404)
           end
         end
 
         def show
-          success_response(data: Users::PrivateSerializer.new(current_api_user))
+          success_response(200, user: serialized_resource(@user, ::Users::UserBlueprint, view: :extended))
         end
 
         def update

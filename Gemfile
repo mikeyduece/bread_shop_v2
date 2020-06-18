@@ -3,12 +3,15 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 ruby '2.7.0'
 
+gem 'dry_serialization', source: 'https://gem.fury.io/mikeyduece-gems/'
+gem 'blueprinter'
+
 gem 'rails', '~> 6.0.1'
 gem 'pg', '>= 0.18', '< 2.0'
 gem 'puma', '~> 3.11'
 gem 'sass-rails', '~> 5.0'
 gem 'uglifier', '>= 1.3.0'
-gem 'fast_jsonapi'
+gem 'faker'
 
 gem "webpacker"
 # See https://github.com/rails/execjs#readme for more supported runtimes
@@ -24,7 +27,6 @@ gem 'jbuilder', '~> 2.5'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
-gem "bootstrap", ">= 4.1.2"
 gem 'jquery-rails'
 gem 'database_cleaner'
 gem 'faraday'
@@ -33,11 +35,13 @@ gem 'cancancan', '~> 2.0'
 gem 'devise'
 gem 'doorkeeper'
 gem 'stream_rails'
+gem 'newrelic_rpm'
 
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.1.0', require: false
 
 group :development, :test do
+  gem 'rubocop-rspec'
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
   gem 'rspec-rails'
   gem 'pry-rails'
@@ -47,6 +51,8 @@ group :development, :test do
   gem 'factory_bot_rails', '~> 4.0'
   gem 'vcr'
   gem 'webmock'
+  gem 'rubocop', require: false
+  gem 'bullet'
 end
 
 group :development do
