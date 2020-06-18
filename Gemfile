@@ -3,7 +3,7 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 ruby '2.7.0'
 
-gem 'dry_serialization', source: 'https://gem.fury.io/mikeyduece-gems/'
+gem 'dry_serialization'
 gem 'blueprinter'
 
 gem 'rails', '~> 6.0.1'
