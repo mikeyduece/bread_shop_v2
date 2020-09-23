@@ -335,7 +335,7 @@ DEPENDENCIES
   pg (>= 0.18, < 2.0)
   pry-rails
   puma (~> 3.11)
-  rails (~> 6.0.1)
+  rails (~> 6.0.3)
   rspec-rails
   rubocop
   rubocop-rspec
@@ -350,7 +350,7 @@ DEPENDENCIES
   webpacker
 
 RUBY VERSION
-   ruby 2.7.0p0
+   ruby 2.7.1p83
 
 BUNDLED WITH
    2.1.4
