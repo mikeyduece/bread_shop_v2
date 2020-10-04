@@ -15,18 +15,10 @@ module Api
       create_recipe_ingredients(recipe: self, ingredients: params[:ingredients])
       recipe_ingredients.find_each(&:save)
     end
-
-    
-
-   
   
     def destroy_all_recipe_ingredients
       recipe_ingredients.delete_all
     end
-  
-  
-
- 
 
     def recalculated_amounts(new_flour_weight:)
       recipe_ingredients.includes(:ingredient).find_each do |recipe_ingredient|
@@ -35,9 +27,6 @@ module Api
         
       end
     end
-
-    private
-
 
   end
 end
