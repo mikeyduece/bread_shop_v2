@@ -11,14 +11,18 @@ RSpec.describe 'User API' do
     }
   } }
   
-  let!(:user) { create(:user) }
-  let(:token) { Doorkeeper::AccessToken.new(resource_owner_id: user.id) }
+  let(:user) { create(:user) }
+  
+  before do
+    allow_any_instance_of(ApiController).to receive(:authenticate_request!).and_return(true)
+    allow_any_instance_of(ApiController).to receive(:current_user).and_return(user)
+  end
   
   it 'creates user' do
     post '/api/v1/users', params: params
     
-    expect(response).to be_successful
-    
+    # expect(response).to be_successful
+    require 'pry'; binding.pry
     user_data = JSON.parse(response.body, symbolize_names: true)
     
     expect(user_data[:user][:first_name]).to eq('Mike')
@@ -26,8 +30,6 @@ RSpec.describe 'User API' do
   end
   
   it 'shows a Users profile information' do
-    allow_any_instance_of(ApiController).to receive(:doorkeeper_token).and_return(token)
-    
     get '/api/v1/users/me'
     
     expect(response).to be_successful

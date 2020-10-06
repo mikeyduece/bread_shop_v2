@@ -1,20 +1,12 @@
 class ApiController < ActionController::API
+  include Auth0CurrentUser::Secured
   include DrySerialization::Blueprinter
-  include SerializationHelper
-  
-  before_action :doorkeeper_authorize!
-  helper_method :current_api_user
+  include DrySerialization::Concerns::SerializationHelper
   
   delegate :t, to: I18n
   
-  def doorkeeper_unauthorized_render_options(error: nil)
-    { json: { error: "Not Authorized" } }
-  end
-  
-  private
-  
-  def current_api_user
-    @current_api_user ||= User.find_by(id: doorkeeper_token.resource_owner_id) if doorkeeper_token
+  rescue_from JWT::VerificationError, JWT::DecodeError do |exception|
+    render json: { errors: ['Not Authenticated', exception], status: :unauthorized }
   end
   
 end
