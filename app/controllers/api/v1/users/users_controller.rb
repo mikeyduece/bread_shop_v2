@@ -7,19 +7,21 @@ module Api
         def create
           user = User.create(user_params)
           if user.save
-            success_response(user: serialized_resource(user, ::Users::UserBlueprint, view: :extended), status: :created)
+            success_response(serialized_resource(user, ::Users::UserBlueprint, view: :extended), :created)
           else
-            error_response('A user with that email already exists', 404)
+            error_response(user.errors.full_messages, :unprocessable_entity)
           end
         end
 
         def show
-          success_response(user: serialized_resource(@user, ::Users::UserBlueprint, view: :extended))
+          success_response(serialized_resource(@user, ::Users::UserBlueprint, view: :extended))
         end
 
         def update
           if current_user.update(user_params)
-            success_response(data: Users::PrivateSerializer.new(current_user))
+            success_response(serialized_resource(current_user, UserSerializer))
+          else
+            error_response(current_user.errors.full_messages, :unprocessable_entity)
           end
         end
 
