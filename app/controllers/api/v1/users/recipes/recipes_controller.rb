@@ -7,10 +7,10 @@ module Api
           
           def create
             recipe = current_api_user.recipes.find_by(name: recipe_params[:name].downcase)
-            return error_response(code: 404, message: t('api.errors..recipe.record_exists')) if recipe
+            return error_response(code: 404, message: t('api.errors.recipes.record_exists')) if recipe
             
             ::Recipes::Create.call(current_api_user, recipe_params) do |success, failure|
-              success.call { |recipe| success_response(data: V1::Recipes::OverviewSerializer.new(recipe)) }
+              success.call { |object| success_response(data: V1::Recipes::OverviewSerializer.new(object)) }
               
               failure.call(&method(:error_response))
             end
@@ -30,7 +30,7 @@ module Api
           end
           
           def destroy
-            return error_response(code: 404, message: t('errors.record_not_found')) unless @user_recipe.present?
+            return error_response(code: 404, message: t('api.errors.recipes.record_not_found')) unless @user_recipe.present?
             
             recipe_name = @user_recipe.name
             @user_recipe.destroy
