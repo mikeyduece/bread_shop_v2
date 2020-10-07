@@ -1,9 +1,5 @@
 FactoryBot.define do
   factory :family do
-    sequence :name do
-      @name ||= %i[lean soft rich sweet slack]
-      
-      @name.sample
-    end
+    name { Faker::Food.name }
   end
 end

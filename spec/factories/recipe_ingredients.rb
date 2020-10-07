@@ -6,5 +6,7 @@ FactoryBot.define do
       @amount ||= (0.01..10.0).step(0.01).to_a.shuffle
       @amount[n].round(2)
     end
+    
+    bakers_percentage { 0.30 }
   end
 end

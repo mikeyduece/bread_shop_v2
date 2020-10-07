@@ -1,13 +1,5 @@
-require 'rails_helper'
-
-RSpec.describe Category, type: :model do
-  subject { Category.new(name: 'Category 1') }
-
-  context :associations do
-    it { should have_many(:ingredients) }
-  end
-
-  context :validations do
-    it { should validate_uniqueness_of(:name) }
-  end
-end
+# require 'rails_helper'
+#
+# RSpec.describe Category, type: :model do
+#   pending "add some examples to (or delete) #{__FILE__}"
+# end

@@ -1,11 +1,11 @@
-class CreateRecipeIngredients < ActiveRecord::Migration[5.2]
+class CreateRecipeIngredients < ActiveRecord::Migration[6.0]
   def change
     create_table :recipe_ingredients do |t|
       t.references :recipe, foreign_key: true, index: true
       t.references :ingredient, foreign_key: true, index: true
       t.float :amount, null: false
       t.float :bakers_percentage, null: false
-
+  
       t.timestamps
     end
 
