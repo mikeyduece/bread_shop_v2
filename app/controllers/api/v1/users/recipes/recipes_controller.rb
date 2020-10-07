@@ -7,7 +7,7 @@ module Api
           
           def create
             recipe = current_api_user.recipes.find_by(name: recipe_params[:name].downcase)
-            return error_response(code: 404, message: t('api.errors.record_exists')) if recipe
+            return error_response(code: 404, message: t('api.errors..recipe.record_exists')) if recipe
             
             ::Recipes::Create.call(current_api_user, recipe_params) do |success, failure|
               success.call { |recipe| success_response(data: V1::Recipes::OverviewSerializer.new(recipe)) }
