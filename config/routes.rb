@@ -1,10 +1,4 @@
 Rails.application.routes.draw do
-  use_doorkeeper
-  root to: 'home#index'
-  
-  devise_for :users
-  devise_for :admins
-  
   namespace :api do
     namespace :v1 do
       resources :recipes, module: :recipes, only: :show do
@@ -26,4 +20,5 @@ Rails.application.routes.draw do
       end
     end
   end
+  
 end
