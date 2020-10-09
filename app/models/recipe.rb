@@ -17,9 +17,11 @@ class Recipe < ApplicationRecord
   validates :name, uniqueness: { scope: :user_id }
   validates :number_of_portions, :weight_per_portion, presence: true, numericality: { greater_than: 0 }
   
-  after_commit :calculate_family, on: :create
+  before_commit :calculate_family#, on: :create
   
   enum unit: %i[oz lbs g kg]
+  
+  delegate :name, to: :family, prefix: true, allow_nil: true
   
   def flour_amounts
     flour = sum_recipe_ingredient_amounts[:flour]

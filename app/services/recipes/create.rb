@@ -2,23 +2,27 @@ module Recipes
   class Create < BaseRecipeService
     
     def call
+      build_recipe!
       Success.new(recipe: recipe)
     rescue ActiveRecord::RecordNotUnique => e
-      yield(NoTrigger, Failure.new(error: I18n.t('api.errors.recipes.record_exists'), status: :unprocessable_entity))
+      Failure.new(error: I18n.t('api.errors.recipes.record_exists'))
     rescue StandardError => e
-      yield(NoTrigger, Failure.new(error: e.message, status: :unprocessable_entity))
+      Failure.new(error: e.message)
     end
     
     private
     
-    def recipe
-      @recipe ||= user.recipes.build(params.except(:ingredients))
-      add_ingredients
-      @recipe
+    attr_accessor :recipe
+    
+    def build_recipe!
+      attrs = attributes(params)
+      @recipe ||= user.recipes.build(attrs)
+      add_ingredients!
     end
     
-    def add_ingredients
-      create_recipe_ingredients(recipe: @recipe, ingredients: params[:ingredients])
+    def add_ingredients!
+      attrs = relationship(params, :ingredients)
+      create_recipe_ingredients(recipe: recipe, ingredients: attrs)
     end
   
   end

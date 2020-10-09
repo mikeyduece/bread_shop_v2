@@ -7,7 +7,8 @@ Rails.application.routes.draw do
         resources :comments, except: %i[new edit]
       end
       
-      resources :users, module: :users, only: %i[create show update] do
+      namespace :users do
+        resource :me, only: %i[create show update]
         
         resources :recipes, module: :recipes, except: %i[new edit]
       end
@@ -20,5 +21,5 @@ Rails.application.routes.draw do
       end
     end
   end
-  
+
 end

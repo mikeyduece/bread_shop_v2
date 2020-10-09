@@ -6,14 +6,10 @@ module Api
           before_action :set_user_recipe, except: :create
           
           def create
-            recipe = current_api_user.recipes.find_by(name: recipe_params[:name].downcase)
-            return error_response(code: 404, message: t('api.errors.recipes.record_exists')) if recipe
+            service = ::Recipes::Create.call(user: current_user, params: recipe_params)
+            return error_response(service.errors) unless service.success?
             
-            ::Recipes::Create.call(current_api_user, recipe_params) do |success, failure|
-              success.call { |object| success_response(data: V1::Recipes::OverviewSerializer.new(object)) }
-              
-              failure.call(&method(:error_response))
-            end
+            success_response(serialized_resource(service.recipe, RecipeSerializer), :created)
           end
           
           def index
@@ -45,7 +41,15 @@ module Api
           end
           
           def recipe_params
-            params.require(:recipe).permit(:name, :unit, :number_of_portions, :weight_per_portion, ingredients: [:name, :amount])
+            params.permit(
+              data: [
+                      :type,
+                      attributes:    %i[name unit number_of_portions weight_per_portion],
+                      relationships: [
+                                       ingredients: [data: [:type, attributes: %i[name amount]]]
+                                     ]
+                    ]
+            )
           end
         end
       end

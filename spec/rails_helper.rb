@@ -32,9 +32,13 @@ rescue ActiveRecord::PendingMigrationError => e
   exit 1
 end
 
-DatabaseCleaner.strategy = :truncation
+DatabaseCleaner.strategy = :truncation, { except: %w[families categories] }
 
 RSpec.configure do |config|
+  config.before(:suite) do
+    Rails.application.load_seed
+  end
+  
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
   config.fixture_path = "#{::Rails.root}/spec/fixtures"
   config.include(Shoulda::Matchers::ActiveModel, type: :model)
