@@ -19,6 +19,12 @@ class BaseService
   
   private
   
+  def handle_error(error)
+    Rails.logger.error(error.message)
+    Rails.logger.error(error.backtrace)
+    Failure.new(errors: error.message)
+  end
+  
   def attributes(base_params)
     parse_serialization(base_params, :attributes)
   end
