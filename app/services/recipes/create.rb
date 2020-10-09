@@ -3,6 +3,7 @@ module Recipes
     
     def call
       build_recipe!
+      
       Success.new(recipe: recipe)
     rescue ActiveRecord::RecordNotUnique => e
       Failure.new(error: I18n.t('api.errors.recipes.record_exists'))
@@ -18,11 +19,13 @@ module Recipes
       attrs = attributes(params)
       @recipe ||= user.recipes.build(attrs)
       add_ingredients!
+      @recipe.save!
     end
     
     def add_ingredients!
       attrs = relationship(params, :ingredients)
-      create_recipe_ingredients(recipe: recipe, ingredients: attrs)
+      ingredient_attrs = build_recipe_ingredients(ingredients: attrs)
+      @recipe.assign_attributes(ingredient_attrs)
     end
   
   end

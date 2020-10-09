@@ -3,7 +3,8 @@ module Api
     module Users
       module Recipes
         class RecipesController < UsersBaseController
-          before_action :set_user_recipe, except: :create
+          skip_before_action :set_user
+          before_action :set_user_recipe, except: %i[create index]
           
           def create
             service = ::Recipes::Create.call(user: current_user, params: recipe_params)
@@ -13,11 +14,12 @@ module Api
           end
           
           def index
-            success_response(data: V1::Recipes::OverviewSerializer.new(current_api_user.recipes))
+            recipes = current_user.recipes.includes(:recipe_ingredients)
+            success_response(serialized_resource(recipes, RecipeSerializer, include: %i[recipe_ingredients]))
           end
           
           def show
-            success_response(data: V1::Recipes::OverviewSerializer.new(@user_recipe))
+            success_response(serialized_resource(@recipe, RecipeSerializer))
           end
           
           def update
@@ -37,7 +39,7 @@ module Api
           private
           
           def set_user_recipe
-            @user_recipe ||= @user.recipes.find_by(id: params[:recipe_id] || params[:id])
+            @recipe ||= current_user.recipes.find_by(id: params[:recipe_id] || params[:id])
           end
           
           def recipe_params

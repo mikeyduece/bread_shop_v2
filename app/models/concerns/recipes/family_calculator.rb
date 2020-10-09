@@ -5,21 +5,21 @@ module Recipes
     def calculate_family
       case
         when lean?
-          update(family: set_family(:lean))
+          update_columns(family_id: set_family(:lean))
         when soft?
-          update(family: set_family(:soft))
+          update_columns(family_id: set_family(:soft))
         when sweet?
-          update(family: set_family(:sweet))
+          update_columns(family_id: set_family(:sweet))
         when rich?
-          update(family: set_family(:rich))
+          update_columns(family_id: set_family(:rich))
         when slack?
-          update(family: set_family(:slack))
+          update_columns(family_id: set_family(:slack))
       end
     end
     
     # Sets family according to the name passed in
     def set_family(name)
-      Family.find_by(name: name)
+      Family.find_by(name: name).id
     end
     
     # Boolean checks for for family related percentage/category ranges
@@ -59,7 +59,7 @@ module Recipes
     end
     
     def water_percentage
-      water = water_amt || 0
+      water = water_amounts || 0
       calculate_percentage(water)
     end
     

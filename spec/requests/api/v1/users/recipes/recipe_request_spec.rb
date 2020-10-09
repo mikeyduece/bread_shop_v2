@@ -8,13 +8,11 @@ RSpec.describe 'User Recipes API' do
   context 'user recipes' do
     it 'returns list of recipes for a user with params' do
       get "/api/v1/users/recipes"
-      
       expect(response).to be_successful
       
       recipes = json_response
-      
       expect(response.status).to eq(200)
-      expect(recipes.count).to eq(4)
+      expect(recipes[:data].count).to eq(4)
     end
     
     it 'returns recipe with ingredients and total percentage' do
@@ -35,10 +33,10 @@ RSpec.describe 'User Recipes API' do
       expect(response).to be_successful
       
       json_recipe = json_response
-      
+      require 'pry'; binding.pry
       expect(response.status).to eq(200)
-      expect(json_recipe[:name]).to eq(recipe.name)
-      expect(json_recipe[:id]).to eq(recipe.id)
+      expect(attributes(:name)).to eq(recipe.name)
+      expect(json_recipe[:data][:id]).to eq(recipe.id)
       expect(json_recipe[:ingredient_list].length).to eq(7)
     end
     

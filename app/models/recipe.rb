@@ -12,14 +12,18 @@ class Recipe < ApplicationRecord
   has_many :recipe_ingredients, dependent: :destroy
   has_many :ingredients, through: :recipe_ingredients
   has_many :categories, through: :ingredients
+  has_many :recipe_tags, dependent: :destroy
+  has_many :tags, through: :recipe_tags
   
   validates :name, presence: true
   validates :name, uniqueness: { scope: :user_id }
   validates :number_of_portions, :weight_per_portion, presence: true, numericality: { greater_than: 0 }
   
-  before_commit :calculate_family#, on: :create
+  after_commit :calculate_family, on: %i[create update]
   
   enum unit: %i[oz lbs g kg]
+  
+  accepts_nested_attributes_for :recipe_ingredients, reject_if: :all_blank, allow_destroy: true
   
   delegate :name, to: :family, prefix: true, allow_nil: true
   
