@@ -17,7 +17,6 @@ module Recipes
       end
     end
     
-    
     # Sets family according to the name passed in
     def set_family(name)
       Family.find_by(name: name)
