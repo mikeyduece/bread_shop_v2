@@ -15,8 +15,8 @@ module Api
           end
           
           def index
-            recipes = current_user.recipes
-            success_response(serialized_resource(recipes, RecipeSerializer))
+            recipes = current_user.recipes.limit(limit).offset(offset)
+            success_response(serialized_resource(recipes, RecipeSerializer, meta: { total: recipes.count, per_page: limit, page: offset + 1 }))
           end
           
           def show
@@ -46,10 +46,10 @@ module Api
           def recipe_params
             params.permit(
               data: [
-                      :type,
-                      attributes:    %i[name unit number_of_portions weight_per_portion],
-                      relationships: [ingredients: [data: [:type, attributes: %i[name amount]]]]
-                    ]
+                :type,
+                attributes: %i[name unit number_of_portions weight_per_portion],
+                relationships: [ingredients: [data: [:type, attributes: %i[name amount]]]]
+              ]
             )
           end
         end

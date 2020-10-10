@@ -10,7 +10,7 @@ RSpec.describe 'User Recipes API' do
   before { login_as_user(user) }
   
   context 'user recipes' do
-    it { expect{ get users_recipes_path }.to raise_error(ActionController::RoutingError) }
+    it { expect{ get '/api/v1/users/recipes' }.to raise_error(ActionController::RoutingError) }
     
     it 'returns list of recipes for a user with params' do
       get "/api/v1/users/recipes", headers: headers
@@ -34,7 +34,7 @@ RSpec.describe 'User Recipes API' do
         create(:recipe_ingredient, recipe: recipe)
       end
       
-      get "/api/v1/users/recipes/#{recipe.id}"
+      get "/api/v1/users/recipes/#{recipe.id}", headers: headers
       
       expect(response).to be_successful
       
@@ -43,26 +43,21 @@ RSpec.describe 'User Recipes API' do
       expect(response.status).to eq(200)
       expect(attributes(:name)).to eq(recipe.name)
       expect(json_recipe[:data][:id]).to eq(recipe.id.to_s)
-      expect(json_recipe[:ingredient_list].length).to eq(7)
+      expect(attributes(:formatted_ingredients).length).to eq(7)
     end
     
     it 'can create recipe' do
       # VCR.use_cassette('new_recipes') do
-        post "/api/v1/users/recipes", params: params
+        post "/api/v1/users/recipes", params: params, headers: headers
         
-        require 'pry'; binding.pry
         expect(response).to be_successful
         
         new_recipe = json_response
         
-        recipe_date = user.recipes.last.created_at
         expect(response.status).to eq(201)
-        expect(new_recipe[:id]).to eq(user.recipes.last.id)
-        expect(new_recipe[:name]).to eq(user.recipes.last.name)
-        expect(Recipe.exists?(name: 'baguette')).to be(true)
-        expect(Ingredient.where(name: ingredient_names).pluck(:name)).to include(*ingredient_names)
-        expect(RecipeIngredient.where(recipe_id: new_recipe[:id]).pluck(:amount)).to include(*ingredient_amounts)
-        expect(new_recipe[:created_at]).to eq(recipe_date.strftime("Created on %d %^b '%y at %H:%M"))
+        expect(new_recipe[:data][:id]).to eq(user.recipes.last.id.to_s)
+        expect(attributes(:name)).to eq(user.recipes.last.name)
+        expect(user.recipes.exists?(name: 'baguette')).to be(true)
       # end
     end
     
@@ -80,8 +75,7 @@ RSpec.describe 'User Recipes API' do
           }
         }
         
-        post "/api/v1/users/recipes",
-             params: { token: token, recipe: list }
+        post "/api/v1/users/recipes", params: params, headers: headers
         
         expect(response).not_to be_successful
         
@@ -105,8 +99,8 @@ RSpec.describe 'User Recipes API' do
         }
         tags = %w[Lean Baguette French\ Bread]
         
-        post "/api/v1/users/recipes",
-             params: { token: token, recipe: list, tags: tags }
+        post "/api/v1/users/recipes", headers: headers
+        
         
         expect(response).to be_successful
         
@@ -124,8 +118,7 @@ RSpec.describe 'User Recipes API' do
         flour  = create(:ingredient, name: 'Flour')
         recipe.recipe_ingredients << create(:recipe_ingredient, ingredient_id: flour.id)
         
-        delete "/api/v1/users/recipes/#{recipe.id}",
-               params: { token: token }
+        delete "/api/v1/users/recipes/#{recipe.id}", headers: headers
         
         expect(response).to be_successful
         
@@ -134,33 +127,6 @@ RSpec.describe 'User Recipes API' do
         expect(deleted[:status]).to eq(204)
         expect(deleted[:message]).to eq("Successfully deleted #{recipe.name}")
         expect(Recipe.all).not_to include(recipe.id)
-      # end
-    end
-    
-    it 'returns the family of the recipe' do
-      # VCR.use_cassette('family') do
-        list = {
-          name: 'baguette',
-          ingredients: [
-                  { name: 'flour', amount: 1.00 },
-                  { name: 'water', amount: 0.62 },
-                  { name: 'yeast', amount: 0.02 },
-                  { name: 'salt', amount: 0.02 }
-                ]
-        }
-        post "/api/v1/users/recipes",
-             params: list.to_json
-        
-        new_recipe = json_response
-        
-        get "/api/v1/users/recipes/#{new_recipe[:id]}",
-            params: { token: token }
-        
-        expect(response).to be_successful
-        
-        return_recipe = json_response
-        
-        expect(return_recipe[:family]).to eq('Lean')
       # end
     end
     
