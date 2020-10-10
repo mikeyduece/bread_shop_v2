@@ -9,7 +9,7 @@ Rails.application.routes.draw do
         end
         
         namespace :users do
-          resource :me, controller: :users, only: %i[create show update]
+          resources :users, only: %i[create show update]
           
           resources :recipes, module: :recipes, except: %i[new edit]
         end

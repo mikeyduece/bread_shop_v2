@@ -19,10 +19,11 @@ RSpec.describe 'User API' do
   let(:user) { create(:user) }
   
   context 'Authorized' do
+    include_context 'shared headers'
     before { login_as_user(user) }
     
     it 'creates user' do
-      post '/api/v1/users', params: params
+      post '/api/v1/users/users', params: params, headers: headers
       
       expect(response).to be_successful
       user_data = json_response
@@ -32,7 +33,7 @@ RSpec.describe 'User API' do
     end
     
     it 'shows a Users profile information' do
-      get '/api/v1/users/me'
+      get "/api/v1/users/users/#{user.id}", headers: headers
       
       expect(response).to be_successful
       expect(response.status).to eq(200)
@@ -46,8 +47,9 @@ RSpec.describe 'User API' do
   end
   
   context 'Unauthorized' do
+    include_context 'shared headers'
     it 'doesn\'t allow User to see profile info if not logged in' do
-      get api_v1_user_path(user.id)
+      get "/api/v1/users/users/#{user.id}", headers: headers
       
       expect(response).to_not be_successful
       expect(response.status).to eq(401)

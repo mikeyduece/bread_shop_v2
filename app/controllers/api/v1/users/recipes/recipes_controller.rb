@@ -7,25 +7,24 @@ module Api
           before_action :set_user_recipe, except: %i[create index]
           
           def create
-            require 'pry'; binding.pry
             service = ::Recipes::Create.call(user: current_user, params: recipe_params)
             return error_response(service.errors) unless service.success?
             
-            success_response(serialized_resource(service.recipe, RecipeSerializer), :created)
+            success_response(serialized_recipe(service.recipe), :created)
           end
           
           def index
-            recipes = current_user.recipes.limit(limit).offset(offset)
-            success_response(serialized_resource(recipes, RecipeSerializer, meta: { total: recipes.count, per_page: limit, page: offset + 1 }))
+            recipes = current_user.recipes.includes(:recipe_tags,:tags).limit(limit).offset(offset)
+            success_response(serialized_recipe(recipes, meta: { total: recipes.count, per_page: limit, page: offset + 1 }))
           end
           
           def show
-            success_response(serialized_resource(@recipe, RecipeSerializer))
+            success_response(serialized_recipe(@recipe))
           end
           
           def update
             @recipe.update_recipe(params: recipe_params)
-            success_response(serialized_resource(@recipe, RecipeSerializer))
+            success_response(serialized_recipe(@recipe))
           end
           
           def destroy
@@ -34,10 +33,14 @@ module Api
             recipe_name = @recipe.name
             @recipe.destroy
             
-            success_response(code: 202, message: t('api.recipes.recipe_deleted', recipe_name: recipe_name))
+            success_response({ data: { message: t('api.recipes.recipe_deleted', name: recipe_name) } }, :accepted)
           end
           
           private
+          
+          def serialized_recipe(recipe, options = {})
+            serialized_resource(recipe, RecipeSerializer, options.merge!(include: %i[tags]))
+          end
           
           def set_user_recipe
             @recipe ||= current_user.recipes.find_by(id: params[:recipe_id] || params[:id])
@@ -48,7 +51,10 @@ module Api
               data: [
                 :type,
                 attributes: %i[name unit number_of_portions weight_per_portion],
-                relationships: [ingredients: [data: [:type, attributes: %i[name amount]]]]
+                relationships: [
+                  ingredients: [data: [:type, attributes: %i[name amount]]],
+                  tags: [data: [:type, attributes: %i[name]]]
+                ]
               ]
             )
           end
