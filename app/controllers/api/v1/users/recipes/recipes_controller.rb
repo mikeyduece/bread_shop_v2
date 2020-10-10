@@ -14,8 +14,8 @@ module Api
           end
           
           def index
-            recipes = current_user.recipes.includes(:recipe_ingredients)
-            success_response(serialized_resource(recipes, RecipeSerializer, include: %i[recipe_ingredients]))
+            recipes = current_user.recipes
+            success_response(serialized_resource(recipes, RecipeSerializer))
           end
           
           def show
@@ -23,15 +23,15 @@ module Api
           end
           
           def update
-            @user_recipe.update_recipe(params: recipe_params)
-            success_response(data: V1::Recipes::OverviewSerializer.new(@user_recipe))
+            @recipe.update_recipe(params: recipe_params)
+            success_response(serialized_resource(@recipe, RecipeSerializer))
           end
           
           def destroy
-            return error_response(code: 404, message: t('api.errors.recipes.record_not_found')) unless @user_recipe.present?
+            return error_response(code: 404, message: t('api.errors.recipes.record_not_found')) unless @recipe.present?
             
-            recipe_name = @user_recipe.name
-            @user_recipe.destroy
+            recipe_name = @recipe.name
+            @recipe.destroy
             
             success_response(code: 202, message: t('api.recipes.recipe_deleted', recipe_name: recipe_name))
           end
@@ -47,9 +47,7 @@ module Api
               data: [
                       :type,
                       attributes:    %i[name unit number_of_portions weight_per_portion],
-                      relationships: [
-                                       ingredients: [data: [:type, attributes: %i[name amount]]]
-                                     ]
+                      relationships: [ingredients: [data: [:type, attributes: %i[name amount]]]]
                     ]
             )
           end

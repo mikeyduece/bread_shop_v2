@@ -4,4 +4,5 @@ class RecipeSerializer
   
   has_many :recipe_ingredients, serializer: RecipeIngredientSerializer
   has_many :tags, serializer: TagSerializer
+  
 end
