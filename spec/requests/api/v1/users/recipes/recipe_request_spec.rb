@@ -1,17 +1,23 @@
 require 'rails_helper'
 
 RSpec.describe 'User Recipes API' do
+  include_context 'shared recipe params'
+  include_context 'shared headers'
+  
   let(:user) { create(:user_with_recipes) }
+  let(:params) { lean_create_params }
   
   before { login_as_user(user) }
   
   context 'user recipes' do
+    it { expect{ get users_recipes_path }.to raise_error(ActionController::RoutingError) }
+    
     it 'returns list of recipes for a user with params' do
-      get "/api/v1/users/recipes"
+      get "/api/v1/users/recipes", headers: headers
       expect(response).to be_successful
       
       recipes = json_response
-      expect(response.status).to eq(200)
+      expect(response).to have_http_status(:ok)
       expect(recipes[:data].count).to eq(4)
     end
     
@@ -33,35 +39,23 @@ RSpec.describe 'User Recipes API' do
       expect(response).to be_successful
       
       json_recipe = json_response
-      require 'pry'; binding.pry
+      
       expect(response.status).to eq(200)
       expect(attributes(:name)).to eq(recipe.name)
-      expect(json_recipe[:data][:id]).to eq(recipe.id)
+      expect(json_recipe[:data][:id]).to eq(recipe.id.to_s)
       expect(json_recipe[:ingredient_list].length).to eq(7)
     end
     
     it 'can create recipe' do
       # VCR.use_cassette('new_recipes') do
-        ingredient_names = %w[flour water yeast salt]
-        ingredient_amounts = [1.00, 0.62, 0.02, 0.02]
-        list = {
-          name: 'baguette',
-          ingredients: [
-                  { name: 'flour', amount: 1.00 },
-                  { name: 'water', amount: 0.62 },
-                  { name: 'yeast', amount: 0.02 },
-                  { name: 'salt', amount: 0.02 }
-                ]
-        }
+        post "/api/v1/users/recipes", params: params
         
-        post "/api/v1/users/recipes", params: list.to_json
-        
+        require 'pry'; binding.pry
         expect(response).to be_successful
         
         new_recipe = json_response
         
         recipe_date = user.recipes.last.created_at
-        
         expect(response.status).to eq(201)
         expect(new_recipe[:id]).to eq(user.recipes.last.id)
         expect(new_recipe[:name]).to eq(user.recipes.last.name)
