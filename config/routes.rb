@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  api_version(module: 'Api::V1', header: { name: 'Content-Type', value: 'application/vnd.breadshop.json; version=1' }) do
+  api_version(module: 'Api::V1', defaults: { format: :json }, header: { name: 'Accept', value: 'application/vnd.breadshop.json; version=1' }) do
     scope path: :api do
       scope path: :v1 do
         resources :recipes, module: :recipes, only: :show do
