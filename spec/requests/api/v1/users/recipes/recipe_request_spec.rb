@@ -10,7 +10,7 @@ RSpec.describe 'User Recipes API' do
   before { login_as_user(user) }
   
   context 'user recipes' do
-    it { expect{ get '/api/v1/users/recipes' }.to raise_error(ActionController::RoutingError) }
+    it { expect { get '/api/v1/users/recipes' }.to raise_error(ActionController::RoutingError) }
     
     it 'returns list of recipes for a user with params' do
       get "/api/v1/users/recipes", headers: headers
@@ -28,7 +28,7 @@ RSpec.describe 'User Recipes API' do
       end
       
       recipe.recipe_ingredients.clear
-      flour  = create(:ingredient, name: 'flour')
+      flour = create(:ingredient, name: 'flour')
       recipe.recipe_ingredients << create(:recipe_ingredient, ingredient_id: flour.id)
       6.times do
         create(:recipe_ingredient, recipe: recipe)
@@ -48,87 +48,66 @@ RSpec.describe 'User Recipes API' do
     
     it 'can create recipe' do
       # VCR.use_cassette('new_recipes') do
-        post "/api/v1/users/recipes", params: params, headers: headers
-        
-        expect(response).to be_successful
-        
-        new_recipe = json_response
-        
-        expect(response.status).to eq(201)
-        expect(new_recipe[:data][:id]).to eq(user.recipes.last.id.to_s)
-        expect(attributes(:name)).to eq(user.recipes.last.name)
-        expect(user.recipes.exists?(name: 'baguette')).to be(true)
+      post "/api/v1/users/recipes", params: params, headers: headers
+      expect(response).to be_successful
+      
+      new_recipe = json_response
+      
+      expect(response.status).to eq(201)
+      expect(new_recipe[:data][:id]).to eq(user.recipes.last.id.to_s)
+      expect(attributes(:name)).to eq(user.recipes.last.name)
+      expect(user.recipes.exists?(name: 'baguette')).to be(true)
       # end
     end
     
     it 'cannot create a recipe with same name as one that already exists' do
       # VCR.use_cassette('dupe_recipes') do
-        user.recipes.clear
-        user.recipes << create(:recipe, name: 'baguette')
-        list = {
-          name: 'baguette',
-          ingredients: {
-            flour: { amount: 1.00 },
-            water: { amount: 0.62 },
-            yeast: { amount: 0.02 },
-            salt: { amount: 0.02 }
-          }
-        }
-        
-        post "/api/v1/users/recipes", params: params, headers: headers
-        
-        expect(response).not_to be_successful
-        
-        result = json_response
-        
-        expect(response.status).to eq(404)
-        expect(result[:message]).to eq('You already have a recipe with that name')
+      user.recipes.clear
+      user.recipes << create(:recipe, name: 'baguette')
+      
+      post "/api/v1/users/recipes", params: params, headers: headers
+      
+      expect(response).not_to be_successful
+      
+      result = json_response
+      
+      expect(response).to have_http_status(:unprocessable_entity)
+      expect(result[:errors].first[:detail]).to eq('You already have a recipe with that name')
       # end
     end
     
     it 'can assign a tag to a recipe' do
       # VCR.use_cassette('tags') do
-        list = {
-          name: 'baguette',
-          ingredients: [
-                  { name: 'flour', amount: 1.00 },
-                  { name: 'water', amount: 0.62 },
-                  { name: 'yeast', amount: 0.02 },
-                  { name: 'salt', amount: 0.02 }
-                ]
-        }
-        tags = %w[Lean Baguette French\ Bread]
-        
-        post "/api/v1/users/recipes", headers: headers
-        
-        
-        expect(response).to be_successful
-        
-        recipe = json_response
-        
-        recipe[:tags].each do |tag|
-          expect(tags).to include(tag[:name])
-        end
+      tag_names = %w[Lean Baguette French\ Bread]
+      tag_params = tag_names.each_with_object([]) { |tag, acc| acc << { data: { type: :tag, attributes: { name: tag } } } }
+      params[:data][:relationships].merge!(tags: tag_params)
+      
+      post "/api/v1/users/recipes", params: params, headers: headers
+      expect(response).to be_successful
+      
+      tags = included(:tag)
+      
+      expect(tags.all? { |tag| tag_names.include?(tag.dig(:attributes, :name)) }).to be(true)
+      expect(user.recipes.find(json_response[:data][:id]).tags.pluck(:name) == tag_names).to be(true)
       # end
     end
     
     it 'user can delete recipe' do
       # VCR.use_cassette('formatting') do
-        recipe = user.recipes[0]
-        flour  = create(:ingredient, name: 'Flour')
-        recipe.recipe_ingredients << create(:recipe_ingredient, ingredient_id: flour.id)
-        
-        delete "/api/v1/users/recipes/#{recipe.id}", headers: headers
-        
-        expect(response).to be_successful
-        
-        deleted = json_response
-        
-        expect(deleted[:status]).to eq(204)
-        expect(deleted[:message]).to eq("Successfully deleted #{recipe.name}")
-        expect(Recipe.all).not_to include(recipe.id)
+      recipe = user.recipes[0]
+      flour = create(:ingredient, name: 'Flour')
+      recipe.recipe_ingredients << create(:recipe_ingredient, ingredient_id: flour.id)
+      
+      delete "/api/v1/users/recipes/#{recipe.id}", headers: headers
+      
+      expect(response).to be_successful
+      deleted = json_response
+      
+      expect(response).to have_http_status(:accepted)
+      expect(deleted.dig(:data, :message)).to eq("You have successfully deleted your #{recipe.name} recipe")
+      expect(Recipe.all).not_to include(recipe.id)
       # end
     end
-    
+  
   end
 end

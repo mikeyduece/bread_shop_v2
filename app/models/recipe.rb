@@ -1,11 +1,11 @@
 class Recipe < ApplicationRecord
   include Recipes::FamilyCalculator
-  include Likeable
-  include Commentable
+  # include Likeable
+  # include Commentable
   
-  liker :user
-  commenter :user
-  
+  # liker :user
+  # commenter :user
+
   belongs_to :user
   belongs_to :family, optional: true
   
