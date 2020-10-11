@@ -25,6 +25,10 @@ class BaseService
     Failure.new(errors: error.message)
   end
   
+  def attribute(base, attribute)
+    base.dig(:attributes, attribute)
+  end
+  
   def attributes(base_params)
     parse_serialization(base_params, :attributes)
   end
