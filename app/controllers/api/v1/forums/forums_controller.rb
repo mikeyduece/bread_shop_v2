@@ -24,7 +24,7 @@ module Api
 
             success_response(code: 201, data: Forums::OverviewSerializer.new(new_forum))
           else
-            error_response(code: 500, message: t('forum.errors.create'))
+            error_response(code: 500, message: t('forum.error.create'))
           end
         end
 

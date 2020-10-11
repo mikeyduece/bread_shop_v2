@@ -20,10 +20,10 @@ module Api
             if comment.destroy
               success_response(message: t('api.comments.deleted'))
             else
-              error_response(message: t('api.errors.delete_error', name: 'comment'))
+              error_response(message: t('api.error.delete_error', name: 'comment'))
               end
           else
-            error_response(message: t('api.errors.record_not_found'))
+            error_response(message: t('api.error.record_not_found'))
           end
         end
 
