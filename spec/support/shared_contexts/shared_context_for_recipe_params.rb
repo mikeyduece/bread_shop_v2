@@ -3,13 +3,13 @@ RSpec.shared_context 'shared recipe params' do
     {
       data: {
         type: :recipe,
-        attributes: { name: 'baguette', number_of_portions: 3, weight_per_portion: 10 },
+        attributes: { name: 'baguette', number_of_portions: 2, weight_per_portion: 13.44 },
         relationships: {
           ingredients: [
-            { data: { type: :ingredient, attributes: { name: 'flour', amount: 1.00 } } },
-            { data: { type: :ingredient, attributes: { name: 'water', amount: 0.62 } } },
-            { data: { type: :ingredient, attributes: { name: 'yeast', amount: 0.02 } } },
-            { data: { type: :ingredient, attributes: { name: 'salt', amount: 0.02 } } }
+            { data: { type: :ingredient, attributes: { name: 'flour', amount: 16.0 } } },
+            { data: { type: :ingredient, attributes: { name: 'water', amount: 10.24 } } },
+            { data: { type: :ingredient, attributes: { name: 'yeast', amount: 0.32 } } },
+            { data: { type: :ingredient, attributes: { name: 'salt', amount: 0.32 } } }
           ]
         }
       }
