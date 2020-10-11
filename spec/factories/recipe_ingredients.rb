@@ -8,5 +8,7 @@ FactoryBot.define do
     end
     
     bakers_percentage { 0.30 }
+    
   end
+  
 end

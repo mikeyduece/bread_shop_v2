@@ -10,6 +10,7 @@ en:
         delete_error: 'There was a problem deleting %{recipe_name}'
         record_not_found: 'That recipe does not exist'
         no_flour: 'You must add at least one type of flour to your recipe'
+        invalid_amount_totals: "The sum of the recipe's ingredient amount totals must equal the product of the number of portions and weight per portion attributes"
       comments:
         save_error: 'Oops, Something went wrong while saving your comment'
         delete_error: 'Not able to delete comment at this time'
