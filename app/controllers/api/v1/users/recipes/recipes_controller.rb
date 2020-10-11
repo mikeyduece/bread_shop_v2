@@ -36,6 +36,13 @@ module Api
             success_response({ data: { message: t('api.recipes.recipe_deleted', name: recipe_name) } }, :accepted)
           end
           
+          def scale
+            service = Recipes::ScaleService.call(params: recipe_params)
+            return error_response(service.errors) unless service.success?
+            
+            success_response(serialized_recipe(service.recipe, RecipeSerializer))
+          end
+          
           private
           
           def serialized_recipe(recipe, options = {})
