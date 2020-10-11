@@ -30,8 +30,8 @@ module Recipes
     def raise_error_if_required(attributes)
       total = attributes.sum { |(k,_v)| k[:amount] }
       recipe_total = recipe.number_of_portions * recipe.weight_per_portion
-      require 'pry'; binding.pry
-      if total != recipe_total
+      
+      unless ((recipe_total - 1)..recipe_total + 1).include?(total.to_i)
         raise Recipes::InvalidAmountTotalsError, I18n.t('api.errors.recipes.invalid_amount_totals')
       end
     end
