@@ -31,7 +31,7 @@ module Recipes
       total = attributes.sum { |(k,_v)| k[:amount] }
       recipe_total = recipe.number_of_portions * recipe.weight_per_portion
       
-      unless ((recipe_total - 1)..recipe_total + 1).include?(total.to_i)
+      unless ((recipe_total - 2)..recipe_total + 2).include?(total.round)
         raise Recipes::InvalidAmountTotalsError, I18n.t('api.errors.recipes.invalid_amount_totals')
       end
     end

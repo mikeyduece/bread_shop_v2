@@ -22,6 +22,8 @@ class Ingredient < ApplicationRecord
         self.category = set_category(:sweetener)
       when check_for_category_inclusion(Api::Ingredients::FATS, name)
         self.category = set_category(:fat)
+      when check_for_category_inclusion(Api::Ingredients::LIQUID_FATS, name)
+        self.category = set_category(:liquid_fat)
       when check_for_category_inclusion(Api::Ingredients::FLOURS, name)
         self.category = set_category(:flour)
       when check_for_category_inclusion(Api::Ingredients::WATER, name)
@@ -32,12 +34,10 @@ class Ingredient < ApplicationRecord
   end
   
   def check_for_category_inclusion(constant, ingredient_name)
-    ingredient_name = ingredient_name.split.join('|')
-    
-    constant.any? { |i| /(#{ingredient_name})/ =~ i}
+    constant.any? { |i| ingredient_name.match?(%r{(#{i})}) }
   end
   
   def set_category(category_name)
-    Category.find_or_create_by(name: category_name)
+    Category.find_or_create_by(name: category_name.to_s.titleize.downcase)
   end
 end

@@ -2,7 +2,7 @@ module Api
   module Recipes
     LOW = (0.0..4.99)
     MODERATE = (5.0..10.99)
-    HIGH = (11.0..25.0)
+    HIGH = (11.0..100.0)
   end
 
   module Ingredients
@@ -11,7 +11,9 @@ module Api
       agave molasses honey maple\ syrup stevia
     ].freeze
 
-    FATS = %w[butter cream sour\ cream canola\ oil olive\ oil margerine shortening egg].freeze
+    FATS = %w[butter cream sour\ cream margerine shortening egg].freeze
+    
+    LIQUID_FATS = %w[olive\ oil canola\ oil]
 
     WATER = %w[water milk].freeze
 
