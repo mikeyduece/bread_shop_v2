@@ -2,12 +2,18 @@ module Recipes
   class BaseRecipeService < BaseService
     attr_reader :user, :params
     
-    def initialize(user:, params:)
+    def initialize(user: nil, params:)
       @params = params
       @user = user
     end
     
     private_class_method :new
+    
+    private
+    
+    def recipe
+      @recipe ||= Recipe.find(params.dig(:data, :id))
+    end
     
     def build_recipe_ingredients(ingredients:)
       recipe_ingredients_attributes = ingredients.each_with_object({}) do |recipe_ingredient, acc|
