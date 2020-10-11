@@ -11,13 +11,7 @@ class RecipeIngredient < ApplicationRecord
       .with_indifferent_access
   }
   
-  def ingredient_name
-    ingredient.name
-  end
-  
-  def ingredient_category_name
-    ingredient.category.name
-  end
+  delegate :name, :category_name, to: :ingredient, prefix: true
   
   private
   
