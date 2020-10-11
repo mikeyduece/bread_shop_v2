@@ -22,8 +22,18 @@ module Recipes
         
         acc[attrs[:name]] ||= { amount: attrs[:amount], ingredient_id: ingredient_id }
       end.values
+      raise_error_if_required(recipe_ingredients_attributes)
       
       { recipe_ingredients_attributes: recipe_ingredients_attributes }
+    end
+    
+    def raise_error_if_required(attributes)
+      total = attributes.sum { |(k,_v)| k[:amount] }
+      recipe_total = recipe.number_of_portions * recipe.weight_per_portion
+      require 'pry'; binding.pry
+      if total != recipe_total
+        raise Recipes::InvalidAmountTotalsError, I18n.t('api.errors.recipes.invalid_amount_totals')
+      end
     end
   
   end
