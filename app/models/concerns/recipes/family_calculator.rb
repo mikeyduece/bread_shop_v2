@@ -28,19 +28,16 @@ module Recipes
     end
     
     def soft?
-      (water_percentage + fat_percentage) < 70.0 &&
-        Api::Recipes::MODERATE.include?(sweetener_percentage) &&
-        Api::Recipes::MODERATE.include?(fat_percentage)
+      sweetener_and_fat_amounts.all?(Api::Recipes::MODERATE)
     end
     
     def rich?
-      (Api::Recipes::MODERATE.include?(sweetener_percentage) &&
-        Api::Recipes::HIGH.include?(fat_percentage)) ||
+      (Api::Recipes::MODERATE.include?(sweetener_percentage) && Api::Recipes::HIGH.include?(fat_percentage)) ||
         Api::Recipes::HIGH.include?(fat_percentage)
     end
     
     def slack?
-      (water_percentage + fat_percentage) > 70.0
+      Api::Recipes::MODERATE.include?(liquid_fat_percentage) && Api::Recipes::HIGH.include?(water_percentage)
     end
     
     def sweet?
@@ -63,6 +60,11 @@ module Recipes
       calculate_percentage(water)
     end
     
+    def liquid_fat_percentage
+      liquid_fats = liquid_fat_amounts || 0
+      calculate_percentage(liquid_fats)
+    end
+    
     def sweetener_and_fat_amounts
       [sweetener_percentage, fat_percentage]
     end
@@ -74,6 +76,10 @@ module Recipes
     
     def fat_amounts
       sum_recipe_ingredient_amounts[:fat]
+    end
+    
+    def liquid_fat_amounts
+      sum_recipe_ingredient_amounts['liquid fat']
     end
     
     def water_amounts
