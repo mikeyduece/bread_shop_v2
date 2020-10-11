@@ -9,6 +9,8 @@ class Ingredient < ApplicationRecord
   
   before_validation :ensure_category, on: :create
   
+  delegate :name, to: :category, prefix: true
+  
   private
   
   def ensure_category
