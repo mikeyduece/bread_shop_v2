@@ -5,7 +5,7 @@ class Recipe < ApplicationRecord
   
   # liker :user
   # commenter :user
-
+  
   belongs_to :user
   belongs_to :family, optional: true
   
@@ -35,43 +35,39 @@ class Recipe < ApplicationRecord
   end
   
   def formatted_ingredients
-    list = []
-    recipe_ingredients.includes(:ingredient).find_each do |recipe_ingredient|
-      list << {
-        name: recipe_ingredient.ingredient_name,
-        amount: recipe_ingredient.amount,
-        bakers_percentage: "#{recipe_ingredient.bakers_percentage}%"
-      }
+    recipe_ingredients.includes(:ingredient).each_with_object({}) do |recipe_ingredient, acc|
+      formatted_ingredient_values(recipe_ingredient, acc)
     end
-    
-    list
   end
   
   def total_percentage
-    recipe_ingredients.sum(:bakers_percentage)
+    recipe_ingredients.sum(:bakers_percentage).round(2)
   end
   
-  def new_flour_weight(params:)
-    ((new_total_weight(params: params) / total_percentage) * 100).round(2)
+  def total_dough_weight
+    recipe_ingredients.sum(:amount).round(2)
   end
   
-  def new_total_weight(params:)
-    params[:number_of_portions] * params[:weight_per_portion]
+  def new_flour_weight(new_weight)
+    ((new_weight / total_percentage.to_f) * 100).round(2)
   end
   
-  def new_totals(params:)
-    scaled = []
-    recipe_ingredients.includes(:ingredient).find_each do |recipe_ingredient|
-      new_amount = (new_flour_weight(params: params) * (recipe_ingredient.bakers_percentage.to_f / 100)).round(2)
-      new_amount = new_flour_weight(params: params) if recipe_ingredient.ingredient_name.eql?(:flour)
-      
-      scaled << {
-        name: recipe_ingredient.ingredient_name,
-        amount: new_amount,
-        bakers_percentage: "#{recipe_ingredient.bakers_percentage}%"
-      }
+  def new_totals(flour_weight)
+    recipe_ingredients.includes(:ingredient).each_with_object({}) do |recipe_ingredient, acc|
+      new_amount = (flour_weight * (recipe_ingredient.bakers_percentage.to_f / 100)).round(2)
+      new_amount = flour_weight if recipe_ingredient.ingredient_name.match?('flour')
+
+      formatted_ingredient_values(recipe_ingredient, acc, new_amount)
     end
-    
-    scaled
   end
+  
+  private
+  
+  def formatted_ingredient_values(recipe_ingredient, accumulator, new_amount = nil)
+    accumulator[recipe_ingredient.ingredient_name] ||= {
+      amount: new_amount || recipe_ingredient.amount,
+      bakers_percentage: recipe_ingredient.bakers_percentage
+    }
+  end
+  
 end

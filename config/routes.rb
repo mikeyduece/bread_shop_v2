@@ -11,7 +11,9 @@ Rails.application.routes.draw do
         namespace :users do
           resources :users, only: %i[create show update]
           
-          resources :recipes, module: :recipes, except: %i[new edit]
+          resources :recipes, module: :recipes, except: %i[new edit] do
+            put :scale
+          end
         end
         
         resources :forums, module: :forums, except: %i[new edit] do
