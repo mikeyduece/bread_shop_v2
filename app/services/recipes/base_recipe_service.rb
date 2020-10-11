@@ -28,7 +28,7 @@ module Recipes
     end
     
     def raise_error_if_required(attributes)
-      total = attributes.sum { |(k,_v)| k[:amount] }
+      total = attributes.sum { |(k,_v)| k[:amount].to_f }
       recipe_total = recipe.number_of_portions * recipe.weight_per_portion
       
       unless ((recipe_total - 2)..recipe_total + 2).include?(total.round)

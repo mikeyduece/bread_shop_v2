@@ -7,7 +7,9 @@ RSpec.describe 'User Recipes API' do
   let(:user) { create(:user_with_recipes) }
   let(:params) { lean_create_params }
   
-  before { login_as_user(user) }
+  before do
+    login_as_user(user)
+  end
   
   context 'user recipes' do
     it { expect { get '/api/v1/users/recipes' }.to raise_error(ActionController::RoutingError) }
@@ -48,12 +50,14 @@ RSpec.describe 'User Recipes API' do
     
     it 'can create recipe' do
       # VCR.use_cassette('new_recipes') do
+      recipe = create(:recipe, user: user, name: 'baguette')
+      Recipes::Create.any_instance.stub(:call).and_return(double('Success', success?: true, recipe: recipe))
+
       post "/api/v1/users/recipes", params: params, headers: headers
       expect(response).to be_successful
       
       new_recipe = json_response
-      
-      expect(response.status).to eq(201)
+      expect(response).to have_http_status(:created)
       expect(new_recipe[:data][:id]).to eq(user.recipes.last.id.to_s)
       expect(attributes(:name)).to eq(user.recipes.last.name)
       expect(user.recipes.exists?(name: 'baguette')).to be(true)
@@ -64,13 +68,14 @@ RSpec.describe 'User Recipes API' do
       # VCR.use_cassette('dupe_recipes') do
       user.recipes.clear
       user.recipes << create(:recipe, name: 'baguette')
-      
+      errors = 'You already have a recipe with that name'
+      allow(Recipes::Create).to receive(:call).with(user: user, params: params).and_return(double('Success', success?: false, errors: errors))
+
       post "/api/v1/users/recipes", params: params, headers: headers
       
       expect(response).not_to be_successful
       
       result = json_response
-      
       expect(response).to have_http_status(:unprocessable_entity)
       expect(result[:errors].first[:detail]).to eq('You already have a recipe with that name')
       # end
@@ -83,6 +88,7 @@ RSpec.describe 'User Recipes API' do
       params[:data][:relationships].merge!(tags: tag_params)
       
       post "/api/v1/users/recipes", params: params, headers: headers
+      
       expect(response).to be_successful
       
       tags = included(:tag)

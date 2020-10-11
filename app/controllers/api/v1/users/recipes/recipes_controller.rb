@@ -63,7 +63,7 @@ module Api
                   tags: [data: [:type, attributes: %i[name]]]
                 ]
               ]
-            )
+            ).to_h.deep_symbolize_keys
           end
         end
       end
