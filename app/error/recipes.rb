@@ -1,10 +1,5 @@
-class BaseError < StandardError
-end
-
 module Recipes
-  class NoFlourError < BaseError
-  end
+  class NoFlourError < StandardError; end
+  class InvalidAmountTotalsError < StandardError; end
   
-  class InvalidAmountTotals < BaseError
-  end
 end
