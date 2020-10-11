@@ -3,7 +3,7 @@ RSpec.shared_context 'shared recipe params' do
     {
       data: {
         type: :recipe,
-        attributes: { name: 'baguette', number_of_portions: 2, weight_per_portion: 13.44 },
+        attributes: { name: 'baguette', number_of_portions: 2, weight_per_portion: 13 },
         relationships: {
           ingredients: [
             { data: { type: :ingredient, attributes: { name: 'flour', amount: 16.0 } } },
@@ -20,16 +20,16 @@ RSpec.shared_context 'shared recipe params' do
     {
       data: {
         type: :recipe,
-        attributes: { name: 'ballons', number_of_portions: 12, weight_per_portion: 3 },
+        attributes: { name: 'ballons', number_of_portions: 24, weight_per_portion: 2 },
         relationships: {
           ingredients: [
-            { data: { type: :ingredient, attributes: { name: 'flour', amount: 1.75 } } },
-            { data: { type: :ingredient, attributes: { name: 'water', amount: 0.70 } } },
-            { data: { type: :ingredient, attributes: { name: 'salt', amount: 0.035 } } },
-            { data: { type: :ingredient, attributes: { name: 'yeast', amount: 0.04 } } },
-            { data: { type: :ingredient, attributes: { name: 'milk', amount: 0.35 } } },
-            { data: { type: :ingredient, attributes: { name: 'butter', amount: 0.12 } } },
-            { data: { type: :ingredient, attributes: { name: 'sugar', amount: 0.088 } } }
+            { data: { type: :ingredient, attributes: { name: 'flour', amount: 28.0 } } },
+            { data: { type: :ingredient, attributes: { name: 'water', amount: 11.2 } } },
+            { data: { type: :ingredient, attributes: { name: 'salt', amount: 0.56 } } },
+            { data: { type: :ingredient, attributes: { name: 'yeast', amount: 0.67 } } },
+            { data: { type: :ingredient, attributes: { name: 'milk', amount: 5.6 } } },
+            { data: { type: :ingredient, attributes: { name: 'butter', amount: 1.88 } } },
+            { data: { type: :ingredient, attributes: { name: 'sugar', amount: 1.4 } } }
           ]
         }
       }
