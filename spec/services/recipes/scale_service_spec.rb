@@ -7,7 +7,7 @@ RSpec.describe Recipes::ScaleService, type: :service do
       data: {
         type: :recipe,
         id: recipe.id,
-        attributes: { number_of_portions: 6, weight_per_portion: 10 }
+        attributes: { number_of_portions: recipe.number_of_portions * 2, weight_per_portion: 10 }
       }
     }
   end
