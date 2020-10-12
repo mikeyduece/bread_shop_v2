@@ -39,6 +39,6 @@ module Recipes
       
       tags.map { |tag_hash| Tag.find_or_create_by(attributes(tag_hash)).id }
     end
-  
+    
   end
 end

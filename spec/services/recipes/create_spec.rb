@@ -36,6 +36,20 @@ RSpec.describe Recipes::Create, type: :service do
       service ||= Recipes::Create.call(user: user, params: sweet_create_params)
       expect(service.recipe.family_name).to eq('sweet')
     end
+    
+    it 'can assign params to a recipe' do
+      include 'shared_examples'
+      tag_names = %w[Lean Baguette French\ Bread]
+      tag_params = tag_names.each_with_object([]) { |tag, acc| acc << { data: { type: :tag, attributes: { name: tag } } } }
+      lean_create_params[:data][:relationships].merge!(tags: tag_params)
+      
+      service ||= Recipes::Create.call(user: user, params: lean_create_params)
+
+      expect(service.recipe.tags).not_to be_empty
+      expect(service.recipe.tags.exists?(name: 'lean')).to be(true)
+      expect(service.recipe.tags.exists?(name: 'baguette')).to be(true)
+      expect(service.recipe.tags.exists?(name: 'french bread')).to be(true)
+    end
   
   end
 end
