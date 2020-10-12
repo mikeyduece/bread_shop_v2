@@ -35,9 +35,11 @@ class Recipe < ApplicationRecord
   end
   
   def formatted_ingredients
-    recipe_ingredients.includes(:ingredient).each_with_object({}) do |recipe_ingredient, acc|
+    totals = recipe_ingredients.includes(:ingredient).each_with_object([]) do |recipe_ingredient, acc|
       formatted_ingredient_values(recipe_ingredient, acc)
     end
+    
+    { ingredients: totals }
   end
   
   def total_percentage
@@ -53,21 +55,24 @@ class Recipe < ApplicationRecord
   end
   
   def new_totals(flour_weight)
-    recipe_ingredients.includes(:ingredient).each_with_object({}) do |recipe_ingredient, acc|
+    totals = recipe_ingredients.includes(:ingredient).each_with_object([]) do |recipe_ingredient, acc|
       new_amount = (flour_weight * (recipe_ingredient.bakers_percentage.to_f / 100)).round(2)
       new_amount = flour_weight if recipe_ingredient.ingredient_name.match?('flour')
-
+      
       formatted_ingredient_values(recipe_ingredient, acc, new_amount)
     end
+    
+    { ingredients: totals }
   end
   
   private
   
   def formatted_ingredient_values(recipe_ingredient, accumulator, new_amount = nil)
-    accumulator[recipe_ingredient.ingredient_name] ||= {
+    accumulator << {
+      name: recipe_ingredient.ingredient_name,
       amount: new_amount || recipe_ingredient.amount,
       bakers_percentage: recipe_ingredient.bakers_percentage
     }
   end
-  
+
 end
