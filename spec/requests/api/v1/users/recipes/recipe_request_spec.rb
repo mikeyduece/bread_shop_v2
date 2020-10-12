@@ -45,7 +45,7 @@ RSpec.describe 'User Recipes API' do
       expect(response.status).to eq(200)
       expect(attributes(:name)).to eq(recipe.name)
       expect(json_recipe[:data][:id]).to eq(recipe.id.to_s)
-      expect(attributes(:formatted_ingredients).length).to eq(7)
+      expect(attributes(:formatted_ingredients)[:ingredients].length).to eq(7)
     end
     
     it 'can create recipe' do

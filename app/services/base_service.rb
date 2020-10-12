@@ -26,7 +26,7 @@ class BaseService
   end
   
   def attribute(base, attribute)
-    base.dig(:attributes, attribute)
+    base.dig(:data, :attributes, attribute)
   end
   
   def attributes(base_params)
