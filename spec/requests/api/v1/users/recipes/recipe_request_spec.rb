@@ -6,6 +6,7 @@ RSpec.describe 'User Recipes API' do
   
   let(:user) { create(:user_with_recipes) }
   let(:params) { lean_create_params }
+  let(:recipe) { create(:recipe, user: user, name: 'baguette') }
   
   before do
     login_as_user(user)
@@ -50,7 +51,6 @@ RSpec.describe 'User Recipes API' do
     
     it 'can create recipe' do
       # VCR.use_cassette('new_recipes') do
-      recipe = create(:recipe, user: user, name: 'baguette')
       Recipes::Create.any_instance.stub(:call).and_return(double('Success', success?: true, recipe: recipe))
 
       post "/api/v1/users/recipes", params: params, headers: headers
@@ -84,8 +84,8 @@ RSpec.describe 'User Recipes API' do
     it 'can assign a tag to a recipe' do
       # VCR.use_cassette('tags') do
       tag_names = %w[Lean Baguette French\ Bread]
-      tag_params = tag_names.each_with_object([]) { |tag, acc| acc << { data: { type: :tag, attributes: { name: tag } } } }
-      params[:data][:relationships].merge!(tags: tag_params)
+      tag_names.each { |name| recipe.tags.find_or_create_by(name: name) }
+      Recipes::Create.any_instance.stub(:call).and_return(double('Success', success?: true, recipe: recipe))
       
       post "/api/v1/users/recipes", params: params, headers: headers
       
@@ -93,8 +93,7 @@ RSpec.describe 'User Recipes API' do
       
       tags = included(:tag)
       
-      expect(tags.all? { |tag| tag_names.include?(tag.dig(:attributes, :name)) }).to be(true)
-      expect(user.recipes.find(json_response[:data][:id]).tags.pluck(:name) == tag_names).to be(true)
+      expect(tags.all? { |tag| tag_names.include?(tag.dig(:attributes, :name).titleize) }).to be(true)
       # end
     end
     
