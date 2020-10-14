@@ -20,6 +20,7 @@ class Recipe < ApplicationRecord
   validates :number_of_portions, :weight_per_portion, presence: true, numericality: { greater_than: 0 }
   
   after_commit :calculate_family, on: %i[create update]
+  before_create :normalize_name
   
   enum unit: %i[oz lbs g kg]
   
@@ -66,6 +67,10 @@ class Recipe < ApplicationRecord
   end
   
   private
+  
+  def normalize_name
+    self.name.downcase!
+  end
   
   def formatted_ingredient_values(recipe_ingredient, accumulator, new_amount = nil)
     accumulator << {

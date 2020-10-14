@@ -5,18 +5,47 @@ RSpec.describe Recipes::Create, type: :service do
   let(:user) { create(:user) }
   
   context 'correctly assigns family' do
-    it :lean do
-      include 'shared recipe examples'
-      service ||= Recipes::Create.call(user: user, params: lean_create_params)
-      recipe = service.recipe
+    context :lean do
+      it 'assigns lean for baguette recipe' do
+        include 'shared recipe examples'
+        service = Recipes::Create.call(user: user, params: lean_create_params)
+        expect(service.recipe.family_name).to eq('lean')
+        expect(service.recipe.name).to eq('baguette')
+      end
       
-      expect(recipe.family_name).to eq('lean')
+      it 'assigns lean for bagels' do
+        include 'shared recipe examples'
+        service = Recipes::Create.call(user: user, params: lean_bagel_params)
+        expect(service.recipe.family_name).to eq('lean')
+        expect(service.recipe.name).to eq('bagels')
+      end
+      
+      it 'assigns lean for torpedo rolls' do
+        include 'shared recipe examples'
+        service = Recipes::Create.call(user: user, params: lean_italian_torpedo_params)
+        expect(service.recipe.family_name).to eq('lean')
+        expect(service.recipe.name).to eq('italian torpedo rolls')
+      end
     end
     
-    it :soft do
-      include 'shared recipe examples'
-      service ||= Recipes::Create.call(user: user, params: soft_create_params)
-      expect(service.recipe.family_name).to eq('soft')
+    context :soft do
+      it 'assigns sift to ballons' do
+        include 'shared recipe examples'
+        service ||= Recipes::Create.call(user: user, params: soft_create_params)
+        expect(service.recipe.family_name).to eq('soft')
+        expect(service.recipe.name).to eq('ballons')
+      end
+
+      it 'assigns soft to challah' do
+        include 'shared recipe examples'
+        service ||= Recipes::Create.call(user: user, params: soft_challah_params)
+        expect(service.recipe.family_name).to eq('soft')
+        expect(service.recipe.name).to eq('challah')
+      end
+      
+      it 'assigns soft to pizza dough' do
+      
+      end
     end
     
     it :rich do
