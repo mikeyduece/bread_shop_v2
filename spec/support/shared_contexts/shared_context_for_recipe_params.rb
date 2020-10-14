@@ -16,6 +16,46 @@ RSpec.shared_context 'shared recipe params' do
     }
   end
   
+  let(:lean_bagel_params) do
+    {
+      data: {
+        type: 'recipe',
+        attributes: { name: 'bagels', number_of_portions: 12, weight_per_portion: 4.5 },
+        relationships: {
+          ingredients: [
+            { data: { type: 'ingredient', attributes: { name: 'bread flour', amount: 32 } } },
+            { data: { type: 'ingredient', attributes: { name: 'water', amount: 18.56 } } },
+            { data: { type: 'ingredient', attributes: { name: 'sugar', amount: 0.64 } } },
+            { data: { type: 'ingredient', attributes: { name: 'canola oil', amount: 0.48 } } },
+            { data: { type: 'ingredient', attributes: { name: 'molasses', amount: 0.48 } } },
+            { data: { type: 'ingredient', attributes: { name: 'yeast', amount: 0.32 } } },
+            { data: { type: 'ingredient', attributes: { name: 'salt', amount: 0.64 } } }
+          ]
+        }
+      }
+    }
+  end
+  
+  let(:lean_italian_torpedo_params) do
+    {
+      data: {
+        type: 'recipe',
+        attributes: { name: 'italian torpedo rolls', number_of_portions: 9, weight_per_portion: 6 },
+        relationships: {
+          ingredients: [
+            { data: { type: 'ingredient', attributes: { name: 'flour', amount: 21.5 } } },
+            { data: { type: 'ingredient', attributes: { name: 'semolina', amount: 10.0 } } },
+            { data: { type: 'ingredient', attributes: { name: 'honey', amount: 0.23 } } },
+            { data: { type: 'ingredient', attributes: { name: 'olive oil', amount: 1.5 } } },
+            { data: { type: 'ingredient', attributes: { name: 'water', amount: 19.5 } } },
+            { data: { type: 'ingredient', attributes: { name: 'yeast', amount: 0.5 } } },
+            { data: { type: 'ingredient', attributes: { name: 'salt', amount: 0.75 } } }
+          ]
+        }
+      }
+    }
+  end
+  
   let(:soft_create_params) do
     {
       data: {
@@ -30,6 +70,29 @@ RSpec.shared_context 'shared recipe params' do
             { data: { type: :ingredient, attributes: { name: 'milk', amount: 5.6 } } },
             { data: { type: :ingredient, attributes: { name: 'butter', amount: 1.88 } } },
             { data: { type: :ingredient, attributes: { name: 'sugar', amount: 1.4 } } }
+          ]
+        }
+      }
+    }
+  end
+  
+  let(:soft_challah_params) do
+    {
+      data: {
+        type: :recipe,
+        attributes: { name: 'Challah', number_of_portions: 2, weight_per_portion: 20 },
+        relationships: {
+          ingredients: [
+            { data: { type: :ingredient, attributes: { name: 'flour', amount: 22.0 } } },
+            { data: { type: :ingredient, attributes: { name: 'water', amount: 6.0 } } },
+            { data: { type: :ingredient, attributes: { name: 'salt', amount: 0.5 } } },
+            { data: { type: :ingredient, attributes: { name: 'yeast', amount: 0.33 } } },
+            { data: { type: :ingredient, attributes: { name: 'milk', amount: 3.0 } } },
+            { data: { type: :ingredient, attributes: { name: 'butter', amount: 3.0 } } },
+            { data: { type: :ingredient, attributes: { name: 'sugar', amount: 1.5 } } },
+            { data: { type: :ingredient, attributes: { name: 'salt', amount: 0.5 } } },
+            { data: { type: :ingredient, attributes: { name: 'eggs', amount: 5.25 } } },
+            { data: { type: :ingredient, attributes: { name: 'honey', amount: 0.35 } } }
           ]
         }
       }
