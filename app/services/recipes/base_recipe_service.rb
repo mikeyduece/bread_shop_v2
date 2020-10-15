@@ -31,8 +31,11 @@ module Recipes
       total = attributes.sum { |(k,_v)| k[:amount].to_f }
       recipe_total = recipe.number_of_portions * recipe.weight_per_portion
       
-      unless ((recipe_total - 2)..recipe_total + 2).include?(total.round)
-        raise Recipes::InvalidAmountTotalsError, I18n.t('api.errors.recipes.invalid_amount_totals')
+      unless (recipe_total..recipe_total + 8).include?(total.round)
+        raise Recipes::InvalidAmountTotalsError, I18n.t('api.errors.recipes.invalid_amount_totals',
+                                                        recipe_total: recipe_total,
+                                                        total: total, portions: recipe.number_of_portions,
+                                                        weight_per: recipe.weight_per_portion)
       end
     end
   

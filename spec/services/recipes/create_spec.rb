@@ -29,7 +29,7 @@ RSpec.describe Recipes::Create, type: :service do
     end
     
     context :soft do
-      it 'assigns sift to ballons' do
+      it 'assigns soft to ballons' do
         include 'shared recipe examples'
         service ||= Recipes::Create.call(user: user, params: soft_create_params)
         expect(service.recipe.family_name).to eq('soft')
@@ -44,14 +44,27 @@ RSpec.describe Recipes::Create, type: :service do
       end
       
       it 'assigns soft to pizza dough' do
-      
+        include 'shared recipe examples'
+        service ||= Recipes::Create.call(user: user, params: soft_pizza_dough_params)
+        expect(service.recipe.family_name).to eq('soft')
+        expect(service.recipe.name).to eq('pizza dough')
       end
     end
     
-    it :rich do
-      include 'shared recipe examples'
-      service ||= Recipes::Create.call(user: user, params: rich_create_params)
-      expect(service.recipe.family_name).to eq('rich')
+    context :rich do
+      it 'assigns rich to butter bread' do
+        include 'shared recipe examples'
+        service ||= Recipes::Create.call(user: user, params: rich_create_params)
+        expect(service.recipe.family_name).to eq('rich')
+        expect(service.recipe.name).to eq('butter bread')
+      end
+      
+      it 'assigns rich to brioche' do
+        include 'shared recipe examples'
+        service ||= Recipes::Create.call(user: user, params: rich_brioche_params)
+        expect(service.recipe.family_name).to eq('rich')
+        expect(service.recipe.name).to eq('brioche')
+      end
     end
     
     it :slack do
