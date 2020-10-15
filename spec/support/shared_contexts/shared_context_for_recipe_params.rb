@@ -20,16 +20,16 @@ RSpec.shared_context 'shared recipe params' do
     {
       data: {
         type: 'recipe',
-        attributes: { name: 'bagels', number_of_portions: 12, weight_per_portion: 4.5 },
+        attributes: { name: 'bagels', number_of_portions: 12, weight_per_portion: 4 },
         relationships: {
           ingredients: [
             { data: { type: 'ingredient', attributes: { name: 'bread flour', amount: 32 } } },
             { data: { type: 'ingredient', attributes: { name: 'water', amount: 18.56 } } },
-            { data: { type: 'ingredient', attributes: { name: 'sugar', amount: 0.64 } } },
-            { data: { type: 'ingredient', attributes: { name: 'canola oil', amount: 0.48 } } },
-            { data: { type: 'ingredient', attributes: { name: 'molasses', amount: 0.48 } } },
+            { data: { type: 'ingredient', attributes: { name: 'sugar', amount: 0.75 } } },
+            { data: { type: 'ingredient', attributes: { name: 'canola oil', amount: 0.5 } } },
+            { data: { type: 'ingredient', attributes: { name: 'molasses', amount: 0.5 } } },
             { data: { type: 'ingredient', attributes: { name: 'yeast', amount: 0.32 } } },
-            { data: { type: 'ingredient', attributes: { name: 'salt', amount: 0.64 } } }
+            { data: { type: 'ingredient', attributes: { name: 'salt', amount: 0.66 } } }
           ]
         }
       }
@@ -99,19 +99,59 @@ RSpec.shared_context 'shared recipe params' do
     }
   end
   
+  let(:soft_pizza_dough_params) do
+    {
+      data: {
+        type: 'recipe',
+        attributes: { name: 'Pizza Dough', number_of_portions: 3, weight_per_portion: 9.5 },
+        relationships: {
+          ingredients: [
+            { data: { type: :ingredient, attributes: { name: 'flour', amount: 16.0 } } },
+            { data: { type: :ingredient, attributes: { name: 'salt', amount: 0.32 } } },
+            { data: { type: :ingredient, attributes: { name: 'water', amount: 11.2 } } },
+            { data: { type: :ingredient, attributes: { name: 'yeast', amount: 0.24 } } },
+            { data: { type: :ingredient, attributes: { name: 'honey', amount: 0.5 } } },
+            { data: { type: :ingredient, attributes: { name: 'olive oil', amount: 1.0 } } }
+          ]
+        }
+      }
+    }
+  end
+  
   let(:rich_create_params) do
     {
       data: {
         type: :recipe,
-        attributes: { name: 'butter bread', number_of_portions: 2, weight_per_portion: 21 },
+        attributes: { name: 'butter bread', number_of_portions: 6, weight_per_portion: 6 },
         relationships: {
           ingredients: [
             { data: { type: :ingredient, attributes: { name: 'bread flour', amount: 21.0 } } },
-            { data: { type: :ingredient, attributes: { name: 'milk', amount: 12.6 } } },
-            { data: { type: :ingredient, attributes: { name: 'yeast', amount: 0.84 } } },
+            { data: { type: :ingredient, attributes: { name: 'milk', amount: 13.0 } } },
+            { data: { type: :ingredient, attributes: { name: 'yeast', amount: 1 } } },
             { data: { type: :ingredient, attributes: { name: 'eggs', amount: 1.05 } } },
-            { data: { type: :ingredient, attributes: { name: 'salt', amount: 0.42 } } },
-            { data: { type: :ingredient, attributes: { name: 'butter', amount: 4.2.to_s } } }
+            { data: { type: :ingredient, attributes: { name: 'salt', amount: 0.4 } } },
+            { data: { type: :ingredient, attributes: { name: 'butter', amount: 4.5 } } }
+          ]
+        }
+      }
+    }
+  end
+  
+  let(:rich_brioche_params) do
+    {
+      data: {
+        type: :recipe,
+        attributes: { name: 'brioche', number_of_portions: 2, weight_per_portion: 20 },
+        relationships: {
+          ingredients: [
+            { data: { type: :ingredient, attributes: { name: 'flour i', amount: 6.0 } } },
+            { data: { type: :ingredient, attributes: { name: 'flour ii', amount: 18.0 } } },
+            { data: { type: :ingredient, attributes: { name: 'water', amount: 6.0 } } },
+            { data: { type: :ingredient, attributes: { name: 'yeast', amount: 1.0 } } },
+            { data: { type: :ingredient, attributes: { name: 'eggs', amount: 7.0 } } },
+            { data: { type: :ingredient, attributes: { name: 'sugar', amount: 2.0 } } },
+            { data: { type: :ingredient, attributes: { name: 'salt', amount: 0.66 } } },
+            { data: { type: :ingredient, attributes: { name: 'butter', amount: 7.0 } } },
           ]
         }
       }
@@ -127,7 +167,7 @@ RSpec.shared_context 'shared recipe params' do
           ingredients: [
             { data: { type: :ingredient, attributes: { name: 'flour I', amount: 11.0 } } },
             { data: { type: :ingredient, attributes: { name: 'flour II', amount: 16.0 } } },
-            { data: { type: :ingredient, attributes: { name: 'water', amount: 15.84 } } },
+            { data: { type: :ingredient, attributes: { name: 'water', amount: 19.0 } } },
             { data: { type: :ingredient, attributes: { name: 'salt', amount: 0.58 } } },
             { data: { type: :ingredient, attributes: { name: 'yeast', amount: 0.72 } } },
             { data: { type: :ingredient, attributes: { name: 'sugar', amount: 1.68 } } },

@@ -1,6 +1,6 @@
 puts '#################################'
 puts 'Creating Families'
-%w[lean soft slack rich sweet].each { |family_name| Family.find_or_create_by(name: family_name) }
+%w[lean soft slack rich sweet other].each { |family_name| Family.find_or_create_by(name: family_name) }
 
 puts '#################################'
 puts 'Creating Categories'

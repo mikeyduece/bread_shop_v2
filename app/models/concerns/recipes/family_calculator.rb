@@ -3,6 +3,7 @@ module Recipes
     private
     
     def calculate_family
+      # require 'pry'; binding.pry
       case
         when lean?
           update_columns(family_id: set_family(:lean))
@@ -14,6 +15,8 @@ module Recipes
           update_columns(family_id: set_family(:rich))
         when slack?
           update_columns(family_id: set_family(:slack))
+        else
+          update_columns(family_id: set_family(:other))
       end
     end
     
@@ -24,11 +27,12 @@ module Recipes
     
     # Boolean checks for for family related percentage/category ranges
     def lean?
-      sweetener_and_fat_amounts.all?(Api::Recipes::LOW)
+      sweetener_and_fat_percentages.all?(Api::Recipes::LOW) && Api::Recipes::LOW.include?(liquid_fat_percentage)
     end
     
     def soft?
-      sweetener_and_fat_amounts.all?(Api::Recipes::MODERATE)
+      !Api::Recipes::HIGH.include?(sweetener_percentage) && (water_percentage <= 70.0) &&
+      (Api::Recipes::MODERATE.include?(liquid_fat_percentage) || Api::Recipes::MODERATE.include?(fat_percentage))
     end
     
     def rich?
@@ -37,11 +41,11 @@ module Recipes
     end
     
     def slack?
-      Api::Recipes::MODERATE.include?(liquid_fat_percentage) && Api::Recipes::HIGH.include?(water_percentage)
+      Api::Recipes::MODERATE.include?(liquid_fat_percentage) && water_percentage > 70.0
     end
     
     def sweet?
-      sweetener_and_fat_amounts.all?(Api::Recipes::HIGH)
+      sweetener_and_fat_percentages.all?(Api::Recipes::HIGH)
     end
     
     # Percentage ranges for calculating families
@@ -65,7 +69,7 @@ module Recipes
       calculate_percentage(liquid_fats)
     end
     
-    def sweetener_and_fat_amounts
+    def sweetener_and_fat_percentages
       [sweetener_percentage, fat_percentage]
     end
     
