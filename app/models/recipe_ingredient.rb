@@ -1,6 +1,7 @@
 class RecipeIngredient < ApplicationRecord
   belongs_to :recipe
   belongs_to :ingredient
+  has_one :category, through: :ingredient
 
   before_commit :ensure_bakers_percentage, on: %i[create update]
   
@@ -12,6 +13,7 @@ class RecipeIngredient < ApplicationRecord
   }
   
   delegate :name, :category_name, to: :ingredient, prefix: true
+  delegate :name, :category_name, to: :category, prefix: true
   
   private
   
