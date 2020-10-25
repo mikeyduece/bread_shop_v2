@@ -1,6 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe 'User API' do
+  include_context 'shared headers'
   let! (:params) do
     {
       data: {
@@ -19,7 +20,6 @@ RSpec.describe 'User API' do
   let(:user) { create(:user) }
   
   context 'Authorized' do
-    include_context 'shared headers'
     before { login_as_user(user) }
     
     it 'creates user' do
@@ -53,6 +53,11 @@ RSpec.describe 'User API' do
       
       expect(response).to_not be_successful
       expect(response.status).to eq(401)
+    end
+
+    it 'should raise routing error if no accept header present' do
+      login_as_user(user)
+      expect{ get "/api/v1/users/users/#{user.id}" }.to raise_error(ActionController::RoutingError)
     end
   end
 

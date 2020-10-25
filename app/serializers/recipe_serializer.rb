@@ -1,5 +1,5 @@
 class RecipeSerializer
-  include FastJsonapi::ObjectSerializer
+ include JSONAPI::Serializer
   attributes :name, :weight_per_portion, :number_of_portions, :unit, :formatted_ingredients
   
   belongs_to :user

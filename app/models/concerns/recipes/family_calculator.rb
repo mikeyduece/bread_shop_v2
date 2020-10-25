@@ -3,7 +3,6 @@ module Recipes
     private
     
     def calculate_family
-      require 'pry'; binding.pry
       case
         when lean?
           update_columns(family_id: set_family(:lean))
