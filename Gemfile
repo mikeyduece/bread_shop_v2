@@ -15,7 +15,6 @@ gem 'faker'
 gem 'versionist'
 
 gem "webpacker"
-gem 'eps'
 # See https://github.com/rails/execjs#readme for more supported runtimes
 # gem 'mini_racer', platforms: :ruby
 
