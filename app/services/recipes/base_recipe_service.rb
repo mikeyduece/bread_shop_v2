@@ -16,7 +16,7 @@ module Recipes
     end
     
     def build_recipe_ingredients(ingredients:)
-      recipe_ingredients_attributes = ingredients.each_with_object({}) do |recipe_ingredient, acc|
+      recipe_ingredients_attributes = ingredients[:data].each_with_object({}) do |recipe_ingredient, acc|
         attrs = attributes(recipe_ingredient)
         ingredient_id = Ingredient.find_or_create_by(name: attrs[:name].downcase).id
         

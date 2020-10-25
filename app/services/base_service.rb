@@ -38,7 +38,7 @@ class BaseService
   end
   
   def parse_serialization(base_params, key)
-    base_params.dig(:data, key.to_sym)
+    base_params.dig(:data, key.to_sym) || base_params.dig(key.to_sym)
   end
   
   def relationship(base_params, rel_name)
