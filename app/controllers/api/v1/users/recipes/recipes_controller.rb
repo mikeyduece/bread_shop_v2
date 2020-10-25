@@ -7,6 +7,7 @@ module Api
           before_action :set_user_recipe, except: %i[create index]
           
           def create
+            require 'pry'; binding.pry
             service = ::Recipes::Create.call(user: current_user, params: recipe_params)
             return error_response(service.errors) unless service.success?
             

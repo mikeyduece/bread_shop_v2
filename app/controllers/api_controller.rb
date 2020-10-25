@@ -2,6 +2,7 @@ class ApiController < ActionController::API
   include Auth0CurrentUser::Secured
   include DrySerialization::JsonapiSerializer
   include DrySerialization::Concerns::SerializationHelper
+  include DrySerialization::Concerns::Deserializable
   
   before_action :set_response_headers
   
