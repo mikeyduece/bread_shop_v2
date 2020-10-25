@@ -3,14 +3,12 @@ require 'rails_helper'
 RSpec.describe Recipes::Create, type: :service do
   include_context 'shared recipe params'
   let(:user) { create(:user) }
-  before(:all) { @data ||= [] }
   
   context 'correctly assigns family' do
     context :lean do
       it 'assigns lean for baguette recipe' do
         include 'shared recipe examples'
         service = Recipes::Create.call(user: user, params: lean_create_params)
-        @data << service.recipe.formatted_ingredients.merge(family: 'lean')
         expect(service.recipe.family_name).to eq('lean')
         expect(service.recipe.name).to eq('baguette')
       end
@@ -18,7 +16,6 @@ RSpec.describe Recipes::Create, type: :service do
       it 'assigns lean for bagels' do
         include 'shared recipe examples'
         service = Recipes::Create.call(user: user, params: lean_bagel_params)
-        @data << service.recipe.formatted_ingredients.merge(family: 'lean')
         expect(service.recipe.family_name).to eq('lean')
         expect(service.recipe.name).to eq('bagels')
       end
@@ -26,7 +23,6 @@ RSpec.describe Recipes::Create, type: :service do
       it 'assigns lean for torpedo rolls' do
         include 'shared recipe examples'
         service = Recipes::Create.call(user: user, params: lean_italian_torpedo_params)
-        @data << service.recipe.formatted_ingredients.merge(family: 'lean')
         expect(service.recipe.family_name).to eq('lean')
         expect(service.recipe.name).to eq('italian torpedo rolls')
       end
@@ -36,7 +32,6 @@ RSpec.describe Recipes::Create, type: :service do
       it 'assigns soft to ballons' do
         include 'shared recipe examples'
         service ||= Recipes::Create.call(user: user, params: soft_create_params)
-        @data << service.recipe.formatted_ingredients.merge(family: 'soft')
         expect(service.recipe.family_name).to eq('soft')
         expect(service.recipe.name).to eq('ballons')
       end
@@ -44,26 +39,16 @@ RSpec.describe Recipes::Create, type: :service do
       it 'assigns soft to challah' do
         include 'shared recipe examples'
         service ||= Recipes::Create.call(user: user, params: soft_challah_params)
-        @data << service.recipe.formatted_ingredients.merge(family: 'soft')
         expect(service.recipe.family_name).to eq('soft')
         expect(service.recipe.name).to eq('challah')
       end
       
-      it 'assigns soft to pizza dough' do
-        include 'shared recipe examples'
-        service ||= Recipes::Create.call(user: user, params: soft_pizza_dough_params)
-        require 'pry'; binding.pry
-        @data << service.recipe.formatted_ingredients.merge(family: 'soft')
-        expect(service.recipe.family_name).to eq('soft')
-        expect(service.recipe.name).to eq('pizza dough')
-      end
     end
     
     context :rich do
       it 'assigns rich to butter bread' do
         include 'shared recipe examples'
         service ||= Recipes::Create.call(user: user, params: rich_create_params)
-        @data << service.recipe.formatted_ingredients.merge(family: 'rich')
         expect(service.recipe.family_name).to eq('rich')
         expect(service.recipe.name).to eq('butter bread')
       end
@@ -71,7 +56,6 @@ RSpec.describe Recipes::Create, type: :service do
       it 'assigns rich to brioche' do
         include 'shared recipe examples'
         service ||= Recipes::Create.call(user: user, params: rich_brioche_params)
-        @data << service.recipe.formatted_ingredients.merge(family: 'rich')
         expect(service.recipe.family_name).to eq('rich')
         expect(service.recipe.name).to eq('brioche')
       end
@@ -79,17 +63,22 @@ RSpec.describe Recipes::Create, type: :service do
       it 'assigns rich to modeling brioche' do
         include 'shared recipe examples'
         service ||= Recipes::Create.call(user: user, params: rich_modeling_brioche_params)
-        @data << service.recipe.formatted_ingredients.merge(family: 'rich')
         expect(service.recipe.family_name).to eq('rich')
         expect(service.recipe.name).to eq('modeling brioche')
       end
     end
     
     context :slack do
+      it 'assigns slack to pizza dough' do
+        include 'shared recipe examples'
+        service ||= Recipes::Create.call(user: user, params: soft_pizza_dough_params)
+        expect(service.recipe.family_name).to eq('slack')
+        expect(service.recipe.name).to eq('pizza dough')
+      end
+      
       it 'assigns slack to foccacia' do
         include 'shared recipe examples'
         service ||= Recipes::Create.call(user: user, params: slack_create_params)
-        @data << service.recipe.formatted_ingredients.merge(family: 'slack')
         expect(service.recipe.family_name).to eq('slack')
         expect(service.recipe.name).to eq('foccacia')
       end
@@ -97,8 +86,6 @@ RSpec.describe Recipes::Create, type: :service do
       it 'assigns slack to corn meal flat bread' do
         include 'shared recipe examples'
         service ||= Recipes::Create.call(user: user, params: slack_cornmeal_flatbread_params)
-        @data << service.recipe.formatted_ingredients.merge(family: 'slack')
-        require 'pry'; binding.pry
         expect(service.recipe.family_name).to eq('slack')
         expect(service.recipe.name).to eq('cornmeal flatbread')
       end
