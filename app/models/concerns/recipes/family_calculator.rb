@@ -3,7 +3,7 @@ module Recipes
     private
     
     def calculate_family
-      # require 'pry'; binding.pry
+      require 'pry'; binding.pry
       case
         when lean?
           update_columns(family_id: set_family(:lean))
@@ -31,8 +31,8 @@ module Recipes
     end
     
     def soft?
-      !Api::Recipes::HIGH.include?(sweetener_percentage) && (water_percentage <= 70.0) &&
-      (Api::Recipes::MODERATE.include?(liquid_fat_percentage) || Api::Recipes::MODERATE.include?(fat_percentage))
+      !Api::Recipes::HIGH.include?(sweetener_percentage) && (water_percentage.ceil + liquid_fat_percentage.ceil <= 68.9) &&
+      ((Api::Recipes::MODERATE.include?(liquid_fat_percentage) || Api::Recipes::MODERATE.include?(fat_percentage)) || Api::Recipes::MODERATE.include?([fat_percentage, liquid_fat_percentage].sum))
     end
     
     def rich?
@@ -41,7 +41,8 @@ module Recipes
     end
     
     def slack?
-      Api::Recipes::MODERATE.include?(liquid_fat_percentage) && water_percentage > 70.0
+      Api::Recipes::MODERATE.include?(liquid_fat_percentage) && (water_percentage >= 69.0 ||
+        water_percentage.ceil + liquid_fat_percentage.ceil >= 69.0)
     end
     
     def sweet?

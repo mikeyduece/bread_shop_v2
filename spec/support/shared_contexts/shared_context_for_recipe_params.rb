@@ -158,6 +158,29 @@ RSpec.shared_context 'shared recipe params' do
     }
   end
   
+  let(:rich_modeling_brioche_params) do
+    {
+      data: {
+        type: :recipe,
+        attributes: { name: 'modeling brioche', number_of_portions: 2, weight_per_portion: 20 },
+        relationships: {
+          ingredients: [
+            { data: { type: :ingredient, attributes: { name: 'bread flour i', amount: 8 } } },
+            { data: { type: :ingredient, attributes: { name: 'pastry flour ii', amount: 12.75 } } },
+            { data: { type: :ingredient, attributes: { name: 'water', amount: 3.0 } } },
+            { data: { type: :ingredient, attributes: { name: 'milk', amount: 3.5 } } },
+            { data: { type: :ingredient, attributes: { name: 'yeast', amount: 1.0 } } },
+            { data: { type: :ingredient, attributes: { name: 'eggs', amount: 4.0 } } },
+            { data: { type: :ingredient, attributes: { name: 'yolks', amount: 1.0 } } },
+            { data: { type: :ingredient, attributes: { name: 'sugar', amount: 1.66 } } },
+            { data: { type: :ingredient, attributes: { name: 'salt', amount: 0.5 } } },
+            { data: { type: :ingredient, attributes: { name: 'butter', amount: 4.5 } } },
+          ]
+        }
+      }
+    }
+    end
+  
   let(:slack_create_params) do
     {
       data: {
@@ -172,6 +195,28 @@ RSpec.shared_context 'shared recipe params' do
             { data: { type: :ingredient, attributes: { name: 'yeast', amount: 0.72 } } },
             { data: { type: :ingredient, attributes: { name: 'sugar', amount: 1.68 } } },
             { data: { type: :ingredient, attributes: { name: 'olive oil', amount: 1.44 } } }
+          ]
+        }
+      }
+    }
+  end
+
+  let(:slack_cornmeal_flatbread_params) do
+    {
+      data: {
+        type: :recipe,
+        attributes: { name: 'Cornmeal Flatbread', number_of_portions: 12, weight_per_portion: 4.5 },
+        relationships: {
+          ingredients: [
+            { data: { type: :ingredient, attributes: { name: 'whole wheat flour', amount: 4.0 } } },
+            { data: { type: :ingredient, attributes: { name: 'bread flour', amount: 20.5 } } },
+            { data: { type: :ingredient, attributes: { name: 'corn meal', amount: 8.0 } } },
+            { data: { type: :ingredient, attributes: { name: 'water', amount: 20.0 } } },
+            { data: { type: :ingredient, attributes: { name: 'yeast', amount: 0.5 } } },
+            { data: { type: :ingredient, attributes: { name: 'canola oil', amount: 2.0 } } },
+            { data: { type: :ingredient, attributes: { name: 'brown sugar', amount: 1.3 } } },
+            { data: { type: :ingredient, attributes: { name: 'honey', amount: 0.33 } } },
+            { data: { type: :ingredient, attributes: { name: 'salt', amount: 0.42 } } },
           ]
         }
       }
@@ -199,5 +244,5 @@ RSpec.shared_context 'shared recipe params' do
       }
     }
   end
-
+  
 end
