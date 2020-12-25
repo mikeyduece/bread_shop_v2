@@ -35,6 +35,8 @@ gem 'stream_rails'
 gem 'newrelic_rpm'
 gem 'auth0_current_user'
 
+gem 'figaro'
+
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.1.0', require: false
 

@@ -17,7 +17,7 @@ module Recipes
     
     def build_recipe!
       attrs = attributes(params)
-      raise ActiveRecord::RecordNotUnique, I18n.t('api.errors.recipes.record_exists') if user.recipes.find_by(name: attrs[:name])
+      raise ActiveRecord::RecordNotUnique, I18n.t('api.errors.recipes.record_exists') if user.recipes.exists?(name: attrs[:name])
       
       @recipe ||= user.recipes.build(attrs)
       

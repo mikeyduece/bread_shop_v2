@@ -21,7 +21,7 @@ class BaseService
   
   def handle_error(error)
     Rails.logger.error(error.message)
-    Rails.logger.error(error.backtrace)
+    puts e.backtrace.join("\n\t")
     Failure.new(errors: error.message)
   end
   
