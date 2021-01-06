@@ -9,7 +9,10 @@ Bundler.require(*Rails.groups)
 module BreadShopV2
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
-    config.load_defaults 6.0
+    config.load_defaults 6.1
+    # Loads translation files and sets default locale to english(en)
+    config.i18n.load_path += Dir[Rails.root.join('config', 'locales', '**', '*.{rb,yml}')]
+    config.i18n.default_locale = :en
 
     # Configuration for the application, engines, and railties goes here.
     #
