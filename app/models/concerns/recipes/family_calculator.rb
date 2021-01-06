@@ -31,7 +31,8 @@ module Recipes
     
     def soft?
       !Api::Recipes::HIGH.include?(sweetener_percentage) && (water_percentage.ceil + liquid_fat_percentage.ceil <= 68.9) &&
-      ((Api::Recipes::MODERATE.include?(liquid_fat_percentage) || Api::Recipes::MODERATE.include?(fat_percentage)) || Api::Recipes::MODERATE.include?([fat_percentage, liquid_fat_percentage].sum))
+        ((Api::Recipes::MODERATE.include?(liquid_fat_percentage) || Api::Recipes::MODERATE.include?(fat_percentage)) ||
+          Api::Recipes::MODERATE.include?([fat_percentage, liquid_fat_percentage].sum))
     end
     
     def rich?
