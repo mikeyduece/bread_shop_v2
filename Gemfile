@@ -34,7 +34,7 @@ gem 'database_cleaner'
 gem 'cancancan', '~> 2.0'
 gem 'stream_rails'
 gem 'newrelic_rpm'
-# gem 'auth0_current_user'
+gem 'auth0_current_user'
 
 gem 'figaro'
 
