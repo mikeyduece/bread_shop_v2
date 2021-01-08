@@ -4,7 +4,7 @@ jobs:
     parallelism: 3
     working_directory: ~/bread_shop_v2
     docker:
-      - image: circleci/ruby:2.7.1-node-browsers
+      - image: circleci/ruby:3.0.0-node-browsers
         environment:
           PGHOST: localhost
           PGUSER: bread_shop_v2
