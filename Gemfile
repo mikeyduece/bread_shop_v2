@@ -1,14 +1,16 @@
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby '2.7.1'
+ruby '3.3.0'
 
 gem 'dry_serialization'
 gem 'jsonapi-serializer'
 
-gem 'rails', '~> 6.1.0'
+gem 'mongoid', '~> 7.0.5'
 
-gem 'pg', '>= 0.18', '< 2.0'
+gem 'rails', '~> 6.1.3.1'
+
+# gem 'pg', '>= 0.18', '< 2.0'
 gem 'puma', '~> 3.11'
 gem 'sass-rails', '~> 5.0'
 gem 'uglifier', '>= 1.3.0'
