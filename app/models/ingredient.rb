@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Ingredient < ApplicationRecord
+class Ingredient 
   belongs_to :category
 
   has_many :recipe_ingredients, dependent: :destroy

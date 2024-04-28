@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Abstract Model that all models need to inherit from
 class AbstractModel
   include Mongoid::Document
   include Mongoid::Attributes::Dynamic
@@ -8,10 +9,18 @@ class AbstractModel
   before_create :set_created
   before_save :set_updated
 
-  def self.token_prop(prefix)
+  private_class_method def self.token_prop(prefix)
     define_method(:_id) do
       super() ? "#{prefix}#{super()}" : nil
     end
+  end
+
+  private_class_method def self.db_namespace(database_name = 'mongo')
+    store_in database: database_name
+  end
+
+  private_class_method def self.collection(collection_name)
+    store_in collection: collection_name
   end
 
   private def set_created
