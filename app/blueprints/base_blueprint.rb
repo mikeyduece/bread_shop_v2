@@ -1,3 +1,4 @@
-class BaseBlueprint < Blueprinter::Base
+# frozen_string_literal: true
 
+class BaseBlueprint < Blueprinter::Base
 end

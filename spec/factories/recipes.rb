@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 FactoryBot.define do
   factory :recipe do
     sequence :name do |n|
@@ -6,11 +8,11 @@ FactoryBot.define do
     number_of_portions { 2 }
     weight_per_portion { 13.28 }
     user
-    
+
     transient do
       ingredient_count { 6 }
     end
-    
+
     before(:create) do |recipe|
       %i[flour water salt yeast].map do |name|
         ingredient = create(:ingredient, name: "#{SecureRandom.uuid} #{name}")
@@ -19,7 +21,5 @@ FactoryBot.define do
       end
     end
     family { Family.all.sample || association(:family) }
-    
   end
-
 end

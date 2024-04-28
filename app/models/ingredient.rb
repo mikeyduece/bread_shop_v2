@@ -1,5 +1,6 @@
-class Ingredient < ApplicationRecord
+# frozen_string_literal: true
 
+class Ingredient < ApplicationRecord
   belongs_to :category
 
   has_many :recipe_ingredients, dependent: :destroy
@@ -11,9 +12,7 @@ class Ingredient < ApplicationRecord
 
   delegate :name, to: :category, prefix: true
 
-  private
-
-  def ensure_category
+  private def ensure_category
     return unless name
 
     name = self.name&.downcase
@@ -33,11 +32,11 @@ class Ingredient < ApplicationRecord
                     end
   end
 
-  def check_for_category_inclusion(constant, ingredient_name)
-    constant.any? { |i| ingredient_name.match?(%r{(#{i})}) }
+  private def check_for_category_inclusion(constant, ingredient_name)
+    constant.any? { |i| ingredient_name.match?(/(#{i})/) }
   end
 
-  def set_category(category_name)
+  private def set_category(category_name)
     Category.find_or_create_by(name: category_name.to_s.titleize.downcase)
   end
 end

@@ -1,0 +1,36 @@
+require:
+  - ./lib/rubocop/init_autoloader
+
+AllCops:
+  TargetRubyVersion: 3.3.0
+  UseTab: false
+  Exclude:
+    - 'spec/**/*.rb'
+    - 'db/**/*'
+    - 'config/**/*'
+    - 'bin/**/*'
+
+# Custom Cops
+Custom/AbstractModel:
+  Enabled: true
+Custom/PrivateMethodStyle:
+  Enabled: true
+Custom/RequireTokenProp:
+  Enabled: true
+Style/AccessModifierDeclarations:
+  EnforcedStyle: inline
+Metrics/CyclomaticComplexity:
+  Exclude:
+    - 'lib/rubocop/cop/custom/*.rb'
+Metrics/MethodLength:
+  Exclude:
+    - 'lib/rubocop/cop/custom/*.rb'
+Metrics/PerceivedComplexity:
+  Exclude:
+    - 'lib/rubocop/cop/custom/*.rb'
+
+
+
+# Indentation configuration
+Layout/IndentationWidth:
+  EnforcedWidth: 2

@@ -1,5 +1,5 @@
-class NoTrigger
+# frozen_string_literal: true
 
-  def self.call
-  end
+class NoTrigger
+  def self.call; end
 end

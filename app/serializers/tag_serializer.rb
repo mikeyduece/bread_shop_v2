@@ -1,4 +1,6 @@
+# frozen_string_literal: true
+
 class TagSerializer
- include JSONAPI::Serializer
+  include JSONAPI::Serializer
   attributes :name
 end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateRecipeTags < ActiveRecord::Migration[6.0]
   def change
     create_table :recipe_tags do |t|
@@ -6,7 +8,7 @@ class CreateRecipeTags < ActiveRecord::Migration[6.0]
 
       t.timestamps
     end
-    
+
     add_index :recipe_tags, %i[recipe_id tag_id], unique: true, name: :idx_recipes_tags_on_recipe_and_tag
   end
 end

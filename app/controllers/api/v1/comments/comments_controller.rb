@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Api
   module V1
     module Comments
@@ -16,13 +18,11 @@ module Api
           end
         end
 
-        private
-
-        def comment
+        private def comment
           @comment ||= Comment.find_by(id: comment_params[:parent_id])
         end
 
-        def comment_params
+        private def comment_params
           params.require(:comment).permit(:id, :body, :parent_id, :user_id)
         end
       end

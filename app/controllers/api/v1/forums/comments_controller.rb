@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Api
   module V1
     module Forums
@@ -21,23 +23,21 @@ module Api
               success_response(message: t('api.comments.deleted'))
             else
               error_response(message: t('api.error.delete_error', name: 'comment'))
-              end
+            end
           else
             error_response(message: t('api.error.record_not_found'))
           end
         end
 
-        private
-
-        def comment
-          @comment ||= Comment.find_by(id: params[:comment_id] || params[:id])          
+        private def comment
+          @comment ||= Comment.find_by(id: params[:comment_id] || params[:id])
         end
-        
-        def forum
+
+        private def forum
           @forum ||= Forum.find_by(id: params[:forum_id] || params[:id])
         end
 
-        def comment_params
+        private def comment_params
           params.require(:comment).permit(:id, :body, :user_id, :parent_id)
         end
       end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Add your Auth0 audience and domain here to ensure that the gem can authenticate the request against your app
 
 Auth0CurrentUser.config do |c|

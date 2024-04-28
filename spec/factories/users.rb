@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 FactoryBot.define do
   factory :user do
     email { Faker::Internet.unique.email }
@@ -10,6 +12,5 @@ FactoryBot.define do
         create_list(:recipe, 4, user: user)
       end
     end
-    
   end
 end

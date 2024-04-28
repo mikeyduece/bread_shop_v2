@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.shared_context 'shared recipe params' do
   let(:lean_create_params) do
     {
@@ -17,7 +19,7 @@ RSpec.shared_context 'shared recipe params' do
       }
     }
   end
-  
+
   let(:lean_bagel_params) do
     {
       data: {
@@ -39,7 +41,7 @@ RSpec.shared_context 'shared recipe params' do
       }
     }
   end
-  
+
   let(:lean_italian_torpedo_params) do
     {
       data: {
@@ -61,7 +63,7 @@ RSpec.shared_context 'shared recipe params' do
       }
     }
   end
-  
+
   let(:soft_create_params) do
     {
       data: {
@@ -83,7 +85,7 @@ RSpec.shared_context 'shared recipe params' do
       }
     }
   end
-  
+
   let(:soft_challah_params) do
     {
       data: {
@@ -108,7 +110,7 @@ RSpec.shared_context 'shared recipe params' do
       }
     }
   end
-  
+
   let(:soft_pizza_dough_params) do
     {
       data: {
@@ -129,7 +131,7 @@ RSpec.shared_context 'shared recipe params' do
       }
     }
   end
-  
+
   let(:rich_create_params) do
     {
       data: {
@@ -150,7 +152,7 @@ RSpec.shared_context 'shared recipe params' do
       }
     }
   end
-  
+
   let(:rich_brioche_params) do
     {
       data: {
@@ -166,14 +168,14 @@ RSpec.shared_context 'shared recipe params' do
               { type: :ingredient, attributes: { name: 'eggs', amount: 7.0 } },
               { type: :ingredient, attributes: { name: 'sugar', amount: 2.0 } },
               { type: :ingredient, attributes: { name: 'salt', amount: 0.66 } },
-              { type: :ingredient, attributes: { name: 'butter', amount: 7.0 } },
+              { type: :ingredient, attributes: { name: 'butter', amount: 7.0 } }
             ]
           }
         }
       }
     }
   end
-  
+
   let(:rich_modeling_brioche_params) do
     {
       data: {
@@ -191,14 +193,14 @@ RSpec.shared_context 'shared recipe params' do
               { type: :ingredient, attributes: { name: 'yolks', amount: 1.0 } },
               { type: :ingredient, attributes: { name: 'sugar', amount: 1.66 } },
               { type: :ingredient, attributes: { name: 'salt', amount: 0.5 } },
-              { type: :ingredient, attributes: { name: 'butter', amount: 4.5 } },
+              { type: :ingredient, attributes: { name: 'butter', amount: 4.5 } }
             ]
           }
         }
       }
     }
   end
-  
+
   let(:slack_create_params) do
     {
       data: {
@@ -220,7 +222,7 @@ RSpec.shared_context 'shared recipe params' do
       }
     }
   end
-  
+
   let(:slack_cornmeal_flatbread_params) do
     {
       data: {
@@ -237,14 +239,14 @@ RSpec.shared_context 'shared recipe params' do
               { type: :ingredient, attributes: { name: 'canola oil', amount: 2.0 } },
               { type: :ingredient, attributes: { name: 'brown sugar', amount: 1.3 } },
               { type: :ingredient, attributes: { name: 'honey', amount: 0.33 } },
-              { type: :ingredient, attributes: { name: 'salt', amount: 0.42 } },
+              { type: :ingredient, attributes: { name: 'salt', amount: 0.42 } }
             ]
           }
         }
       }
     }
   end
-  
+
   let(:sweet_create_params) do
     {
       data: {
@@ -261,12 +263,11 @@ RSpec.shared_context 'shared recipe params' do
               { type: :ingredient, attributes: { name: 'milk', amount: 8.19 } },
               { type: :ingredient, attributes: { name: 'sugar', amount: 4.00 } },
               { type: :ingredient, attributes: { name: 'butter', amount: 5.88 } },
-              { type: :ingredient, attributes: { name: 'vanilla extract', amount: 0.66 } },
+              { type: :ingredient, attributes: { name: 'vanilla extract', amount: 0.66 } }
             ]
           }
         }
       }
     }
   end
-
 end

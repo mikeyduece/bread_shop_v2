@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Api
   module V1
     module Forums
@@ -28,17 +30,15 @@ module Api
           end
         end
 
-        private
-
-        def forums
+        private def forums
           @forums ||= Forum.all
         end
 
-        def forum_params
+        private def forum_params
           params.require(:forum).permit(:id, :title, :body, :user_id)
         end
 
-        def forum
+        private def forum
           @forum ||= Forum.find_by(id: params[:forum_id] || params[:id])
         end
       end
