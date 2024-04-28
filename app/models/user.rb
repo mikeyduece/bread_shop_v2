@@ -1,5 +1,5 @@
-class User < ApplicationRecord
-  has_many :recipes
+# frozen_string_literal: true
 
+# Generic User class
+class User
 end
-
