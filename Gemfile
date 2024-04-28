@@ -35,6 +35,7 @@ gem 'jbuilder', '~> 2.5'
 # gem 'capistrano-rails', group: :development
 gem 'auth0_current_user'
 gem 'cancancan', '~> 2.0'
+gem 'dalli'
 gem 'database_cleaner'
 gem 'jquery-rails'
 gem 'newrelic_rpm'
@@ -45,10 +46,14 @@ gem 'rubocop', require: false
 gem 'rubocop-performance', require: false
 gem 'rubocop-rails', require: false
 
+gem 'sorbet', :group => :development
+gem 'sorbet-runtime'
+
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.1.0', require: false
 
 group :development, :test do
+  gem 'tapioca', '> 0.11.2', require: false
   gem 'bullet'
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
   gem 'capybara'

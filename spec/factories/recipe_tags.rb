@@ -1,8 +1,0 @@
-# frozen_string_literal: true
-
-FactoryBot.define do
-  factory :recipe_tag do
-    tag { nil }
-    recipe { nil }
-  end
-end
