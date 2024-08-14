@@ -7,7 +7,7 @@
     "bootstrap": "^4.4.1",
     "jquery": "^3.4.1",
     "popper.js": "^1.16.1",
-    "trix": "^1.0.0",
+    "trix": "^2.1.4",
     "webpack": "^4.0.0"
   },
   "devDependencies": {
