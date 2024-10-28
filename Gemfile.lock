@@ -181,6 +181,8 @@ GEM
     nio4r (2.7.1)
     nokogiri (1.16.4-arm64-darwin)
       racc (~> 1.4)
+    nokogiri (1.16.4-x86_64-linux)
+      racc (~> 1.4)
     parallel (1.24.0)
     parser (3.3.1.0)
       ast (~> 2.4.1)
@@ -238,7 +240,7 @@ GEM
     regexp_parser (2.9.0)
     request_store (1.6.0)
       rack (>= 1.4)
-    rexml (3.2.6)
+    rexml (3.3.9)
     rspec-core (3.13.0)
       rspec-support (~> 3.13.0)
     rspec-expectations (3.13.0)
@@ -307,6 +309,7 @@ GEM
       sorbet-static (= 0.5.11361)
     sorbet-runtime (0.5.11361)
     sorbet-static (0.5.11361-universal-darwin)
+    sorbet-static (0.5.11361-x86_64-linux)
     sorbet-static-and-runtime (0.5.11361)
       sorbet (= 0.5.11361)
       sorbet-runtime (= 0.5.11361)
@@ -382,6 +385,7 @@ GEM
 
 PLATFORMS
   arm64-darwin-22
+  x86_64-linux
 
 DEPENDENCIES
   auth0_current_user
